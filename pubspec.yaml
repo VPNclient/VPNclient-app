@@ -38,10 +38,9 @@ dependencies:
   flutter_native_splash: ^2.3.1
   flutter_bloc: ^9.0.0
   vpnclient_engine_flutter:
-    path: ../VPNclient-engine-flutter
-    # git:
-    #   url: https://github.com/VPNclient/VPNclient-engine-flutter.git
-    #   ref: c3bf79010c05a2474a24f763d428a61788a13e9b
+    git:
+      url: https://github.com/VPNclient/VPNclient-engine-flutter.git
+      ref: c3bf79010c05a2474a24f763d428a61788a13e9b
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
