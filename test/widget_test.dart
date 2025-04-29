@@ -42,7 +42,7 @@ void main() {
         providers: [
           ChangeNotifierProvider<ThemeProvider>(create: (_) => ThemeProvider()),
         ],
-        child: const MaterialApp(home: App()),
+        child: const MaterialApp(home: AppsPage()),
       ),
     );
 
