@@ -19,6 +19,7 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
+      - run: flutter gen-l10n
       - run: flutter analyze
 
   test:
@@ -29,6 +30,7 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
+      - run: flutter gen-l10n
       - run: flutter test
 
   build-android:
