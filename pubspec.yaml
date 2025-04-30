@@ -102,3 +102,12 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+  generate: true
+  
+  
+  
+l10n:
+  arb-dir: l10n
+  template-arb-file: app_en.arb
+  output-localization-file: app_localizations.dart
+  untranslated-messages-file: lib/l10n/untranslated_messages.txt
