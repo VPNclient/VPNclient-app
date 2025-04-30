@@ -12,6 +12,7 @@ jobs:
           flutter-version: ${{ env.FLUTTER_VERSION }}
       - run: flutter pub get
       - run: dart format --set-exit-if-changed .
+      - run: flutter gen-l10n
       - run: flutter analyze
       - run: flutter test
       - name: Run Dart Code Metrics
