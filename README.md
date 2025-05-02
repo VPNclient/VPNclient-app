@@ -57,19 +57,23 @@ After installing, simply launch the app. On first launch, you may be prompted to
 If you want to try the latest version or modify the app, you can build it yourself:
 
 1. **Prerequisites:** Install Flutter (Flutter 3 or later recommended) and Dart SDK on your system. Ensure you can run `flutter` commands and have setup Flutter for your target platforms (e.g. Xcode for iOS, Android SDK for Android).
+
 2. **Clone the Repositories:** This app depends on the VPNclient Engine Flutter plugin. Clone the following repository from GitHub:
   ```sh
   git clone https://github.com/VPNclient/VPNclient-app.git
   ```
+
 3. **Get Dependencies:** Navigate into the `VPNclient-app` directory and run:
   ```sh
   flutter pub get
   ```
   This will fetch Flutter packages and link the local plugin.
+
 4. **Platform Setup:**  
   - For **Android**, ensure you have an Android device/emulator and the Android SDK. The app uses the VpnService API; no additional setup is required except granting VPN permissions when prompted.  
   - For **iOS**, open the Xcode workspace (`ios/Runner.xcworkspace`) and **enable the “Personal VPN” capability** in the project (this automatically updates entitlements). Also, in `ios/Runner/Info.plist`, ensure the required VPN usage descriptions are present (the engine may use a custom key such as `allow-vpn`). You will need a valid Apple Developer Team provisioning for running VPN entitlements on device.  
   - For **macOS/Windows/Linux**, additional setup may be needed (e.g., on Windows, the `wintun` driver should be present; on Linux, you might need root or capabilities to create a TUN interface). Desktop support is experimental and may require manual configuration.
+
 5. **Run the App:** Use Flutter CLI to run on your desired platform:
   ```sh
   flutter run
