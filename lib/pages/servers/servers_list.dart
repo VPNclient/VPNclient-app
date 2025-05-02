@@ -29,7 +29,14 @@ class ServersListState extends State<ServersList> {
       if (widget.onServersLoaded != null) {
         widget.onServersLoaded!(_servers);
       }
-    } else {
+    }
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    if (_servers.isEmpty) {
       _loadServers();
     }
   }
@@ -136,7 +143,6 @@ class ServersListState extends State<ServersList> {
     });
 
     _saveSelectedServers();
-
     if (widget.onServersLoaded != null) {
       widget.onServersLoaded!(_servers);
     }
