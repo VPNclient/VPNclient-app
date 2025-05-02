@@ -22,20 +22,20 @@ VPNclient App is architected in layers to separate the user interface from core 
 
 ```mermaid
 flowchart LR
- subgraph subGraph0["Flutter Application"]
-        UI@{ label: "VPNclient App (<span style=\"color:\">Flutter UI)</span>" }
-  end
- subgraph subGraph1["Flutter Plugin"]
-        Plugin["VPNclient Engine Flutter"]
-  end
- subgraph subGraph2["Native Core"]
-        Core["VPNclient Engine Library"]
-  end
-    UI --> Plugin
-    Plugin --> Core
-    Core --> iOS["iOS"] & Android["Android"] & macOS["macOS"] & Windows["Windows"] & Linux["Linux"]
+	subgraph subGraph0["Flutter Application"]
+		UI@{ label: "VPNclient App (<span style=\"color:\">Flutter UI)</span>" }
+	end
+	subgraph subGraph1["Flutter Plugin"]
+		Plugin["VPNclient Engine Flutter"]
+	end
+	subgraph subGraph2["Native Core"]
+		Core["VPNclient Engine Library"]
+	end
+		UI --> Plugin
+		Plugin --> Core
+		Core --> iOS["iOS"] & Android["Android"] & macOS["macOS"] & Windows["Windows"] & Linux["Linux"]
 
-    UI@{ shape: rect}
+		UI@{ shape: rect}
 ```
 
 *Diagram: The Flutter UI calls into the VPNclient Engine via a Flutter plugin. The native engine runs on each supported platform (iOS, Android, etc.), handling low-level network operations.* 
@@ -49,7 +49,7 @@ There are two ways to get VPNclient App:
 ### Install a Pre-built Release (End Users)
 VPNclient App is in active development and available in beta form:
 - **Android:** Download via Google Play [VPNclient on Google Play](https://play.google.com/store/apps/details?id=click.vpnclient.vpnclient) (or join the testing program). Requires Android 6.0 or higher.
-- **iOS:** Download via App Store – [VPNclient on App Store](https://testflight.apple.com/join/KQr4SeS7). Requires iOS 15.6 or higher.  
+- **iOS:** Download via App Store – [VPNclient on App Store](https://testflight.apple.com/join/KQr4SeS7). Requires iOS 15.6 or higher.
 
 After installing, simply launch the app. On first launch, you may be prompted to accept VPN permissions (Android) or install a VPN profile (iOS) – these are required to create the VPN tunnel.
 
@@ -59,26 +59,26 @@ If you want to try the latest version or modify the app, you can build it yourse
 1. **Prerequisites:** Install Flutter (Flutter 3 or later recommended) and Dart SDK on your system. Ensure you can run `flutter` commands and have setup Flutter for your target platforms (e.g. Xcode for iOS, Android SDK for Android).
 
 2. **Clone the Repositories:** This app depends on the VPNclient Engine Flutter plugin. Clone the following repository from GitHub:
-  ```sh
-  git clone https://github.com/VPNclient/VPNclient-app.git
-  ```
+	```sh
+	git clone https://github.com/VPNclient/VPNclient-app.git
+	```
 
 3. **Get Dependencies:** Navigate into the `VPNclient-app` directory and run:
-  ```sh
-  flutter pub get
-  ```
-  This will fetch Flutter packages and link the local plugin.
+	```sh
+	flutter pub get
+	```
+	This will fetch Flutter packages and link the local plugin.
 
-4. **Platform Setup:**  
-  - For **Android**, ensure you have an Android device/emulator and the Android SDK. The app uses the VpnService API; no additional setup is required except granting VPN permissions when prompted.  
-  - For **iOS**, open the Xcode workspace (`ios/Runner.xcworkspace`) and **enable the “Personal VPN” capability** in the project (this automatically updates entitlements). Also, in `ios/Runner/Info.plist`, ensure the required VPN usage descriptions are present (the engine may use a custom key such as `allow-vpn`). You will need a valid Apple Developer Team provisioning for running VPN entitlements on device.  
-  - For **macOS/Windows/Linux**, additional setup may be needed (e.g., on Windows, the `wintun` driver should be present; on Linux, you might need root or capabilities to create a TUN interface). Desktop support is experimental and may require manual configuration.
+4. **Platform Setup:**
+	- For **Android**, ensure you have an Android device/emulator and the Android SDK. The app uses the VpnService API; no additional setup is required except granting VPN permissions when prompted.
+	- For **iOS**, open the Xcode workspace (`ios/Runner.xcworkspace`) and **enable the “Personal VPN” capability** in the project (this automatically updates entitlements). Also, in `ios/Runner/Info.plist`, ensure the required VPN usage descriptions are present (the engine may use a custom key such as `allow-vpn`). You will need a valid Apple Developer Team provisioning for running VPN entitlements on device.
+	- For **macOS/Windows/Linux**, additional setup may be needed (e.g., on Windows, the `wintun` driver should be present; on Linux, you might need root or capabilities to create a TUN interface). Desktop support is experimental and may require manual configuration.
 
 5. **Run the App:** Use Flutter CLI to run on your desired platform:
-  ```sh
-  flutter run
-  ```
-  This will launch the app on an emulator or connected device. You can also build release APKs or app bundles using `flutter build apk` / `flutter build appbundle` (Android). There is also a lot of other option to build, you can use `flutter build -h` to list all avaliable options.
+	```sh
+	flutter run
+	```
+	This will launch the app on an emulator or connected device. You can also build release APKs or app bundles using `flutter build apk` / `flutter build appbundle` (Android). There is also a lot of other option to build, you can use `flutter build -h` to list all avaliable options.
 
 ## Usage Guide
 
@@ -89,9 +89,9 @@ Once the VPNclient App is installed and running, using it is straightforward:
 - **Connecting:** On the main screen, tap the **Connect** button (often a large toggle or icon). The first time, your device will ask for VPN connection permission – accept it. The app will then initiate the connection using the selected server and protocol. Within a few seconds, you should see the status change to "Connected", along with a key icon on your status bar (mobile) indicating an active VPN.
 - **During Connection:** While connected, the app may show real-time stats such as upload/download speeds and total data used this session. It will also indicate the current server name or IP. If any error occurs (e.g., invalid credentials or network unreachable), the app will display an error message.
 - **Routing Rules:** If you want to customize which traffic goes through the VPN, go to the **Settings** or **Routing** section. Here you can add rules. For example:
-  - Route specific apps through VPN (e.g., route your web browser and video apps through the VPN for privacy, but let banking apps go direct).
-  - Route or block specific domains (e.g., send `*.example.com` through VPN or block `ads.example.net`).  
-  Set your desired rules and save. The VPNclient Engine will enforce these rules when connected.
+	- Route specific apps through VPN (e.g., route your web browser and video apps through the VPN for privacy, but let banking apps go direct).
+	- Route or block specific domains (e.g., send `*.example.com` through VPN or block `ads.example.net`).
+	Set your desired rules and save. The VPNclient Engine will enforce these rules when connected.
 - **Disconnecting:** To stop the VPN, tap the **Disconnect** button. The status will change to "Disconnected" and your internet traffic will resume normal direct routing. You can reconnect at any time by tapping Connect again.
 - **Auto-Connect & Kill Switch:** In settings, you may enable **Auto-Connect** so that the app automatically connects to the last used or a preferred server on startup or when it detects internet connectivity. Enabling the **Kill Switch** ensures that if the VPN drops, the app will block all internet traffic until the VPN is reconnected (preventing leaks). Use these features if you require always-on protection.
 - **Profiles and Configs:** If you use multiple VPN profiles (for example, personal VPN vs. work VPN), you can manage them via separate subscription links or configuration import. The app can handle multiple profiles – they will be listed separately. Select the profile or server group you want before connecting.
