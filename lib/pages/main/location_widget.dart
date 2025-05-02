@@ -9,7 +9,7 @@ class LocationWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //final String locationName = selectedServer?['text'] ?? '...';
+    final String locationName = selectedServer?['text'] ?? '...';
     final String iconPath =
         selectedServer?['icon'] ?? 'assets/images/flags/auto.svg';
 
@@ -35,9 +35,7 @@ class LocationWidget extends StatelessWidget {
                 ),
               ),
               Text(
-                AppLocalizations.of(
-                  context,
-                )!.auto_select, // <-- I change to localized test but you can still use your variable
+                locationName,
                 style: TextStyle(
                   fontSize: 17,
                   fontWeight: FontWeight.w400,
