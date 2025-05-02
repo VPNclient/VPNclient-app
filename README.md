@@ -46,37 +46,35 @@ This modular design makes it easy to maintain and extend. UI/UX changes can be m
 
 There are two ways to get VPNclient App:
 
-**1. Install a Pre-built Release (End Users):**  
+### Install a Pre-built Release (End Users)
 VPNclient App is in active development and available in beta form:
-- **Android:** Download via Google Play [VPNclient on Google Play](https://play.google.com/store/apps/details?id=vpnclient.click) (or join the testing program). Requires Android 6.0 or higher.
+- **Android:** Download via Google Play [VPNclient on Google Play](https://play.google.com/store/apps/details?id=click.vpnclient.vpnclient) (or join the testing program). Requires Android 6.0 or higher.
 - **iOS:** Download via App Store – [VPNclient on App Store](https://testflight.apple.com/join/KQr4SeS7). Requires iOS 15.6 or higher.  
 
 After installing, simply launch the app. On first launch, you may be prompted to accept VPN permissions (Android) or install a VPN profile (iOS) – these are required to create the VPN tunnel.
 
-**2. Build from Source (Developers):**  
+### Build from Source (Developers)
 If you want to try the latest version or modify the app, you can build it yourself:
 
-- **Prerequisites:** Install Flutter (Flutter 3 or later recommended) and Dart SDK on your system. Ensure you can run `flutter` commands and have setup Flutter for your target platforms (e.g. Xcode for iOS, Android SDK for Android).
-- **Clone the Repositories:** This app depends on the VPNclient Engine Flutter plugin. Clone the following repository from GitHub:
-  ```bash
+1. **Prerequisites:** Install Flutter (Flutter 3 or later recommended) and Dart SDK on your system. Ensure you can run `flutter` commands and have setup Flutter for your target platforms (e.g. Xcode for iOS, Android SDK for Android).
+2. **Clone the Repositories:** This app depends on the VPNclient Engine Flutter plugin. Clone the following repository from GitHub:
+  ```sh
   git clone https://github.com/VPNclient/VPNclient-app.git
   ```
-- **Get Dependencies:** Navigate into the `VPNclient-app` directory and run:
-  ```bash
+3. **Get Dependencies:** Navigate into the `VPNclient-app` directory and run:
+  ```sh
   flutter pub get
   ```
   This will fetch Flutter packages and link the local plugin.
-- **Platform Setup:**  
+4. **Platform Setup:**  
   - For **Android**, ensure you have an Android device/emulator and the Android SDK. The app uses the VpnService API; no additional setup is required except granting VPN permissions when prompted.  
   - For **iOS**, open the Xcode workspace (`ios/Runner.xcworkspace`) and **enable the “Personal VPN” capability** in the project (this automatically updates entitlements). Also, in `ios/Runner/Info.plist`, ensure the required VPN usage descriptions are present (the engine may use a custom key such as `allow-vpn`). You will need a valid Apple Developer Team provisioning for running VPN entitlements on device.  
   - For **macOS/Windows/Linux**, additional setup may be needed (e.g., on Windows, the `wintun` driver should be present; on Linux, you might need root or capabilities to create a TUN interface). Desktop support is experimental and may require manual configuration.
-- **Run the App:** Use Flutter CLI to run on your desired platform:
-  ```bash
+5. **Run the App:** Use Flutter CLI to run on your desired platform:
+  ```sh
   flutter run
-  ``` 
-  This will launch the app on an emulator or connected device. You can also build release APKs or app bundles using `flutter build apk` / `flutter build appbundle` (Android) or an IPA (iOS) with Xcode. For desktop, `flutter run -d macos` or `-d windows` can be used if enabled.
-
-*Note:* The repository includes helper shell scripts (`build_android.sh`, `build_ipa.sh`, etc.) which automate some build steps for CI or local packaging.
+  ```
+  This will launch the app on an emulator or connected device. You can also build release APKs or app bundles using `flutter build apk` / `flutter build appbundle` (Android). There is also a lot of other option to build, you can use `flutter build -h` to list all avaliable options.
 
 ## Usage Guide
 
