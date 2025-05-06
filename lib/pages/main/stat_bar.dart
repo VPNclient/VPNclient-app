@@ -13,13 +13,16 @@ class StatBar extends StatefulWidget {
 class StatBarState extends State<StatBar> {
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        _buildStatItem(CustomIcons.download, '0 Mb/s', context),
-        _buildStatItem(CustomIcons.upload, '0 Mb/s', context),
-        _buildStatItem(CustomIcons.ping, '0 ms', context),
-      ],
+    return Container(
+      margin: EdgeInsets.only(top: 37),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          _buildStatItem(CustomIcons.download, '0 Mb/s', context),
+          _buildStatItem(CustomIcons.upload, '0 Mb/s', context),
+          _buildStatItem(CustomIcons.ping, '0 ms', context),
+        ],
+      ),
     );
   }
 

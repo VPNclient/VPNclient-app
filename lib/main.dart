@@ -7,13 +7,20 @@ import 'package:vpn_client/pages/apps/apps_page.dart';
 import 'package:vpn_client/pages/main/main_page.dart';
 import 'package:vpn_client/pages/servers/servers_page.dart';
 import 'package:vpn_client/theme_provider.dart';
+import 'package:vpn_client/vpn_state.dart';
 
 import 'design/colors.dart';
 import 'nav_bar.dart';
 
 void main() {
   runApp(
-    ChangeNotifierProvider(create: (_) => ThemeProvider(), child: const App()),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        ChangeNotifierProvider(create: (_) => VpnState()),
+      ],
+      child: const App(),
+    ),
   );
 }
 
