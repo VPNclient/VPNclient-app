@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vpn_client/pages/servers/servers_list_item.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'dart:convert';
 
 class ServersList extends StatefulWidget {
@@ -28,7 +29,14 @@ class ServersListState extends State<ServersList> {
       if (widget.onServersLoaded != null) {
         widget.onServersLoaded!(_servers);
       }
-    } else {
+    }
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    if (_servers.isEmpty) {
       _loadServers();
     }
   }
@@ -54,25 +62,25 @@ class ServersListState extends State<ServersList> {
       List<Map<String, dynamic>> serversList = [
         {
           'icon': 'assets/images/flags/auto.svg',
-          'text': 'Автовыбор',
-          'ping': 'Самый быстрый',
+          'text': AppLocalizations.of(context)!.auto_select,
+          'ping': AppLocalizations.of(context)!.fastest,
           'isActive': true,
         },
         {
           'icon': 'assets/images/flags/Kazahstan.svg',
-          'text': 'Казахстан',
+          'text': AppLocalizations.of(context)!.kazakhstan,
           'ping': '48',
           'isActive': false,
         },
         {
           'icon': 'assets/images/flags/Turkey.svg',
-          'text': 'Турция',
+          'text': AppLocalizations.of(context)!.turkey,
           'ping': '142',
           'isActive': false,
         },
         {
           'icon': 'assets/images/flags/Poland.svg',
-          'text': 'Польша',
+          'text': AppLocalizations.of(context)!.poland,
           'ping': '298',
           'isActive': false,
         },
@@ -135,7 +143,6 @@ class ServersListState extends State<ServersList> {
     });
 
     _saveSelectedServers();
-
     if (widget.onServersLoaded != null) {
       widget.onServersLoaded!(_servers);
     }
@@ -170,8 +177,8 @@ class ServersListState extends State<ServersList> {
                     if (activeServers.isNotEmpty) ...[
                       Container(
                         margin: const EdgeInsets.only(left: 10),
-                        child: const Text(
-                          'Выбранный сервер',
+                        child: Text(
+                          AppLocalizations.of(context)!.selected_server,
                           style: TextStyle(color: Colors.grey),
                         ),
                       ),
@@ -189,8 +196,8 @@ class ServersListState extends State<ServersList> {
                     if (inactiveServers.isNotEmpty) ...[
                       Container(
                         margin: const EdgeInsets.only(left: 10),
-                        child: const Text(
-                          'Все серверы',
+                        child: Text(
+                          AppLocalizations.of(context)!.all_servers,
                           style: TextStyle(color: Colors.grey),
                         ),
                       ),

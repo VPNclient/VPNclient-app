@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:vpn_client/pages/main/main_btn.dart';
 import 'package:vpn_client/pages/main/location_widget.dart';
 import 'package:vpn_client/pages/main/stat_bar.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -43,7 +44,7 @@ class MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('VPN Client'),
+        title: Text(AppLocalizations.of(context)!.app_name),
         centerTitle: true,
         titleTextStyle: TextStyle(
           color: Theme.of(context).colorScheme.primary,
@@ -52,22 +53,20 @@ class MainPageState extends State<MainPage> {
         backgroundColor: Theme.of(context).colorScheme.surface,
         elevation: 0,
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          const StatBar(),
-          const MainBtn(),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+      body: SafeArea(
+        // I change to SafeArea to prevent screen over flow
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              LocationWidget(selectedServer: _selectedServer)
-              // GestureDetector(
-              //   onTap: _navigateToServersList,
-              //   child: LocationWidget(selectedServer: _selectedServer),
-              // ),
+              const StatBar(),
+              const SizedBox(height: 20),
+              const MainBtn(),
+              const SizedBox(height: 20),
+              LocationWidget(selectedServer: _selectedServer),
             ],
           ),
-        ],
+        ),
       ),
     );
   }

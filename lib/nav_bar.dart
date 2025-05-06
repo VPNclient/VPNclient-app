@@ -58,13 +58,14 @@ class NavBarState extends State<NavBar> {
           return GestureDetector(
             onTap: () => _onItemTapped(index),
             child: SizedBox(
-                width: (MediaQuery.of(context).size.width-60)/5,
-                child: AnimatedContainer(
-              duration: const Duration(milliseconds: 200),
-              curve: Curves.easeInOut,
-              padding: const EdgeInsets.all(8),
-              child: isActive ? _activeIcons[index] : _inactiveIcons[index],
-            ),)
+              width: (MediaQuery.of(context).size.width - 60) / 5,
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                curve: Curves.easeInOut,
+                padding: const EdgeInsets.all(8),
+                child: isActive ? _activeIcons[index] : _inactiveIcons[index],
+              ),
+            ),
           );
         }),
       ),

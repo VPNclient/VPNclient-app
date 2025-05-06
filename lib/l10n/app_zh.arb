@@ -1,0 +1,26 @@
+{
+    "@@locale": "zh",
+    "app_name": "VPN客户端",
+    "apps_selection": "应用选择",
+    "search": "搜索",
+    "your_location": "你的位置",
+    "auto_select": "自动选择",
+    "kazakhstan": "哈萨克斯坦",
+    "turkey": "土耳其",
+    "poland": "波兰",
+    "fastest": "最快",
+    "selected_server": "已选择服务器",
+    "server_selection": "服务器选择",
+    "all_servers": "所有服务器",
+    "country_name": "国家名称",
+    "all_apps": "所有应用",
+    "done": "完成",
+    "cancel": "取消",
+    "recently_searched": "最近搜索",
+    "nothing_found": "未找到内容",
+    "connected": "已连接",
+    "disconnected": "已断开连接",
+    "connecting": "连接中",
+    "disconnecting": "断开中"
+  }
+  

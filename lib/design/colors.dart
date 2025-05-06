@@ -25,5 +25,5 @@ final ThemeData darkTheme = ThemeData(
 final LinearGradient mainGradient = LinearGradient(
   colors: [Color(0xFF00C6FB), Color(0xFF005BEA)],
   begin: Alignment.topCenter,
-  end: Alignment.bottomCenter
+  end: Alignment.bottomCenter,
 );
