@@ -1,4 +1,4 @@
-package click.vpnclient
+package vpnclient.click
 
 import android.net.VpnService
 import android.os.ParcelFileDescriptor

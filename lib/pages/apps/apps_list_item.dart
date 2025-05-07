@@ -37,7 +37,7 @@ class AppListItem extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withAlpha((255 * 0.2).toInt()),
+              color: Colors.grey.withValues(alpha: 0.2),
               blurRadius: 10,
               offset: const Offset(0, 1),
             ),
@@ -83,8 +83,7 @@ class AppListItem extends StatelessWidget {
                         child: CupertinoSwitch(
                           value: isActive,
                           onChanged: null,
-                          inactiveTrackColor:
-                              Theme.of(context).colorScheme.onSecondary,
+                          inactiveTrackColor: Theme.of(context).colorScheme.onSecondary,
                         ),
                       )
                       : Checkbox(
@@ -113,7 +112,7 @@ class AppListItem extends StatelessWidget {
             if (!isEnabled)
               Container(
                 decoration: BoxDecoration(
-                  color: Colors.grey.withAlpha((255 * 0.2).toInt()),
+                  color: Colors.grey.withValues(alpha: 0.4),
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),

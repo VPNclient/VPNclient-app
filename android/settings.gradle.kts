@@ -23,3 +23,9 @@ plugins {
 }
 
 include(":app")
+
+val targetPath = File(settingsDir, "../../VPNclient-engine/android")
+println("[DEBUG111] Expected project dir: ${targetPath.absolutePath}")
+
+include(":vpnclient-engine-android")
+project(":vpnclient-engine-android").projectDir = targetPath

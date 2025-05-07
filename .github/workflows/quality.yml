@@ -13,8 +13,6 @@ jobs:
       - run: flutter pub get
       - run: dart format --set-exit-if-changed .
       - run: flutter analyze
-      - run: flutter test
       - name: Run Dart Code Metrics
-        run: |
           dart pub global activate dart_code_metrics
           dart pub global run dart_code_metrics:metrics analyze lib

@@ -5,6 +5,18 @@ import 'package:vpn_client/design/colors.dart';
 import 'package:vpn_client/design/dimensions.dart';
 import 'package:vpnclient_engine_flutter/vpnclient_engine_flutter.dart';
 
+///
+import 'package:flutter_v2ray/flutter_v2ray.dart';
+
+final FlutterV2ray flutterV2ray = FlutterV2ray(
+    onStatusChanged: (status) {
+        // do something
+    },
+);
+
+
+///
+
 class MainBtn extends StatefulWidget {
   const MainBtn({super.key});
 
@@ -14,25 +26,8 @@ class MainBtn extends StatefulWidget {
 
 class MainBtnState extends State<MainBtn> with SingleTickerProviderStateMixin {
   ///static const platform = MethodChannel('vpnclient_engine2');
-  ///
-  late CustomString statusText;
-  late String connectionStatus;
-  late String connectionStatusDisconnected;
-  late String connectionStatusDisconnecting;
-  late String connectionStatusConnected;
-  late String connectionStatusConnecting;
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    final statusText = CustomString(context);
-    connectionStatus = statusText.disconnected;
-    connectionStatusDisconnected = statusText.disconnected;
-    connectionStatusConnected = statusText.connected;
-    connectionStatusDisconnecting = statusText.disconnecting;
-    connectionStatusConnecting = statusText.connecting;
-  }
-
+  String connectionStatus = connectionStatusDisconnected;
   String connectionTime = "00:00:00";
   Timer? _timer;
   late AnimationController _animationController;
@@ -98,17 +93,54 @@ class MainBtnState extends State<MainBtn> with SingleTickerProviderStateMixin {
       _animationController.repeat(reverse: true);
 
       VPNclientEngine.ClearSubscriptions();
-      VPNclientEngine.addSubscription(
-        subscriptionURL: "https://pastebin.com/raw/ZCYiJ98W",
-      );
+      VPNclientEngine.addSubscription(subscriptionURL: "https://pastebin.com/raw/ZCYiJ98W");
       await VPNclientEngine.updateSubscription(subscriptionIndex: 0);
+// <<<<<<< Updated upstream
+
+
+      //END TODO
+
+///
+// You must initialize V2Ray before using it.
+await flutterV2ray.initializeV2Ray();
+
+
+
+// v2ray share link like vmess://, vless://, ...
+String link = "vless://c61daf3e-83ff-424f-a4ff-5bfcb46f0b30@5.35.98.91:8443?encryption=none&flow=&security=reality&sni=yandex.ru&fp=chrome&pbk=rLCmXWNVoRBiknloDUsbNS5ONjiI70v-BWQpWq0HCQ0&sid=108108108108#%F0%9F%87%B7%F0%9F%87%BA+%F0%9F%99%8F+Russia+%231";
+V2RayURL parser = FlutterV2ray.parseFromURL(link);
+
+
+// Get Server Delay
+log('${flutterV2ray.getServerDelay(config: parser.getFullConfiguration())}ms');
+
+// Permission is not required if you using proxy only
+if (await flutterV2ray.requestPermission()){
+    flutterV2ray.startV2Ray(
+        remark: parser.remark,
+        // The use of parser.getFullConfiguration() is not mandatory,
+        // and you can enter the desired V2Ray configuration in JSON format
+        config: parser.getFullConfiguration(),
+        blockedApps: null,
+        bypassSubnets: null,
+        proxyOnly: false,
+    );
+}
+
+// Disconnect
+///flutterV2ray.stopV2Ray();
+
+///
+
+      //TODO:move to right place
+// =======
+//
+// >>>>>>> Stashed changes
       VPNclientEngine.pingServer(subscriptionIndex: 0, index: 1);
       VPNclientEngine.onPingResult.listen((result) {
-        log(
-          "Ping result: ${result.latencyInMs} ms",
-          name: 'PingLogger',
-        ); // <- Use dev.log instead of print.(It build to log meta data)
+        log("Ping result: ${result.latencyInMs} ms");
       });
+
 
       ///final result = await platform.invokeMethod('startVPN');
 

@@ -45,7 +45,7 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
       - run: flutter build apk --release
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v3
         with:
           name: android-apk
           path: build/app/outputs/flutter-apk/app-release.apk
@@ -60,7 +60,7 @@ jobs:
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
       - run: flutter build ios --release --no-codesign
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v3
         with:
           name: ios-app
           path: build/ios/Release
@@ -75,7 +75,7 @@ jobs:
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
       - run: flutter build macos --release
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v3
         with:
           name: macos-app
           path: build/macos/Build/Products/Release
@@ -85,14 +85,12 @@ jobs:
     needs: [analyze, test]
     runs-on: windows-latest
     steps:
-      - name: Enable long paths on Windows
-        run: git config --system core.longpaths true
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
       - run: flutter build windows --release
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v3
         with:
           name: windows-app
           path: build/windows/runner/Release
@@ -109,7 +107,7 @@ jobs:
       - run: |
           sudo apt-get install -y clang cmake ninja-build pkg-config libgtk-3-dev
           flutter build linux --release
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v3
         with:
           name: linux-app
           path: build/linux/x64/release/bundle
@@ -120,7 +118,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && contains(github.ref, 'tags')
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v3
         with:
           path: artifacts
       - uses: softprops/action-gh-release@v1
