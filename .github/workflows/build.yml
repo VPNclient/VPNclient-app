@@ -1,88 +1,61 @@
-name: Flutter CI/CD
+name: Build
 
 on:
-  push:
-    branches: [main, develop]
-  pull_request:
-    branches: [main]
   workflow_dispatch:
-
-env:
-  FLUTTER_VERSION: '3.29.3'
+  push:
+    branches: [main, development]
+  pull_request:
+    branches: [main, development]
 
 jobs:
-  analyze:
-    name: Analyze
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: subosito/flutter-action@v2
-        with:
-          flutter-version: ${{ env.FLUTTER_VERSION }}
-      - run: flutter analyze
-
-  test:
-    name: Test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: subosito/flutter-action@v2
-        with:
-          flutter-version: ${{ env.FLUTTER_VERSION }}
-      - run: flutter test
-
   build-android:
     name: Build Android
-    needs: [analyze, test]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: ${{ env.FLUTTER_VERSION }}
-      - uses: actions/setup-java@v3
+          channel: stable
+          flutter-version-file: pubspec.yaml
+      - uses: actions/setup-java@v4
         with:
           java-version: '17'
-          distribution: 'temurin'
+          distribution: 'jetbrains'
       - run: flutter build apk --release
       - uses: actions/upload-artifact@v4
         with:
           name: android-apk
           path: build/app/outputs/flutter-apk/app-release.apk
-
   build-ios:
     name: Build iOS
-    needs: [analyze, test]
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          flutter-version-file: pubspec.yaml
       - run: flutter build ios --release --no-codesign
       - uses: actions/upload-artifact@v4
         with:
           name: ios-app
           path: build/ios/iphoneos/Runner.app
-
   build-macos:
     name: Build macOS
-    needs: [analyze, test]
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          flutter-version-file: pubspec.yaml
       - run: flutter build macos --release
       - uses: actions/upload-artifact@v4
         with:
           name: macos-app
           path: build/macos/Build/Products/Release
-
   build-windows:
     name: Build Windows
-    needs: [analyze, test]
     runs-on: windows-latest
     steps:
       - name: Enable long paths on Windows
@@ -90,22 +63,22 @@ jobs:
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          flutter-version-file: pubspec.yaml
       - run: flutter build windows --release
       - uses: actions/upload-artifact@v4
         with:
           name: windows-app
           path: build/windows/x64/runner/Release/vpn_client.exe
-
   build-linux:
     name: Build Linux
-    needs: [analyze, test]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          flutter-version-file: pubspec.yaml
       - run: |
           sudo apt-get install -y clang cmake ninja-build pkg-config libgtk-3-dev
           flutter build linux --release
@@ -113,23 +86,3 @@ jobs:
         with:
           name: linux-app
           path: build/linux/x64/release/bundle
-
-  release:
-    name: Create Release
-    needs: [build-android, build-ios, build-macos, build-windows, build-linux]
-    runs-on: ubuntu-latest
-    if: github.event_name == 'push' && contains(github.ref, 'tags')
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          path: artifacts
-      - uses: softprops/action-gh-release@v1
-        with:
-          files: |
-            artifacts/android-apk/app-release.apk
-            artifacts/ios-app/Runner.app
-            artifacts/macos-app/VPNclient.app
-            artifacts/windows-app/VPNclient.exe
-            artifacts/linux-app/bundle/
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
