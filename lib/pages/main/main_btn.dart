@@ -1,8 +1,6 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vpn_client/design/colors.dart';
-import 'package:vpn_client/design/dimensions.dart';
 // import 'package:vpnclient_engine_flutter/vpnclient_engine_flutter.dart';
 import 'package:flutter_v2ray/flutter_v2ray.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -74,7 +72,8 @@ class MainBtnState extends State<MainBtn> with SingleTickerProviderStateMixin {
       vpnState.setConnectionStatus(localizations.connecting);
       _animationController.repeat(reverse: true);
 
-      String link = "vless://c61daf3e-83ff-424f-a4ff-5bfcb46f0b30@45.77.190.146:8443?encryption=none&flow=&security=reality&sni=www.gstatic.com&fp=chrome&pbk=rLCmXWNVoRBiknloDUsbNS5ONjiI70v-BWQpWq0HCQ0&sid=108108108108#%F0%9F%87%BA%F0%9F%87%B8+%F0%9F%99%8F+USA+%231";
+      String link =
+          "vless://c61daf3e-83ff-424f-a4ff-5bfcb46f0b30@45.77.190.146:8443?encryption=none&flow=&security=reality&sni=www.gstatic.com&fp=chrome&pbk=rLCmXWNVoRBiknloDUsbNS5ONjiI70v-BWQpWq0HCQ0&sid=108108108108#%F0%9F%87%BA%F0%9F%87%B8+%F0%9F%99%8F+USA+%231";
       V2RayURL parser = FlutterV2ray.parseFromURL(link);
 
       if (await flutterV2ray.requestPermission()) {
@@ -108,15 +107,9 @@ class MainBtnState extends State<MainBtn> with SingleTickerProviderStateMixin {
             fontSize: 40,
             fontWeight: FontWeight.w600,
             color:
-            vpnState.connectionStatus == localizations.connected
-                ? Theme
-                .of(context)
-                .colorScheme
-                .primary
-                : Theme
-                .of(context)
-                .colorScheme
-                .secondary,
+                vpnState.connectionStatus == localizations.connected
+                    ? Theme.of(context).colorScheme.primary
+                    : Theme.of(context).colorScheme.secondary,
           ),
         ),
         const SizedBox(height: 70),
