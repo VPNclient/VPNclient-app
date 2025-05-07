@@ -31,7 +31,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Setup dart
-        uses: dart-lang/setup-dart@v1
-      - name: Run Dart Code Metrics
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version-file: pubspec.yaml
+      - name: Run dart code metrics
         run: dart run dart_code_metrics:metrics analyze lib
