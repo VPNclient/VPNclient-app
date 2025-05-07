@@ -22,4 +22,3 @@ jobs:
           access-token: ${{ secrets.SIGNPATH_ACCESS_TOKEN }}
           artifact-path: build/windows/runner/Release/**/*.exe
           signing-policy-slug: ${{ secrets.SIGNPATH_SIGNING_POLICY_SLUG }}
-          

@@ -1,20 +1,37 @@
 name: Code Quality
 
-on: [push, pull_request]
+on: push
 
 jobs:
-  quality:
+  analyze:
+    name: Static Analysis
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: subosito/flutter-action@v2
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
         with:
-          flutter-version: ${{ env.FLUTTER_VERSION }}
-      - run: flutter pub get
-      - run: dart format --set-exit-if-changed .
-      - run: flutter analyze
-      - run: flutter test
+          channel: stable
+          flutter-version-file: pubspec.yaml
+      - name: Analyze code
+        run: flutter analyze
+  format:
+    name: Code Formatting
+    needs: [analyze]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup dart
+        uses: dart-lang/setup-dart@v1
+      - name: Format code
+        run: dart format --output=none --set-exit-if-changed .
+  code_matrics:
+    name: Code Matrics
+    needs: [analyze]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup dart
+        uses: dart-lang/setup-dart@v1
       - name: Run Dart Code Metrics
-        run: |
-          dart pub global activate dart_code_metrics
-          dart pub global run dart_code_metrics:metrics analyze lib
+        run: dart run dart_code_metrics:metrics analyze lib
