@@ -25,7 +25,7 @@ jobs:
         uses: dart-lang/setup-dart@v1
       - name: Format code
         run: dart format --output=none --set-exit-if-changed .
-  code_matrics:
+  matrics:
     name: Code Matrics
     needs: [analyze]
     runs-on: ubuntu-latest
