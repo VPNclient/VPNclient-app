@@ -1,4 +1,4 @@
-name: Build
+name: Build and Release
 
 on:
   workflow_dispatch:
@@ -86,3 +86,22 @@ jobs:
         with:
           name: linux-app
           path: build/linux/x64/release/bundle
+  release:
+    name: Create Release
+    if: ${{ github.ref == 'refs/heads/main' && startsWith(github.ref, 'refs/tags/v') }}
+    needs: [build-android, build-ios, build-macos, build-windows, build-linux]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            artifacts/android-apk/app-release.apk
+            artifacts/ios-app/Runner.app
+            artifacts/macos-app/VPNclient.app
+            artifacts/windows-app/VPNclient.exe
+            artifacts/linux-app/bundle/
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
