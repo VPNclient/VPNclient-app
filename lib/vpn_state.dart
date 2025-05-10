@@ -2,21 +2,28 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_v2ray/flutter_v2ray.dart';
 
-class VpnState with ChangeNotifier {
-  String _connectionStatus =
-      ''; // Изначально пустой, будет установлен в MainPage
-  String _connectionTime = "00:00:00";
-  Timer? _timer;
+enum ConnectionStatus {
+  disconnected,
+  connected,
+  reconnecting,
+  disconnecting,
+  connecting,
+}
 
-  String get connectionStatus => _connectionStatus;
-  String get connectionTime => _connectionTime;
+class VpnState with ChangeNotifier {
+  ConnectionStatus _connectionStatus = ConnectionStatus.disconnected;
+  Timer? _timer;
+  String _connectionTimeText = "00:00:00";
+
+  ConnectionStatus get connectionStatus => _connectionStatus;
+  String get connectionTimeText => _connectionTimeText;
 
   VpnState() {
-    // Инициализация V2Ray при создании провайдера
+    // Initializing V2Ray when creating a provider
     FlutterV2ray(onStatusChanged: (status) {}).initializeV2Ray();
   }
 
-  void setConnectionStatus(String status) {
+  void setConnectionStatus(ConnectionStatus status) {
     _connectionStatus = status;
     notifyListeners();
   }
@@ -28,7 +35,7 @@ class VpnState with ChangeNotifier {
       int hours = seconds ~/ 3600;
       int minutes = (seconds % 3600) ~/ 60;
       int remainingSeconds = seconds % 60;
-      _connectionTime =
+      _connectionTimeText =
           '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${remainingSeconds.toString().padLeft(2, '0')}';
       notifyListeners();
       seconds++;
@@ -37,7 +44,7 @@ class VpnState with ChangeNotifier {
 
   void stopTimer() {
     _timer?.cancel();
-    _connectionTime = "00:00:00";
+    _connectionTimeText = "00:00:00";
     notifyListeners();
   }
 

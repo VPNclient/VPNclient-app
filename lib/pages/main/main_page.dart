@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:vpn_client/pages/main/main_btn.dart';
 import 'package:vpn_client/pages/main/location_widget.dart';
 import 'package:vpn_client/pages/main/stat_bar.dart';
-import 'package:vpn_client/vpn_state.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MainPage extends StatefulWidget {
@@ -30,15 +28,7 @@ class MainPageState extends State<MainPage> {
     super.didChangeDependencies();
     if (!_isInitialized) {
       // Schedule VpnState connection status update after build
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        final vpnState = Provider.of<VpnState>(context, listen: false);
-        final localizations = AppLocalizations.of(context)!;
-        // Инициализировать статус только если он пустой или равен начальному значению
-        if (vpnState.connectionStatus.isEmpty ||
-            vpnState.connectionStatus == 'Disconnected') {
-          vpnState.setConnectionStatus(localizations.disconnected);
-        }
-      });
+      WidgetsBinding.instance.addPostFrameCallback((_) {});
       _isInitialized = true;
     }
   }

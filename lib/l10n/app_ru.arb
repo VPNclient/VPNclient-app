@@ -20,11 +20,7 @@
     "nothing_found": "Ничего не найдено",
     "connected": "ПОДКЛЮЧЕН",
     "disconnected": "ОТКЛЮЧЕН",
+    "reconnecting": "Повторное подключение",
     "connecting": "ПОДКЛЮЧЕНИЕ",
     "disconnecting": "ОТКЛЮЧЕНИЕ"
-
-
-
-
-    
   }

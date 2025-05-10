@@ -20,12 +20,7 @@
     "nothing_found": "Nothing found",
     "connected": "CONNECTED",
     "disconnected": "DISCONNECTED",
-   "connecting": "CONNECTING",
-   "disconnecting": "DISCONNECTING"
-
-
-
-
-  
+    "reconnecting": "RECONNECTING",
+    "connecting": "CONNECTING",
+    "disconnecting": "DISCONNECTING"
 }
-  

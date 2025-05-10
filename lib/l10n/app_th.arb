@@ -20,11 +20,7 @@
     "nothing_found": "ไม่พบข้อมูล",
     "connected": "เชื่อมต่อแล้ว",
     "disconnected": "ไม่ได้เชื่อมต่อ",
+    "reconnecting": "กำลังเชื่อมต่อใหม่",
     "connecting": "กำลังเชื่อมต่อ",
     "disconnecting": "กำลังตัดการเชื่อมต่อ"
-
-
-
-
 }
-  
