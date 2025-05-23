@@ -15,11 +15,22 @@ class MainPage extends StatefulWidget {
 
 class MainPageState extends State<MainPage> {
   Map<String, dynamic>? _selectedServer;
+  bool _isInitialized = false;
 
   @override
   void initState() {
     super.initState();
     _loadSelectedServer();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_isInitialized) {
+      // Schedule VpnState connection status update after build
+      WidgetsBinding.instance.addPostFrameCallback((_) {});
+      _isInitialized = true;
+    }
   }
 
   Future<void> _loadSelectedServer() async {
@@ -54,18 +65,13 @@ class MainPageState extends State<MainPage> {
         elevation: 0,
       ),
       body: SafeArea(
-        // I change to SafeArea to prevent screen over flow
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              const StatBar(),
-              const SizedBox(height: 20),
-              const MainBtn(),
-              const SizedBox(height: 20),
-              LocationWidget(selectedServer: _selectedServer),
-            ],
-          ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const StatBar(),
+            const MainBtn(),
+            LocationWidget(selectedServer: _selectedServer),
+          ],
         ),
       ),
     );
