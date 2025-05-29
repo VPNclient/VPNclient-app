@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:vpn_client/pages/main/main_btn.dart';
 import 'package:vpn_client/pages/main/location_widget.dart';
 import 'package:vpn_client/pages/main/stat_bar.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:vpn_client/localization_service.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -55,7 +55,7 @@ class MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.app_name),
+        title: Text(LocalizationService.to('app_name')),
         centerTitle: true,
         titleTextStyle: TextStyle(
           color: Theme.of(context).colorScheme.primary,
