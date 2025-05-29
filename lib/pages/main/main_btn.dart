@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vpn_client/design/colors.dart';
 import 'package:flutter_v2ray/flutter_v2ray.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:vpn_client/localization_service.dart';
 import 'package:vpn_client/vpn_state.dart';
 
 final FlutterV2ray flutterV2ray = FlutterV2ray(
@@ -47,21 +47,16 @@ class MainBtnState extends State<MainBtn> with SingleTickerProviderStateMixin {
     super.dispose();
   }
 
-  String get connectionStatusText {
-    final localizations = AppLocalizations.of(context)!;
+  String connectionStatusText(BuildContext context) {
     final vpnState = Provider.of<VpnState>(context, listen: false);
-    switch (vpnState.connectionStatus) {
-      case ConnectionStatus.connected:
-        return localizations.connected;
-      case ConnectionStatus.disconnected:
-        return localizations.disconnected;
-      case ConnectionStatus.reconnecting:
-        return localizations.reconnecting;
-      case ConnectionStatus.disconnecting:
-        return localizations.disconnecting;
-      case ConnectionStatus.connecting:
-        return localizations.connecting;
-    }
+
+    return {
+      ConnectionStatus.connected: LocalizationService.to('connected'),
+      ConnectionStatus.disconnected: LocalizationService.to('disconnected'),
+      ConnectionStatus.reconnecting: LocalizationService.to('reconnecting'),
+      ConnectionStatus.disconnecting: LocalizationService.to('disconnecting'),
+      ConnectionStatus.connecting: LocalizationService.to('connecting'),
+    }[vpnState.connectionStatus]!;
   }
 
   Future<void> _toggleConnection(BuildContext context) async {
@@ -160,7 +155,7 @@ class MainBtnState extends State<MainBtn> with SingleTickerProviderStateMixin {
         ),
         const SizedBox(height: 20),
         Text(
-          connectionStatusText,
+          connectionStatusText(context),
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w500,

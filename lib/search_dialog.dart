@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vpn_client/pages/apps/apps_list_item.dart';
 import 'package:vpn_client/pages/servers/servers_list_item.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:vpn_client/localization_service.dart';
 import 'dart:convert';
 
 class SearchDialog extends StatefulWidget {
@@ -137,7 +137,7 @@ class _SearchDialogState extends State<SearchDialog> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          AppLocalizations.of(context)!.search,
+                          LocalizationService.to('search'),
                           style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.w600,
@@ -155,7 +155,7 @@ class _SearchDialogState extends State<SearchDialog> {
                               Navigator.of(context).pop(widget.items);
                             },
                             child: Text(
-                              AppLocalizations.of(context)!.done,
+                              LocalizationService.to('done'),
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: Colors.blue,
@@ -174,7 +174,7 @@ class _SearchDialogState extends State<SearchDialog> {
                               Navigator.of(context).pop();
                             },
                             child: Text(
-                              AppLocalizations.of(context)!.cancel,
+                              LocalizationService.to('cancel'),
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: Colors.blue,
@@ -248,7 +248,7 @@ class _SearchDialogState extends State<SearchDialog> {
                     Container(
                       margin: const EdgeInsets.only(left: 20),
                       child: Text(
-                        AppLocalizations.of(context)!.recently_searched,
+                        LocalizationService.to('recently_searched'),
                         style: TextStyle(color: Colors.grey),
                       ),
                     ),
@@ -311,7 +311,7 @@ class _SearchDialogState extends State<SearchDialog> {
                         ? _filteredItems.isEmpty
                             ? Center(
                               child: Text(
-                                AppLocalizations.of(context)!.nothing_found,
+                                LocalizationService.to('nothing_found'),
                                 style: TextStyle(
                                   color: Theme.of(context).colorScheme.primary,
                                 ),
