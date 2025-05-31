@@ -37,11 +37,13 @@ class ServerListItem extends StatelessWidget {
         height: 52,
         margin: const EdgeInsets.symmetric(vertical: 8),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.onSurface, // Usar cor do tema
           borderRadius: BorderRadius.circular(10),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withValues(alpha: 0.2),
+              color: Theme.of(
+                context,
+              ).shadowColor.withAlpha((255 * 0.1).round()), // Usar cor do tema
               blurRadius: 10,
               offset: const Offset(0, 1),
             ),
@@ -62,7 +64,13 @@ class ServerListItem extends StatelessWidget {
                     height: 52,
                     child: Text(
                       text,
-                      style: const TextStyle(fontSize: 16, color: Colors.black),
+                      style: TextStyle(
+                        fontSize: 16,
+                        color:
+                            Theme.of(
+                              context,
+                            ).colorScheme.primary, // Usar cor do tema
+                      ),
                     ),
                   ),
                 ],
@@ -74,7 +82,13 @@ class ServerListItem extends StatelessWidget {
                   children: [
                     Text(
                       int.tryParse(ping) != null ? '$ping ms' : ping,
-                      style: const TextStyle(fontSize: 14, color: Colors.grey),
+                      style: TextStyle(
+                        fontSize: 14,
+                        color:
+                            Theme.of(
+                              context,
+                            ).colorScheme.secondary, // Usar cor do tema
+                      ),
                     ),
                     if (ping.isNotEmpty)
                       Image.asset(pingImage, width: 52, height: 52),

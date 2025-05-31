@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vpn_client/pages/servers/servers_list.dart';
 import 'package:vpn_client/search_dialog.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:vpn_client/l10n/app_localizations.dart';
 
 class ServersPage extends StatefulWidget {
   final Function(int) onNavBarTap;
@@ -80,6 +80,10 @@ class ServersPageState extends State<ServersPage> {
           });
         },
         servers: _servers,
+        onItemTapNavigate: (selectedIndex) {
+          // Passando a callback
+          widget.onNavBarTap(2); // Navega para a página principal (índice 2)
+        },
       ),
     );
   }
