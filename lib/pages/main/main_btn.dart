@@ -2,8 +2,10 @@ import 'dart:async';
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:vpn_client/design/colors.dart';
-import 'package:vpn_client/design/dimensions.dart';
+import 'package:vpn_client/l10n/app_localizations.dart';
 import 'package:vpnclient_engine_flutter/vpnclient_engine_flutter.dart';
+
+enum VpnConnectionState { connected, disconnected, connecting, disconnecting }
 
 class MainBtn extends StatefulWidget {
   const MainBtn({super.key});
@@ -15,22 +17,25 @@ class MainBtn extends StatefulWidget {
 class MainBtnState extends State<MainBtn> with SingleTickerProviderStateMixin {
   ///static const platform = MethodChannel('vpnclient_engine2');
   ///
-  late CustomString statusText;
-  late String connectionStatus;
+  late VpnConnectionState _vpnState;
   late String connectionStatusDisconnected;
   late String connectionStatusDisconnecting;
   late String connectionStatusConnected;
   late String connectionStatusConnecting;
+  bool _initialized = false;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final statusText = CustomString(context);
-    connectionStatus = statusText.disconnected;
-    connectionStatusDisconnected = statusText.disconnected;
-    connectionStatusConnected = statusText.connected;
-    connectionStatusDisconnecting = statusText.disconnecting;
-    connectionStatusConnecting = statusText.connecting;
+    // Initialize localized strings once
+    connectionStatusDisconnected = AppLocalizations.of(context)!.disconnected;
+    connectionStatusConnected = AppLocalizations.of(context)!.connected;
+    connectionStatusDisconnecting = AppLocalizations.of(context)!.disconnecting;
+    connectionStatusConnecting = AppLocalizations.of(context)!.connecting;
+    if (!_initialized) {
+      _vpnState = VpnConnectionState.disconnected;
+      _initialized = true;
+    }
   }
 
   String connectionTime = "00:00:00";
@@ -76,25 +81,38 @@ class MainBtnState extends State<MainBtn> with SingleTickerProviderStateMixin {
     _timer?.cancel();
     setState(() {
       connectionTime = "00:00:00";
-      connectionStatus = connectionStatusDisconnected;
+      _vpnState = VpnConnectionState.disconnected;
     });
   }
 
+  String get currentStatusText {
+    switch (_vpnState) {
+      case VpnConnectionState.connected:
+        return connectionStatusConnected;
+      case VpnConnectionState.disconnected:
+        return connectionStatusDisconnected;
+      case VpnConnectionState.connecting:
+        return connectionStatusConnecting;
+      case VpnConnectionState.disconnecting:
+        return connectionStatusDisconnecting;
+    }
+  }
+
   Future<void> _handleConnection() async {
-    if (connectionStatus != connectionStatusConnected &&
-        connectionStatus != connectionStatusDisconnected) {
+    if (_vpnState == VpnConnectionState.connecting ||
+        _vpnState == VpnConnectionState.disconnecting) {
       return;
     }
 
     setState(() {
-      if (connectionStatus == connectionStatusConnected) {
-        connectionStatus = connectionStatusDisconnecting;
-      } else if (connectionStatus == connectionStatusDisconnected) {
-        connectionStatus = connectionStatusConnecting;
+      if (_vpnState == VpnConnectionState.connected) {
+        _vpnState = VpnConnectionState.disconnecting;
+      } else if (_vpnState == VpnConnectionState.disconnected) {
+        _vpnState = VpnConnectionState.connecting;
       }
     });
 
-    if (connectionStatus == connectionStatusConnecting) {
+    if (_vpnState == VpnConnectionState.connecting) {
       _animationController.repeat(reverse: true);
 
       VPNclientEngine.ClearSubscriptions();
@@ -115,16 +133,16 @@ class MainBtnState extends State<MainBtn> with SingleTickerProviderStateMixin {
       await VPNclientEngine.connect(subscriptionIndex: 0, serverIndex: 1);
       startTimer();
       setState(() {
-        connectionStatus = connectionStatusConnected;
+        _vpnState = VpnConnectionState.connected;
       });
       await _animationController.forward();
       _animationController.stop();
-    } else if (connectionStatus == connectionStatusDisconnecting) {
+    } else if (_vpnState == VpnConnectionState.disconnecting) {
       _animationController.repeat(reverse: true);
       stopTimer();
       await VPNclientEngine.disconnect();
       setState(() {
-        connectionStatus = connectionStatusDisconnected;
+        _vpnState = VpnConnectionState.disconnected;
       });
       await _animationController.reverse();
       _animationController.stop();
@@ -141,7 +159,7 @@ class MainBtnState extends State<MainBtn> with SingleTickerProviderStateMixin {
             fontSize: 40,
             fontWeight: FontWeight.w600,
             color:
-                connectionStatus == connectionStatusConnected
+                _vpnState == VpnConnectionState.connected
                     ? Theme.of(context).colorScheme.primary
                     : Theme.of(context).colorScheme.secondary,
           ),
@@ -156,7 +174,10 @@ class MainBtnState extends State<MainBtn> with SingleTickerProviderStateMixin {
                 width: 150,
                 height: 150,
                 decoration: BoxDecoration(
-                  color: Colors.grey[300],
+                  color:
+                      Theme.of(context)
+                          .colorScheme
+                          .surfaceContainerHighest, // Usar cor do tema conforme sugestão do linter
                   shape: BoxShape.circle,
                 ),
               ),
@@ -188,11 +209,11 @@ class MainBtnState extends State<MainBtn> with SingleTickerProviderStateMixin {
         ),
         const SizedBox(height: 20),
         Text(
-          connectionStatus,
+          currentStatusText,
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w500,
-            color: Colors.black,
+            color: Theme.of(context).textTheme.bodyLarge?.color,
           ),
         ),
       ],

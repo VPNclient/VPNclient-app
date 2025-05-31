@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vpn_client/pages/apps/apps_list_item.dart';
 import 'package:vpn_client/pages/servers/servers_list_item.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:vpn_client/l10n/app_localizations.dart';
+import 'package:vpn_client/core/constants/storage_keys.dart';
 import 'dart:convert';
 
 class SearchDialog extends StatefulWidget {
@@ -23,31 +24,52 @@ class SearchDialog extends StatefulWidget {
 
 class _SearchDialogState extends State<SearchDialog> {
   final TextEditingController _searchController = TextEditingController();
-  late List<Map<String, dynamic>> _filteredItems;
+  List<Map<String, dynamic>> _filteredItems = [];
   List<Map<String, dynamic>> _recentlySearchedItems = [];
   late int _searchDialogType;
+
+  String? _allAppsString;
+  bool _dependenciesInitialized = false;
 
   @override
   void initState() {
     super.initState();
     _searchDialogType = widget.type;
+    _searchController.addListener(_filterItems);
     _loadRecentlySearched();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_dependenciesInitialized) {
+      _allAppsString = AppLocalizations.of(context)!.all_apps;
+      _initializeFilteredItems();
+      _dependenciesInitialized = true;
+    }
+  }
+
+  void _initializeFilteredItems() {
     _filteredItems =
         widget.items.where((item) {
-          if (_searchDialogType == 1) {
-            return item['text'] != 'Все приложения';
+          if (_searchDialogType == 1 && _allAppsString != null) {
+            return item['text'] != _allAppsString;
           }
           return true;
         }).toList();
-    _searchController.addListener(_filterItems);
+    if (_searchController.text.isNotEmpty) {
+      _filterItems();
+    } else {
+      setState(() {});
+    }
   }
 
   Future<void> _loadRecentlySearched() async {
     final prefs = await SharedPreferences.getInstance();
     final String key =
         _searchDialogType == 1
-            ? 'recently_searched_apps'
-            : 'recently_searched_servers';
+            ? StorageKeys.recentlySearchedApps
+            : StorageKeys.recentlySearchedServers;
     final String? recentlySearched = prefs.getString(key);
     if (recentlySearched != null) {
       setState(() {
@@ -58,12 +80,12 @@ class _SearchDialogState extends State<SearchDialog> {
     }
   }
 
-  Future<void> _saveRecentlySearched(Map<String, dynamic> item) async {
+  Future<void> _addOrUpdateRecentlySearched(Map<String, dynamic> item) async {
     final prefs = await SharedPreferences.getInstance();
     final String key =
         _searchDialogType == 1
-            ? 'recently_searched_apps'
-            : 'recently_searched_servers';
+            ? StorageKeys.recentlySearchedApps
+            : StorageKeys.recentlySearchedServers;
     setState(() {
       _recentlySearchedItems.removeWhere((i) => i['text'] == item['text']);
       _recentlySearchedItems.insert(0, item);
@@ -79,20 +101,21 @@ class _SearchDialogState extends State<SearchDialog> {
     setState(() {
       _filteredItems =
           widget.items.where((item) {
-            if (_searchDialogType == 1) {
+            if (_searchDialogType == 1 && _allAppsString != null) {
               return item['text'].toLowerCase().contains(query) &&
-                  item['text'] != 'Все приложения';
+                  item['text'] != _allAppsString;
             }
             return item['text'].toLowerCase().contains(query);
           }).toList();
     });
   }
 
-  void _updateServerSelection(Map<String, dynamic> selectedItem) {
-    // Обновляем isActive для всех элементов: выбранный становится активным, остальные — неактивными
+  void _handleServerSelection(Map<String, dynamic> selectedItem) {
     for (var item in widget.items) {
       item['isActive'] = item['text'] == selectedItem['text'];
     }
+    _addOrUpdateRecentlySearched(selectedItem);
+    Navigator.of(context).pop(widget.items);
   }
 
   @override
@@ -104,11 +127,6 @@ class _SearchDialogState extends State<SearchDialog> {
   @override
   Widget build(BuildContext context) {
     final isQueryEmpty = _searchController.text.isEmpty;
-    final hasRecentSearches = _recentlySearchedItems.isNotEmpty;
-
-    final showFilteredItems =
-        !isQueryEmpty || (isQueryEmpty && !hasRecentSearches);
-    final showRecentSearches = isQueryEmpty && hasRecentSearches;
 
     return Dialog(
       insetPadding: EdgeInsets.zero,
@@ -133,67 +151,60 @@ class _SearchDialogState extends State<SearchDialog> {
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          AppLocalizations.of(context)!.search,
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.w600,
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
+                    Center(
+                      child: Text(
+                        AppLocalizations.of(context)!.search,
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.w600,
+                          color: Theme.of(context).colorScheme.primary,
                         ),
-                      ],
+                      ),
                     ),
                     if (_searchDialogType == 1)
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop(widget.items);
-                            },
-                            child: Text(
-                              AppLocalizations.of(context)!.done,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Colors.blue,
-                                fontSize: 16,
-                              ),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop(widget.items);
+                          },
+                          child: Text(
+                            AppLocalizations.of(context)!.done,
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary,
+                              fontSize: 16,
                             ),
                           ),
-                        ],
+                        ),
                       ),
                     if (_searchDialogType == 2)
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: Text(
-                              AppLocalizations.of(context)!.cancel,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Colors.blue,
-                                fontSize: 16,
-                              ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Text(
+                            AppLocalizations.of(context)!.cancel,
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary,
+                              fontSize: 16,
                             ),
                           ),
-                        ],
+                        ),
                       ),
                   ],
                 ),
               ),
               Container(
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Theme.of(context).cardColor,
                   borderRadius: BorderRadius.circular(10),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.grey.withAlpha((255 * 0.2).toInt()),
+                      color: Theme.of(
+                        context,
+                      ).shadowColor.withAlpha((255 * 0.1).round()),
                       blurRadius: 10,
                       offset: const Offset(0, 1),
                     ),
@@ -207,32 +218,36 @@ class _SearchDialogState extends State<SearchDialog> {
                   controller: _searchController,
                   decoration: InputDecoration(
                     hintText: widget.placeholder,
-                    hintStyle: const TextStyle(color: Colors.grey),
+                    hintStyle: TextStyle(color: Theme.of(context).hintColor),
                     suffixIcon: Icon(
                       Icons.search,
                       color: Theme.of(context).colorScheme.primary,
                     ),
-                    fillColor: Colors.white,
+                    fillColor: Theme.of(context).cardColor,
                     filled: true,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: BorderSide(
-                        color: Colors.grey.shade300,
-                        width: 0,
+                        color: Theme.of(
+                          context,
+                        ).dividerColor.withAlpha((255 * 0.5).round()),
+                        width: 0.5,
                       ),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: BorderSide(
-                        color: Colors.grey.shade300,
-                        width: 0,
+                        color: Theme.of(
+                          context,
+                        ).dividerColor.withAlpha((255 * 0.5).round()),
+                        width: 0.5,
                       ),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: BorderSide(
-                        color: Colors.grey.shade300,
-                        width: 0,
+                        color: Theme.of(context).colorScheme.primary,
+                        width: 1,
                       ),
                     ),
                     contentPadding: const EdgeInsets.all(14),
@@ -240,74 +255,85 @@ class _SearchDialogState extends State<SearchDialog> {
                 ),
               ),
               const SizedBox(height: 7),
-              // Отображаем недавно измененные элементы
-              if (showRecentSearches)
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.only(left: 20),
-                      child: Text(
-                        AppLocalizations.of(context)!.recently_searched,
-                        style: TextStyle(color: Colors.grey),
-                      ),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 14),
-                      child: Column(
-                        children: List.generate(_recentlySearchedItems.length, (
-                          index,
-                        ) {
-                          final item = _recentlySearchedItems[index];
-                          if (_searchDialogType == 1) {
-                            return AppListItem(
-                              icon: item['icon'],
-                              image: item['image'],
-                              text: item['text'],
-                              isSwitch: item['isSwitch'] ?? false,
-                              isActive: item['isActive'] ?? false,
-                              isEnabled: true,
-                              onTap: () {
-                                setState(() {
-                                  _recentlySearchedItems[index]['isActive'] =
-                                      !_recentlySearchedItems[index]['isActive'];
-                                });
-                                final originalIndex = widget.items.indexWhere(
-                                  (i) => i['text'] == item['text'],
+              if (isQueryEmpty && _recentlySearchedItems.isNotEmpty)
+                Flexible(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize:
+                          MainAxisSize.min, // Ensure Column takes minimum space
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(
+                            left: 20,
+                            bottom: 4,
+                            top: 4,
+                          ), // Adjusted margin
+                          child: Text(
+                            AppLocalizations.of(context)!.recently_searched,
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.secondary,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 14),
+                          child: Column(
+                            mainAxisSize:
+                                MainAxisSize
+                                    .min, // Ensure Column takes minimum space
+                            children: List.generate(_recentlySearchedItems.length, (
+                              index,
+                            ) {
+                              final item = _recentlySearchedItems[index];
+                              if (_searchDialogType == 1) {
+                                return AppListItem(
+                                  icon: item['icon'],
+                                  image: item['image'],
+                                  text: item['text'],
+                                  isSwitch: item['isSwitch'] ?? false,
+                                  isActive: item['isActive'] ?? false,
+                                  isEnabled: true,
+                                  onTap: () {
+                                    setState(() {
+                                      _recentlySearchedItems[index]['isActive'] =
+                                          !_recentlySearchedItems[index]['isActive'];
+                                    });
+                                    final originalIndex = widget.items
+                                        .indexWhere(
+                                          (i) => i['text'] == item['text'],
+                                        );
+                                    if (originalIndex != -1) {
+                                      widget.items[originalIndex]['isActive'] =
+                                          _recentlySearchedItems[index]['isActive'];
+                                    }
+                                    _addOrUpdateRecentlySearched(
+                                      _recentlySearchedItems[index],
+                                    );
+                                  },
                                 );
-                                if (originalIndex != -1) {
-                                  widget.items[originalIndex]['isActive'] =
-                                      _recentlySearchedItems[index]['isActive'];
-                                }
-                                _saveRecentlySearched(
-                                  _recentlySearchedItems[index],
+                              } else {
+                                return ServerListItem(
+                                  icon: item['icon'],
+                                  text: item['text'],
+                                  ping: item['ping'],
+                                  isActive: item['isActive'] ?? false,
+                                  onTap: () {
+                                    _handleServerSelection(item);
+                                  },
                                 );
-                              },
-                            );
-                          } else {
-                            return ServerListItem(
-                              icon: item['icon'],
-                              text: item['text'],
-                              ping: item['ping'],
-                              isActive: item['isActive'] ?? false,
-                              onTap: () {
-                                if (_searchController.text.isNotEmpty) {
-                                  _saveRecentlySearched(item);
-                                }
-                                _updateServerSelection(item);
-                                Navigator.of(context).pop(widget.items);
-                              },
-                            );
-                          }
-                        }),
-                      ),
+                              }
+                            }),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
-              // Отображаем отфильтрованный список
               Expanded(
                 child:
-                    showFilteredItems
+                    (!isQueryEmpty ||
+                            (isQueryEmpty && _recentlySearchedItems.isEmpty))
                         ? _filteredItems.isEmpty
                             ? Center(
                               child: Text(
@@ -337,7 +363,7 @@ class _SearchDialogState extends State<SearchDialog> {
                                         _filteredItems[index]['isActive'] =
                                             !_filteredItems[index]['isActive'];
                                         if (_searchController.text.isNotEmpty) {
-                                          _saveRecentlySearched(
+                                          _addOrUpdateRecentlySearched(
                                             _filteredItems[index],
                                           );
                                         }
@@ -359,11 +385,7 @@ class _SearchDialogState extends State<SearchDialog> {
                                     ping: item['ping'],
                                     isActive: item['isActive'] ?? false,
                                     onTap: () {
-                                      if (_searchController.text.isNotEmpty) {
-                                        _saveRecentlySearched(item);
-                                      }
-                                      _updateServerSelection(item);
-                                      Navigator.of(context).pop(widget.items);
+                                      _handleServerSelection(item);
                                     },
                                   );
                                 }
@@ -371,17 +393,7 @@ class _SearchDialogState extends State<SearchDialog> {
                             )
                         : const SizedBox.shrink(),
               ),
-              Transform.scale(
-                scale: 1.2,
-                child: Transform.translate(
-                  offset: const Offset(0, 30),
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: 40,
-                    color: Theme.of(context).colorScheme.surface,
-                  ),
-                ),
-              ),
+              SizedBox(height: MediaQuery.of(context).padding.bottom + 10),
             ],
           ),
         ),
