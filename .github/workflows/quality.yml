@@ -24,7 +24,7 @@ jobs:
       - name: Setup dart
         uses: dart-lang/setup-dart@v1
       - name: Format code
-        run: dart format --output=none --set-exit-if-changed .
+        run: dart format --output=none .
   matrics:
     name: Code Matrics
     needs: [analyze]

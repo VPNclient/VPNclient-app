@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vpn_client/pages/apps/apps_list.dart';
 import 'package:vpn_client/search_dialog.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:vpn_client/localization_service.dart';
 
 class AppsPage extends StatefulWidget {
   const AppsPage({super.key});
@@ -19,7 +19,7 @@ class AppsPageState extends State<AppsPage> {
         context: context,
         builder: (BuildContext context) {
           return SearchDialog(
-            placeholder: AppLocalizations.of(context)!.app_name,
+            placeholder: LocalizationService.to('app_name'),
             items: _apps,
             type: 1,
           );
@@ -40,7 +40,7 @@ class AppsPageState extends State<AppsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.apps_selection),
+        title: Text(LocalizationService.to('apps_selection')),
         centerTitle: true,
         titleTextStyle: TextStyle(
           color: Theme.of(context).colorScheme.primary,
@@ -60,7 +60,7 @@ class AppsPageState extends State<AppsPage> {
                   color: Theme.of(context).colorScheme.primary,
                 ),
                 onPressed: () => _showSearchDialog(context),
-                tooltip: AppLocalizations.of(context)!.search,
+                tooltip: LocalizationService.to('search'),
               ),
             ),
           ),
