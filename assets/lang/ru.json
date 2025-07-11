@@ -1,5 +1,5 @@
 {
-    "@@locale": "ru",
+    
     "app_name": "VPN Клиент",
     "apps_selection": "Выбор приложений",
     "search": "Поиск",
@@ -22,5 +22,20 @@
     "disconnected": "ОТКЛЮЧЕН",
     "reconnecting": "Повторное подключение",
     "connecting": "ПОДКЛЮЧЕНИЕ",
-    "disconnecting": "ОТКЛЮЧЕНИЕ"
+    "disconnecting": "ОТКЛЮЧЕНИЕ",
+    "settings": "Настройки",
+    "version": "Версия",
+    "connection": "Подключение",
+    "not_connected": "Не подключено",
+    "support": "Поддержка",
+    "unavailable": "Недоступно",
+    "your_id": "Ваш ID",
+    "support_service": "Служба поддержки",
+    "reset_settings": "Сбросить настройки",
+    "connect": "Подключить",
+    "are_you_sure_reset": "Вы уверены, что хотите сбросить все настройки подключения?",
+    "reset": "Сбросить",
+    "connection_reset": "Настройки подключения сброшены",
+    "failed_open_telegram": "Не удалось открыть Telegram бот",
+    "about_app": "О приложении"
   }
