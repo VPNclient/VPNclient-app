@@ -127,7 +127,7 @@ class MainBtnState extends State<MainBtn> with SingleTickerProviderStateMixin {
         vpnState.setConnectionStatus(ConnectionStatus.connecting);
         _animationController.repeat(reverse: true);
         String link =
-            "vless://c61daf3e-83ff-424f-a4ff-5bfcb46f0b30@45.77.190.146:8443?encryption=none&flow=&security=reality&sni=www.gstatic.com&fp=chrome&pbk=rLCmXWNVoRBiknloDUsbNS5ONjiI70v-BWQpWq0HCQ0&sid=108108108108#%F0%9F%87%BA%F0%9F%87%B8+%F0%9F%99%8F+USA+%231";
+            "vless://c61daf3e-83ff-424f-a4ff-5bfcb46f0b30@5.35.98.91:8443?encryption=none&flow=&security=reality&sni=yandex.ru&fp=chrome&pbk=rLCmXWNVoRBiknloDUsbNS5ONjiI70v-BWQpWq0HCQ0&sid=108108108108#%F0%9F%87%B7%F0%9F%87%BA+%F0%9F%99%8F+Russia+%231";
         V2RayURL parser = FlutterV2ray.parseFromURL(link);
 
         if (await flutterV2ray.requestPermission()) {
