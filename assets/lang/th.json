@@ -22,5 +22,20 @@
     "disconnected": "ไม่ได้เชื่อมต่อ",
     "reconnecting": "กำลังเชื่อมต่อใหม่",
     "connecting": "กำลังเชื่อมต่อ",
-    "disconnecting": "กำลังตัดการเชื่อมต่อ"
+    "disconnecting": "กำลังตัดการเชื่อมต่อ",
+    "settings": "การตั้งค่า",
+    "version": "เวอร์ชัน",
+    "connection": "การเชื่อมต่อ",
+    "not_connected": "ไม่ได้เชื่อมต่อ",
+    "support": "การสนับสนุน",
+    "unavailable": "ไม่พร้อมใช้งาน",
+    "your_id": "รหัสของคุณ",
+    "support_service": "บริการสนับสนุน",
+    "reset_settings": "รีเซ็ตการตั้งค่า",
+    "connect": "เชื่อมต่อ",
+    "are_you_sure_reset": "คุณแน่ใจหรือไม่ว่าต้องการรีเซ็ตการตั้งค่าการเชื่อมต่อทั้งหมด?",
+    "reset": "รีเซ็ต",
+    "connection_reset": "รีเซ็ตการตั้งค่าการเชื่อมต่อแล้ว",
+    "failed_open_telegram": "ไม่สามารถเปิดบอท Telegram ได้",
+    "about_app": "เกี่ยวกับแอป"
 }

@@ -1,29 +1,42 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vpn_client/pages/servers/servers_list.dart';
-import 'package:vpn_client/providers/vpn_provider.dart';
 import 'package:vpn_client/search_dialog.dart';
+import 'package:vpn_client/localization_service.dart';
 
-class ServersPage extends StatelessWidget {
-  const ServersPage({super.key});
+class ServersPage extends StatefulWidget {
+  final Function(int) onNavBarTap;
+  const ServersPage({super.key, required this.onNavBarTap});
 
-  void _showSearchDialog(BuildContext context, List<Map<String, dynamic>> servers) async {
-    if (servers.isNotEmpty) {
+  @override
+  State<ServersPage> createState() => ServersPageState();
+}
+
+class ServersPageState extends State<ServersPage> {
+  List<Map<String, dynamic>> _servers = [];
+
+  void _showSearchDialog(BuildContext context) async {
+    if (_servers.isNotEmpty) {
       final updatedServers = await showDialog<List<Map<String, dynamic>>>(
         context: context,
         builder: (BuildContext context) {
           return SearchDialog(
-            placeholder: 'Название страны',
-            items: servers,
+            placeholder: LocalizationService.to('country_name'),
+            items: _servers,
             type: 2,
           );
         },
       );
 
       if (updatedServers != null) {
+        setState(() {
+          _servers = updatedServers;
+        });
+
         final prefs = await SharedPreferences.getInstance();
-        //await prefs.setString('selected_servers', jsonEncode(updatedServers));
+        await prefs.setString('selected_servers', jsonEncode(updatedServers));
       }
     } else {
       debugPrint('Servers list is empty, cannot show search dialog');
@@ -34,7 +47,7 @@ class ServersPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Выбор сервера'),
+        title: Text(LocalizationService.to('selected_server')),
         centerTitle: true,
         titleTextStyle: TextStyle(
           color: Theme.of(context).colorScheme.primary,
@@ -54,7 +67,7 @@ class ServersPage extends StatelessWidget {
                   color: Theme.of(context).colorScheme.primary,
                 ),
                 onPressed: () => _showSearchDialog(context),
-                tooltip: 'Поиск',
+                tooltip: LocalizationService.to('search'),
               ),
             ),
           ),

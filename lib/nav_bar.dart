@@ -1,54 +1,70 @@
 import 'package:flutter/material.dart';
 import 'design/images.dart';
-import 'package:vpn_client/models/nav_item.dart';
 
-class NavBar extends StatelessWidget {
+class NavBar extends StatefulWidget {
   final int initialIndex;
   final Function(int) onItemTapped;
-  final Color selectedColor;
 
-  const NavBar({
-    super.key,
-    this.initialIndex = 2,
-    required this.onItemTapped,
-    required this.selectedColor,
-  });
+  const NavBar({super.key, this.initialIndex = 2, required this.onItemTapped});
+
+  @override
+  State<NavBar> createState() => NavBarState();
+}
+
+class NavBarState extends State<NavBar> {
+  late int _selectedIndex;
+
+  final List<Widget> _inactiveIcons = [
+    appIcon,
+    serverIcon,
+    homeIcon,
+    speedIcon,
+    settingsIcon,
+  ];
+
+  final List<Widget> _activeIcons = [
+    activeAppIcon,
+    activeServerIcon,
+    activeHomeIcon,
+    speedIcon,
+    activeSettingsIcon,
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedIndex = widget.initialIndex;
+  }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+    widget.onItemTapped(index);
+  }
 
   @override
   Widget build(BuildContext context) {
-    final List<NavItem> navItems = [
-      NavItem(inactiveIcon: appIcon, activeIcon: activeAppIcon),
-      NavItem(inactiveIcon: serverIcon, activeIcon: activeServerIcon),
-      NavItem(inactiveIcon: homeIcon, activeIcon: activeHomeIcon),
-      NavItem(inactiveIcon: speedIcon, activeIcon: speedIcon),
-      NavItem(inactiveIcon: settingsIcon, activeIcon: settingsIcon),
-    ];
-
     return Container(
       alignment: Alignment.center,
       width: MediaQuery.of(context).size.width,
       height: 60,
       margin: const EdgeInsets.only(bottom: 30),
       padding: const EdgeInsets.symmetric(horizontal: 30),
-      decoration:
-          BoxDecoration(color: Theme.of(context).colorScheme.surface),
+      decoration: BoxDecoration(color: Theme.of(context).colorScheme.surface),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: List.generate(navItems.length, (index) {
-          bool isActive = initialIndex == index;
+        children: List.generate(_inactiveIcons.length, (index) {
+          bool isActive = _selectedIndex == index;
           return GestureDetector(
-            onTap: () => onItemTapped(index),
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 200),
-              curve: Curves.easeInOut,
-              padding: const EdgeInsets.all(8),
-              child: isActive
-                  ? ColorFiltered(
-                      colorFilter: ColorFilter.mode(
-                          selectedColor, BlendMode.srcIn),
-                      child: navItems[index].activeIcon,
-                    )
-                  : navItems[index].inactiveIcon,
+            onTap: () => _onItemTapped(index),
+            child: SizedBox(
+              width: (MediaQuery.of(context).size.width - 60) / 5,
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                curve: Curves.easeInOut,
+                padding: const EdgeInsets.all(8),
+                child: isActive ? _activeIcons[index] : _inactiveIcons[index],
+              ),
             ),
           );
         }),

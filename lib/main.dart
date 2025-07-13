@@ -1,19 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
-
 import 'package:vpn_client/pages/apps/apps_page.dart';
+import 'dart:ui' as ui;
 import 'package:vpn_client/pages/main/main_page.dart';
-import 'package:vpn_client/pages/settings/settings_page.dart';
+import 'package:vpn_client/pages/settings/setting_page.dart';
 import 'package:vpn_client/pages/servers/servers_page.dart';
 import 'package:vpn_client/theme_provider.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:vpn_client/vpn_state.dart';
+import 'package:vpn_client/localization_service.dart';
 
 import 'design/colors.dart';
 import 'nav_bar.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  Locale userLocale =
+      ui.PlatformDispatcher.instance.locale; // <-- Get the system locale
+  await LocalizationService.load(userLocale);
+
   runApp(
     MultiProvider(
       providers: [
@@ -37,28 +43,23 @@ class App extends StatelessWidget {
     final Locale? manualLocale = null; // ← use system by default
 
     return MaterialApp(
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
       debugShowCheckedModeBanner: false,
       title: 'VPN Client',
       theme: lightTheme,
       darkTheme: darkTheme,
       locale: manualLocale,
-      localeResolutionCallback: (locale, supportedLocales) {
+      localeResolutionCallback: (locale, _) {
         if (locale == null) return const Locale('en');
 
         // Check for exact match
-        for (var supportedLocale in supportedLocales) {
-          if (supportedLocale.languageCode == locale.languageCode &&
-              (supportedLocale.countryCode == null ||
-                  supportedLocale.countryCode == locale.countryCode)) {
-            return supportedLocale;
-          }
-        }
-
-        // If Chinese variants are not supported, fallback to zh
-        if (locale.languageCode == 'zh') {
-          return supportedLocales.contains(const Locale('zh'))
-              ? const Locale('zh')
-              : const Locale('en');
+        final supported = ['en', 'ru', 'th', 'zh'];
+        if (supported.contains(locale.languageCode)) {
+          return Locale(locale.languageCode);
         }
 
         // Fallback to 'en' if not found
@@ -67,19 +68,6 @@ class App extends StatelessWidget {
 
       themeMode: themeProvider.themeMode,
       home: const MainScreen(),
-
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: const [
-        Locale('en'),
-        Locale('ru'),
-        Locale('th'),
-        Locale('zh'),
-      ],
     );
   }
 }
@@ -103,7 +91,7 @@ class _MainScreenState extends State<MainScreen> {
       ServersPage(onNavBarTap: _handleNavBarTap),
       const MainPage(),
       const PlaceholderPage(text: 'Speed Page'),
-      const SettingsPage(),
+      SettingPage(onNavBarTap: _handleNavBarTap),
     ];
   }
 

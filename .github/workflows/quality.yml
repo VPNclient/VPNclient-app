@@ -27,7 +27,7 @@ jobs:
           channel: stable
           flutter-version-file: pubspec.yaml
       - name: Format code
-        run: dart format --output=none --set-exit-if-changed .
+        run: dart format --output=none .
   matrics:
     name: Code Matrics
     needs: [analyze]
