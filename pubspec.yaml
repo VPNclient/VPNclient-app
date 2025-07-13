@@ -112,7 +112,6 @@ flutter:
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
 
-  # generate: true
   generate: true
   
 flutter_gen:
