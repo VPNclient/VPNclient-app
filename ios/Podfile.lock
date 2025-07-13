@@ -26,9 +26,9 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  flutter_native_splash: df59bb2e1421aa0282cb2e95618af4dcb0c56c29
-  flutter_v2ray: 21ee520e013877941e2e67b3b48aed9c6870e8dc
-  shared_preferences_foundation: fcdcbc04712aee1108ac7fda236f363274528f78
+  flutter_native_splash: c32d145d68aeda5502d5f543ee38c192065986cf
+  flutter_v2ray: 1190bb389b67a1dc9f28ece1d4b308101e38395e
+  shared_preferences_foundation: 9e1978ff2562383bd5676f64ec4e9aa8fa06a6f7
 
 PODFILE CHECKSUM: f8e15f817b1bf5846cb6aad560a31cf33c165196
 

@@ -1,5 +1,4 @@
 {
- 
   "app_name": "VPN Client",
   "apps_selection": "App Selection",
   "search": "Search",
@@ -22,5 +21,20 @@
   "disconnected": "DISCONNECTED",
   "reconnecting": "RECONNECTING",
   "connecting": "CONNECTING",
-  "disconnecting": "DISCONNECTING"
+  "disconnecting": "DISCONNECTING",
+  "settings": "Settings",
+  "version": "Version",
+  "connection": "Connection",
+  "not_connected": "Not connected",
+  "support": "Support",
+  "unavailable": "Unavailable",
+  "your_id": "Your ID",
+  "support_service": "Support Service",
+  "reset_settings": "Reset settings",
+  "connect": "Connect",
+  "are_you_sure_reset": "Are you sure you want to reset all connection settings?",
+  "reset": "Reset",
+  "connection_reset": "Connection settings have been reset",
+  "failed_open_telegram": "Failed to open Telegram bot",
+  "about_app": "About App"
 }

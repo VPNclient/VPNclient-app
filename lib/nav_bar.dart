@@ -27,7 +27,7 @@ class NavBarState extends State<NavBar> {
     activeServerIcon,
     activeHomeIcon,
     speedIcon,
-    settingsIcon,
+    activeSettingsIcon,
   ];
 
   @override
