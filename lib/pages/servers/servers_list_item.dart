@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+
 class ServerListItem extends StatelessWidget {
   final String? icon;
   final String text;
@@ -8,6 +9,7 @@ class ServerListItem extends StatelessWidget {
   final bool isActive;
   final VoidCallback onTap;
 
+  final Color selectedColor;
   const ServerListItem({
     super.key,
     this.icon,
@@ -15,21 +17,12 @@ class ServerListItem extends StatelessWidget {
     required this.ping,
     required this.isActive,
     required this.onTap,
+    required this.selectedColor,
   });
 
   @override
   Widget build(BuildContext context) {
-    String pingImage = 'assets/images/ping_status_1.png';
-    if (ping.isNotEmpty) {
-      final int? pingValue = int.tryParse(ping);
-      if (pingValue != null) {
-        if (pingValue > 200) {
-          pingImage = 'assets/images/ping_status_3.png';
-        } else if (pingValue > 100) {
-          pingImage = 'assets/images/ping_status_2.png';
-        }
-      }
-    }
+
 
     return GestureDetector(
       onTap: onTap,
@@ -37,13 +30,11 @@ class ServerListItem extends StatelessWidget {
         height: 52,
         margin: const EdgeInsets.symmetric(vertical: 8),
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.onSurface, // Usar cor do tema
+          color: isActive ? selectedColor : Colors.white,
           borderRadius: BorderRadius.circular(10),
           boxShadow: [
             BoxShadow(
-              color: Theme.of(
-                context,
-              ).shadowColor.withAlpha((255 * 0.1).round()), // Usar cor do tema
+              color: Colors.grey.withValues(alpha: 0.2),
               blurRadius: 10,
               offset: const Offset(0, 1),
             ),
@@ -57,20 +48,15 @@ class ServerListItem extends StatelessWidget {
               Row(
                 children: [
                   if (icon != null)
-                    SvgPicture.asset(icon!, width: 52, height: 52),
+                    Container(margin: const EdgeInsets.only(left: 16),child: SvgPicture.asset(icon!, width: 24, height: 24)),
                   if (icon == null) const SizedBox(width: 16),
                   Container(
                     alignment: Alignment.center,
                     height: 52,
-                    child: Text(
+                    margin: const EdgeInsets.only(left: 16),
+                    child:  Text(
                       text,
-                      style: TextStyle(
-                        fontSize: 16,
-                        color:
-                            Theme.of(
-                              context,
-                            ).colorScheme.primary, // Usar cor do tema
-                      ),
+                      style: const TextStyle(fontSize: 16, color: Colors.black),
                     ),
                   ),
                 ],
@@ -78,20 +64,12 @@ class ServerListItem extends StatelessWidget {
               Container(
                 alignment: Alignment.center,
                 height: 52,
-                child: Row(
-                  children: [
-                    Text(
+                margin: const EdgeInsets.only(right: 16),
+                child: Text(
                       int.tryParse(ping) != null ? '$ping ms' : ping,
-                      style: TextStyle(
-                        fontSize: 14,
-                        color:
-                            Theme.of(
-                              context,
-                            ).colorScheme.secondary, // Usar cor do tema
-                      ),
-                    ),
-                    if (ping.isNotEmpty)
-                      Image.asset(pingImage, width: 52, height: 52),
+                      style: const TextStyle(fontSize: 14, color: Colors.grey),
+                
+
                   ],
                 ),
               ),
