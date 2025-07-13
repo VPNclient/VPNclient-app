@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_v2ray/flutter_v2ray.dart';
+// import 'package:flutter_v2ray/flutter_v2ray.dart';
 
 enum ConnectionStatus {
   disconnected,
@@ -20,7 +20,7 @@ class VpnState with ChangeNotifier {
 
   VpnState() {
     // Initializing V2Ray when creating a provider
-    FlutterV2ray(onStatusChanged: (status) {}).initializeV2Ray();
+    // FlutterV2ray(onStatusChanged: (status) {}).initializeV2Ray();
   }
 
   void setConnectionStatus(ConnectionStatus status) {
