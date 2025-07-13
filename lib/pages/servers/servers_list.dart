@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vpn_client/pages/servers/servers_list_item.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:vpn_client/localization_service.dart';
 import 'dart:convert';
 
 class ServersList extends StatefulWidget {
@@ -62,25 +62,25 @@ class ServersListState extends State<ServersList> {
       List<Map<String, dynamic>> serversList = [
         {
           'icon': 'assets/images/flags/auto.svg',
-          'text': AppLocalizations.of(context)!.auto_select,
-          'ping': AppLocalizations.of(context)!.fastest,
+          'text': LocalizationService.to('auto_select'),
+          'ping': LocalizationService.to('fastest'),
           'isActive': true,
         },
         {
           'icon': 'assets/images/flags/Kazahstan.svg',
-          'text': AppLocalizations.of(context)!.kazakhstan,
+          'text': LocalizationService.to('kazakhstan'),
           'ping': '48',
           'isActive': false,
         },
         {
           'icon': 'assets/images/flags/Turkey.svg',
-          'text': AppLocalizations.of(context)!.turkey,
+          'text': LocalizationService.to('turkey'),
           'ping': '142',
           'isActive': false,
         },
         {
           'icon': 'assets/images/flags/Poland.svg',
-          'text': AppLocalizations.of(context)!.poland,
+          'text': LocalizationService.to('poland'),
           'ping': '298',
           'isActive': false,
         },
@@ -178,7 +178,7 @@ class ServersListState extends State<ServersList> {
                       Container(
                         margin: const EdgeInsets.only(left: 10),
                         child: Text(
-                          AppLocalizations.of(context)!.selected_server,
+                          LocalizationService.to('selected_server'),
                           style: TextStyle(color: Colors.grey),
                         ),
                       ),
@@ -197,7 +197,7 @@ class ServersListState extends State<ServersList> {
                       Container(
                         margin: const EdgeInsets.only(left: 10),
                         child: Text(
-                          AppLocalizations.of(context)!.all_servers,
+                          LocalizationService.to('all_servers'),
                           style: TextStyle(color: Colors.grey),
                         ),
                       ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:vpn_client/localization_service.dart';
 
 class LocationWidget extends StatelessWidget {
   final Map<String, dynamic>? selectedServer;
@@ -27,7 +27,7 @@ class LocationWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                AppLocalizations.of(context)!.your_location,
+                LocalizationService.to('your_location'),
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w400,
