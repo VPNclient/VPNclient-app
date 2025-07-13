@@ -112,12 +112,18 @@ flutter:
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
 
-  generate: false
+  # generate: true
+  generate: true
   
-  
-  
+flutter_gen:
+  output: lib/gen/
+  line_length: 80
+
+# l10n config from HEAD (keep for reference, comment out if not used)
 # l10n:
 #   arb-dir: l10n
 #   template-arb-file: app_en.arb
 #   output-localization-file: app_localizations.dart
+#   output-class: AppLocalizations
+#   output-dir: lib/l10n
 #   untranslated-messages-file: lib/l10n/untranslated_messages.txt
