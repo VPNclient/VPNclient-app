@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vpn_client/pages/servers/servers_list.dart';
 import 'package:vpn_client/search_dialog.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:vpn_client/localization_service.dart';
 
 class ServersPage extends StatefulWidget {
   final Function(int) onNavBarTap;
@@ -23,7 +23,7 @@ class ServersPageState extends State<ServersPage> {
         context: context,
         builder: (BuildContext context) {
           return SearchDialog(
-            placeholder: AppLocalizations.of(context)!.country_name,
+            placeholder: LocalizationService.to('country_name'),
             items: _servers,
             type: 2,
           );
@@ -47,7 +47,7 @@ class ServersPageState extends State<ServersPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.selected_server),
+        title: Text(LocalizationService.to('selected_server')),
         centerTitle: true,
         titleTextStyle: TextStyle(
           color: Theme.of(context).colorScheme.primary,
@@ -67,7 +67,7 @@ class ServersPageState extends State<ServersPage> {
                   color: Theme.of(context).colorScheme.primary,
                 ),
                 onPressed: () => _showSearchDialog(context),
-                tooltip: AppLocalizations.of(context)!.search,
+                tooltip: LocalizationService.to('search'),
               ),
             ),
           ),

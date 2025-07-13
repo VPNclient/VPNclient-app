@@ -35,8 +35,8 @@ dependencies:
   flutter_svg: ^2.0.17
   flutter_localizations:
     sdk: flutter
-  shared_preferences: ^2.2.3
-  flutter_native_splash: ^2.3.1
+  shared_preferences: ^2.5.3
+  flutter_native_splash: ^2.4.6
   flutter_bloc: ^9.0.0
 #  vpnclient_engine_flutter:
 #    git:
@@ -47,6 +47,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   flutter_v2ray: ^1.0.10
   cupertino_icons: ^1.0.8
+  url_launcher: ^6.3.1
 
 dev_dependencies:
   flutter_test:
@@ -65,7 +66,7 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
-
+  
   fonts:
     - family: CustomIcons
       fonts:
@@ -80,6 +81,10 @@ flutter:
   assets:
     - assets/images/
     - assets/images/flags/
+    - assets/lang/en.json
+    - assets/lang/zh.json
+    - assets/lang/ru.json
+    - assets/lang/th.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
@@ -108,15 +113,17 @@ flutter:
   # see https://flutter.dev/to/font-from-package
 
   # generate: true
+  generate: true
   
 flutter_gen:
   output: lib/gen/
   line_length: 80
 
-l10n:
-  arb-dir: l10n
-  template-arb-file: app_en.arb
-  output-localization-file: app_localizations.dart
-  output-class: AppLocalizations
-  output-dir: lib/l10n
-  untranslated-messages-file: lib/l10n/untranslated_messages.txt
+# l10n config from HEAD (keep for reference, comment out if not used)
+# l10n:
+#   arb-dir: l10n
+#   template-arb-file: app_en.arb
+#   output-localization-file: app_localizations.dart
+#   output-class: AppLocalizations
+#   output-dir: lib/l10n
+#   untranslated-messages-file: lib/l10n/untranslated_messages.txt
