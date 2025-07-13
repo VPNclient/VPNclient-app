@@ -1,15 +1,11 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vpn_client/design/colors.dart';
 import 'package:flutter_v2ray/flutter_v2ray.dart';
 import 'package:vpn_client/localization_service.dart';
 import 'package:vpn_client/vpn_state.dart';
-
-final FlutterV2ray flutterV2ray = FlutterV2ray(
-  onStatusChanged: (status) {
-    // Handle status changes if needed
-  },
-);
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MainBtn extends StatefulWidget {
   const MainBtn({super.key});
@@ -62,37 +58,45 @@ class MainBtnState extends State<MainBtn> with SingleTickerProviderStateMixin {
   Future<void> _toggleConnection(BuildContext context) async {
     final vpnState = Provider.of<VpnState>(context, listen: false);
 
-    switch (vpnState.connectionStatus) {
-      case ConnectionStatus.disconnected:
-        vpnState.setConnectionStatus(ConnectionStatus.connecting);
-        _animationController.repeat(reverse: true);
-        String link =
-            "vless://c61daf3e-83ff-424f-a4ff-5bfcb46f0b30@45.77.190.146:8443?encryption=none&flow=&security=reality&sni=www.gstatic.com&fp=chrome&pbk=rLCmXWNVoRBiknloDUsbNS5ONjiI70v-BWQpWq0HCQ0&sid=108108108108#%F0%9F%87%BA%F0%9F%87%B8+%F0%9F%99%8F+USA+%231";
-        V2RayURL parser = FlutterV2ray.parseFromURL(link);
+    try {
+      switch (vpnState.connectionStatus) {
+        case ConnectionStatus.disconnected:
+          vpnState.setConnectionStatus(ConnectionStatus.connecting);
+          _animationController.repeat(reverse: true);
 
-        if (await flutterV2ray.requestPermission()) {
-          await flutterV2ray.startV2Ray(
-            remark: parser.remark,
-            config: parser.getFullConfiguration(),
-            blockedApps: null,
-            bypassSubnets: null,
-            proxyOnly: false,
-          );
-        }
+          if (Platform.isIOS) {
+            await vpnState.setupVPN(
+              tunAddr: '192.168.1.2',
+              tunMask: '255.255.255.0',
+              tunDns: '8.8.8.8',
+              socks5Proxy: '176.226.244.28:1080',
+            );
+            await vpnState.startVPN();
+          } else if (Platform.isAndroid) {
+            await vpnState.startVPN();
+          }
+          await _animationController.forward();
+          _animationController.stop();
+          break;
 
-        vpnState.startTimer();
-        vpnState.setConnectionStatus(ConnectionStatus.connected);
-        await _animationController.forward();
-        _animationController.stop();
-      case ConnectionStatus.connected:
-        vpnState.setConnectionStatus(ConnectionStatus.disconnecting);
-        _animationController.repeat(reverse: true);
-        await flutterV2ray.stopV2Ray();
-        vpnState.stopTimer();
-        vpnState.setConnectionStatus(ConnectionStatus.disconnected);
-        await _animationController.reverse();
-        _animationController.stop();
-      default:
+        case ConnectionStatus.connected:
+          vpnState.setConnectionStatus(ConnectionStatus.disconnecting);
+          _animationController.repeat(reverse: true);
+          if (Platform.isIOS || Platform.isAndroid) {
+            await vpnState.stopVPN();
+          }
+          await _animationController.reverse();
+          _animationController.stop();
+          break;
+
+        default:
+          break;
+      }
+    } catch (e) {
+      print('Error toggling connection: $e');
+      vpnState.setConnectionStatus(ConnectionStatus.disconnected);
+      _animationController.reverse();
+      _animationController.stop();
     }
   }
 
