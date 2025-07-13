@@ -35,8 +35,8 @@ dependencies:
   flutter_svg: ^2.0.17
   flutter_localizations:
     sdk: flutter
-  shared_preferences: ^2.2.3
-  flutter_native_splash: ^2.3.1
+  shared_preferences: ^2.5.3
+  flutter_native_splash: ^2.4.6
   flutter_bloc: ^9.0.0
 #  vpnclient_engine_flutter:
 #    git:
