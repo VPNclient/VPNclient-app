@@ -33,12 +33,15 @@ class AppListItem extends StatelessWidget {
         height: 52,
         margin: const EdgeInsets.symmetric(vertical: 8),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color:
+              Theme.of(context).colorScheme.onSurface, // Exemplo de uso do tema
           borderRadius: BorderRadius.circular(10),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withAlpha((255 * 0.2).toInt()),
-              blurRadius: 10,
+              color: Theme.of(
+                context,
+              ).shadowColor.withAlpha((255 * 0.1).round()), // Exemplo
+              blurRadius: 5, // Ajuste conforme necessário
               offset: const Offset(0, 1),
             ),
           ],
@@ -70,9 +73,11 @@ class AppListItem extends StatelessWidget {
                         child: Text(
                           text,
                           style: const TextStyle(
-                            fontSize: 16,
-                            color: Colors.black,
-                          ),
+                            fontSize: 16, // Considere usar TextTheme
+                            // color: Colors.black, // Removido para usar cor padrão do tema ou definir explicitamente via tema
+                          ).apply(
+                            color: Theme.of(context).colorScheme.primary,
+                          ), // Exemplo
                         ),
                       ),
                     ],
@@ -90,7 +95,8 @@ class AppListItem extends StatelessWidget {
                       : Checkbox(
                         value: isActive,
                         onChanged: null,
-                        checkColor: Colors.white,
+                        checkColor:
+                            Theme.of(context).colorScheme.onPrimary, // Exemplo
                         fillColor: WidgetStateProperty.resolveWith((states) {
                           if (!isActive) {
                             return Theme.of(context).colorScheme.onSecondary;
@@ -113,7 +119,9 @@ class AppListItem extends StatelessWidget {
             if (!isEnabled)
               Container(
                 decoration: BoxDecoration(
-                  color: Colors.grey.withAlpha((255 * 0.2).toInt()),
+                  color: Theme.of(
+                    context,
+                  ).disabledColor.withAlpha((255 * 0.2).round()), // Exemplo
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),

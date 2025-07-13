@@ -3,6 +3,7 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
+  vpnclient_engine_flutter
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST

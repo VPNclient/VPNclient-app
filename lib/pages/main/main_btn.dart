@@ -1,18 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:vpn_client/design/colors.dart';
-import 'package:flutter_v2ray/flutter_v2ray.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:vpn_client/vpn_state.dart';
 
-final FlutterV2ray flutterV2ray = FlutterV2ray(
-  onStatusChanged: (status) {
-    // Handle status changes if needed
-  },
-);
 
 class MainBtn extends StatefulWidget {
-  const MainBtn({super.key});
+  final String title;
+  final VoidCallback onPressed;
+  final String connectionTime;
+  final String connectionStatus;
+  const MainBtn({super.key, required this.title, required this.onPressed, required this.connectionTime, required this.connectionStatus});
 
   @override
   State<MainBtn> createState() => MainBtnState();
@@ -25,6 +20,7 @@ class MainBtnState extends State<MainBtn> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+
     _animationController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 1),
@@ -32,13 +28,7 @@ class MainBtnState extends State<MainBtn> with SingleTickerProviderStateMixin {
     _sizeAnimation = Tween<double>(begin: 0, end: 150).animate(
       CurvedAnimation(parent: _animationController, curve: Curves.ease),
     );
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final vpnState = Provider.of<VpnState>(context, listen: false);
-      if (vpnState.connectionStatus == ConnectionStatus.connected) {
-        _animationController.forward();
-      }
-    });
+        _animationController.repeat(reverse: true);
   }
 
   @override
@@ -47,88 +37,39 @@ class MainBtnState extends State<MainBtn> with SingleTickerProviderStateMixin {
     super.dispose();
   }
 
-  String get connectionStatusText {
-    final localizations = AppLocalizations.of(context)!;
-    final vpnState = Provider.of<VpnState>(context, listen: false);
-    switch (vpnState.connectionStatus) {
-      case ConnectionStatus.connected:
-        return localizations.connected;
-      case ConnectionStatus.disconnected:
-        return localizations.disconnected;
-      case ConnectionStatus.reconnecting:
-        return localizations.reconnecting;
-      case ConnectionStatus.disconnecting:
-        return localizations.disconnecting;
-      case ConnectionStatus.connecting:
-        return localizations.connecting;
-    }
-  }
-
-  Future<void> _toggleConnection(BuildContext context) async {
-    final vpnState = Provider.of<VpnState>(context, listen: false);
-
-    switch (vpnState.connectionStatus) {
-      case ConnectionStatus.disconnected:
-        vpnState.setConnectionStatus(ConnectionStatus.connecting);
-        _animationController.repeat(reverse: true);
-        String link =
-            "vless://c61daf3e-83ff-424f-a4ff-5bfcb46f0b30@45.77.190.146:8443?encryption=none&flow=&security=reality&sni=www.gstatic.com&fp=chrome&pbk=rLCmXWNVoRBiknloDUsbNS5ONjiI70v-BWQpWq0HCQ0&sid=108108108108#%F0%9F%87%BA%F0%9F%87%B8+%F0%9F%99%8F+USA+%231";
-        V2RayURL parser = FlutterV2ray.parseFromURL(link);
-
-        if (await flutterV2ray.requestPermission()) {
-          await flutterV2ray.startV2Ray(
-            remark: parser.remark,
-            config: parser.getFullConfiguration(),
-            blockedApps: null,
-            bypassSubnets: null,
-            proxyOnly: false,
-          );
-        }
-
-        vpnState.startTimer();
-        vpnState.setConnectionStatus(ConnectionStatus.connected);
-        await _animationController.forward();
-        _animationController.stop();
-      case ConnectionStatus.connected:
-        vpnState.setConnectionStatus(ConnectionStatus.disconnecting);
-        _animationController.repeat(reverse: true);
-        await flutterV2ray.stopV2Ray();
-        vpnState.stopTimer();
-        vpnState.setConnectionStatus(ConnectionStatus.disconnected);
-        await _animationController.reverse();
-        _animationController.stop();
-      default:
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    final vpnState = Provider.of<VpnState>(context);
-
     return Column(
       children: [
         Text(
-          vpnState.connectionTimeText,
+          widget.connectionTime,
           style: TextStyle(
             fontSize: 40,
             fontWeight: FontWeight.w600,
             color:
-                vpnState.connectionStatus == ConnectionStatus.connected
+                widget.connectionStatus == 'Connected'
                     ? Theme.of(context).colorScheme.primary
                     : Theme.of(context).colorScheme.secondary,
           ),
         ),
         const SizedBox(height: 70),
         GestureDetector(
-          onTap: () => _toggleConnection(context),
+          onTap: () {
+            widget.onPressed();
+             if (widget.connectionStatus == 'Connected') {
+              _animationController.reverse();
+            } else {
+              _animationController.forward();
+            }
+          },
           child: Stack(
             alignment: Alignment.center,
             children: [
               Container(
                 width: 150,
                 height: 150,
-                decoration: BoxDecoration(
-                  color: Colors.grey[300],
+                decoration: const BoxDecoration(
+                  color: Colors.grey,
                   shape: BoxShape.circle,
                 ),
               ),
@@ -160,8 +101,17 @@ class MainBtnState extends State<MainBtn> with SingleTickerProviderStateMixin {
         ),
         const SizedBox(height: 20),
         Text(
-          connectionStatusText,
-          style: TextStyle(
+          widget.title,
+          style: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+            color: Colors.black,
+          ),
+        ),
+         const SizedBox(height: 20),
+        Text(
+         widget.connectionStatus,
+          style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w500,
             color: Colors.black,
@@ -171,3 +121,23 @@ class MainBtnState extends State<MainBtn> with SingleTickerProviderStateMixin {
     );
   }
 }
+// Remove this code
+/*
+import 'dart:async';
+import 'dart:developer';
+import 'package:flutter/material.dart';
+import 'package:vpn_client/design/colors.dart';
+import 'package:vpn_client/design/dimensions.dart';
+import 'package:vpnclient_engine_flutter/vpnclient_engine_flutter.dart';
+
+
+import 'package:flutter_v2ray/flutter_v2ray.dart';
+
+final FlutterV2ray flutterV2ray = FlutterV2ray(
+    onStatusChanged: (status) {
+        // do something
+    },
+);
+
+
+*/
