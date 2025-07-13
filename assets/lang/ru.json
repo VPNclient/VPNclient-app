@@ -1,0 +1,26 @@
+{
+    
+    "app_name": "VPN Клиент",
+    "apps_selection": "Выбор приложений",
+    "search": "Поиск",
+    "your_location": "Ваша локация",
+    "auto_select": "Автовыбор",
+    "kazakhstan": "Казахстан",
+    "turkey": "Турция",
+    "poland": "Польша",
+    "fastest": "Самый быстрый",
+    "selected_server": "Выбранный сервер",
+    "server_selection": "Выбор сервера",
+    "all_servers": "Все серверы",
+    "country_name": "Название страны",
+    "all_apps": "Все приложения",
+    "done": "Готово",
+    "cancel": "Отмена",
+    "recently_searched": "Недавно искали",
+    "nothing_found": "Ничего не найдено",
+    "connected": "ПОДКЛЮЧЕН",
+    "disconnected": "ОТКЛЮЧЕН",
+    "reconnecting": "Повторное подключение",
+    "connecting": "ПОДКЛЮЧЕНИЕ",
+    "disconnecting": "ОТКЛЮЧЕНИЕ"
+  }

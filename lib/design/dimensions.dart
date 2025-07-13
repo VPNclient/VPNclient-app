@@ -1,9 +1,3 @@
-// text
-const String connectionStatusConnected = 'ПОДКЛЮЧЕН';
-const String connectionStatusDisconnected = 'ОТКЛЮЧЕН';
-const String connectionStatusConnecting = 'ПОДКЛЮЧЕНИЕ';
-const String connectionStatusDisconnecting = 'ОТКЛЮЧЕНИЕ';
-
 // style
 const double elevation0 = 0;
 
@@ -14,3 +8,6 @@ const double fontSize15 = 15;
 const double fontSize17 = 17;
 const double fontSize24 = 24;
 const double fontSize40 = 40;
+
+const String connectionTgUrl = 't.me/vpn_client_bot';
+const String supportTgUrl = 't.me/vpn_client_support';

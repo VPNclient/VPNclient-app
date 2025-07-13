@@ -1,11 +1,9 @@
-package vpnclient.click
+package click.vpnclient
 
-//
 import android.content.Intent
 import android.net.VpnService
 import android.os.Bundle
 import io.flutter.plugin.common.MethodChannel
-//
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:vpn_client/l10n/app_localizations.dart';
 
 
 class LocationWidget extends StatelessWidget {
@@ -73,7 +74,7 @@ class LocationWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Ваша локация',
+                AppLocalizations.of(context).your_location,
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w400,

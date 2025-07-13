@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vpn_client/pages/apps/apps_list.dart';
 import 'package:vpn_client/search_dialog.dart';
+import 'package:vpn_client/l10n/app_localizations.dart';
 
 class AppsPage extends StatefulWidget {
   const AppsPage({super.key});
@@ -17,7 +18,11 @@ class AppsPageState extends State<AppsPage> {
       final updatedApps = await showDialog<List<Map<String, dynamic>>>(
         context: context,
         builder: (BuildContext context) {
-          return SearchDialog(placeholder: 'Название приложения', items: _apps, type: 1,);
+          return SearchDialog(
+            placeholder: LocalizationService.to('app_name'),
+            items: _apps,
+            type: 1,
+          );
         },
       );
 
@@ -35,7 +40,7 @@ class AppsPageState extends State<AppsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Выбор приложений'),
+        title: Text(LocalizationService.to('apps_selection')),
         centerTitle: true,
         titleTextStyle: TextStyle(
           color: Theme.of(context).colorScheme.primary,
@@ -55,7 +60,7 @@ class AppsPageState extends State<AppsPage> {
                   color: Theme.of(context).colorScheme.primary,
                 ),
                 onPressed: () => _showSearchDialog(context),
-                tooltip: 'Поиск',
+                tooltip: LocalizationService.to('search'),
               ),
             ),
           ),
