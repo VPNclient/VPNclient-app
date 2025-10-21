@@ -4,8 +4,14 @@ import 'design/images.dart';
 class NavBar extends StatefulWidget {
   final int initialIndex;
   final Function(int) onItemTapped;
+  final List<bool>? enabledPages;
 
-  const NavBar({super.key, this.initialIndex = 2, required this.onItemTapped});
+  const NavBar({
+    super.key,
+    this.initialIndex = 2,
+    required this.onItemTapped,
+    this.enabledPages,
+  });
 
   @override
   State<NavBar> createState() => NavBarState();
@@ -45,6 +51,8 @@ class NavBarState extends State<NavBar> {
 
   @override
   Widget build(BuildContext context) {
+    final enabledPages = widget.enabledPages ?? List.filled(5, true);
+
     return Container(
       alignment: Alignment.center,
       width: MediaQuery.of(context).size.width,
@@ -55,15 +63,19 @@ class NavBarState extends State<NavBar> {
       child: Row(
         children: List.generate(_inactiveIcons.length, (index) {
           bool isActive = _selectedIndex == index;
+          bool isEnabled = enabledPages[index];
           return GestureDetector(
-            onTap: () => _onItemTapped(index),
+            onTap: isEnabled ? () => _onItemTapped(index) : null,
             child: SizedBox(
               width: (MediaQuery.of(context).size.width - 60) / 5,
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 200),
                 curve: Curves.easeInOut,
                 padding: const EdgeInsets.all(8),
-                child: isActive ? _activeIcons[index] : _inactiveIcons[index],
+                child: Opacity(
+                  opacity: isEnabled ? 1.0 : 0.3,
+                  child: isActive ? _activeIcons[index] : _inactiveIcons[index],
+                ),
               ),
             ),
           );

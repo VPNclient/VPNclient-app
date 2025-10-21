@@ -21,6 +21,9 @@ dependencies:
     path: ../flutter_vpn_engine
   cupertino_icons: ^1.0.8
   url_launcher: ^6.3.1
+  flutter_dotenv: ^5.1.0
+  app_links: ^3.4.5
+  intl: ^0.20.2
 
 dev_dependencies:
   flutter_test:

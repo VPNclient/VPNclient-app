@@ -10,6 +10,11 @@ import 'package:vpn_client/pages/servers/servers_page.dart';
 import 'package:vpn_client/theme_provider.dart';
 import 'package:vpn_client/vpn_state.dart';
 import 'package:vpn_client/localization_service.dart';
+import 'package:vpn_client/services/config_service.dart';
+import 'package:vpn_client/services/onboarding_service.dart';
+import 'package:vpn_client/services/deep_link_service.dart';
+import 'package:vpn_client/services/vpn_service.dart';
+import 'package:vpn_client/pages/onboarding/onboarding_screen.dart';
 
 import 'design/colors.dart';
 import 'nav_bar.dart';
@@ -17,12 +22,32 @@ import 'nav_bar.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // Инициализация ConfigService (.env конфигурация)
+  await ConfigService.initialize();
+  ConfigService.printConfig(); // Вывод конфигурации в debug режиме
+
   Locale userLocale =
       ui.PlatformDispatcher.instance.locale; // <-- Get the system locale
   await LocalizationService.load(userLocale);
 
+  // Инициализация сервисов
+  final onboardingService = OnboardingService();
+  await onboardingService.initialize();
+
+  // Инициализация Deep Link Service (если включено)
+  if (ConfigService.enableDeepLinks) {
+    DeepLinkService().initialize(onboardingService);
+  }
+
   runApp(
-    ChangeNotifierProvider(create: (_) => ThemeProvider(), child: const App()),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        ChangeNotifierProvider.value(value: onboardingService),
+        ChangeNotifierProvider(create: (_) => VpnService()),
+      ],
+      child: const App(),
+    ),
   );
 }
 
@@ -32,7 +57,17 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
+    final onboardingService = Provider.of<OnboardingService>(context);
     final Locale? manualLocale = null;
+
+    // Определяем начальный экран
+    Widget homeScreen;
+    if (onboardingService.shouldShowOnboarding()) {
+      homeScreen = OnboardingScreen(onboardingService: onboardingService);
+    } else {
+      homeScreen = const MainScreen();
+    }
+
     return MaterialApp(
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
@@ -40,7 +75,7 @@ class App extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       debugShowCheckedModeBanner: false,
-      title: 'VPN Client',
+      title: ConfigService.appName,
       theme: lightTheme,
       darkTheme: darkTheme,
       locale: manualLocale,
@@ -61,7 +96,13 @@ class App extends StatelessWidget {
         return const Locale('en');
       },
       themeMode: themeProvider.themeMode,
-      home: const MainScreen(),
+      home: homeScreen,
+      routes: {
+        '/': (context) => const MainScreen(),
+        '/onboarding': (context) => OnboardingScreen(
+              onboardingService: onboardingService,
+            ),
+      },
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
@@ -87,22 +128,48 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 2;
   late List<Widget> _pages;
+  late List<bool> _pageEnabled;
+
   @override
   void initState() {
     super.initState();
+
+    // Конфигурируемые страницы на основе .env
+    _pageEnabled = [
+      ConfigService.showAppsPage, // Apps page
+      true, // Servers page - всегда включено
+      true, // Main page - всегда включено
+      true, // Speed page - всегда включено
+      ConfigService.showSettingsPage, // Settings page
+    ];
+
     _pages = [
-      const AppsPage(),
+      ConfigService.showAppsPage
+          ? const AppsPage()
+          : const PlaceholderPage(text: 'Apps disabled'),
       ServersPage(onNavBarTap: _handleNavBarTap),
       const MainPage(),
       const PlaceholderPage(text: 'Speed Page'),
-      SettingPage(onNavBarTap: _handleNavBarTap),
+      ConfigService.showSettingsPage
+          ? SettingPage(onNavBarTap: _handleNavBarTap)
+          : const PlaceholderPage(text: 'Settings disabled'),
     ];
+
+    // Корректируем начальный индекс если страница отключена
+    if (!_pageEnabled[_currentIndex]) {
+      _currentIndex = 2; // Возвращаемся на Main page
+    }
   }
+
   void _handleNavBarTap(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
+    // Проверяем, включена ли страница
+    if (_pageEnabled[index]) {
+      setState(() {
+        _currentIndex = index;
+      });
+    }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -110,6 +177,7 @@ class _MainScreenState extends State<MainScreen> {
       bottomNavigationBar: NavBar(
         initialIndex: _currentIndex,
         onItemTapped: _handleNavBarTap,
+        enabledPages: _pageEnabled,
       ),
     );
   }
