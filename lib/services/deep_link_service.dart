@@ -48,26 +48,29 @@ class DeepLinkService {
     }
 
     // Обработка deep links во время работы приложения
-    _subscription = _appLinks.uriLinkStream.listen((Uri? uri) {
-      if (uri != null) {
-        _handleDeepLink(uri.toString());
-      }
-    }, onError: (err) {
-      print('❌ Deep link error: $err');
-    });
+    _subscription = _appLinks.uriLinkStream.listen(
+      (Uri? uri) {
+        if (uri != null) {
+          _handleDeepLink(uri.toString());
+        }
+      },
+      onError: (err) {
+        print('❌ Deep link error: $err');
+      },
+    );
   }
 
   /// Обработка deep link
   void _handleDeepLink(String link) {
     print('📎 Received deep link: $link');
-    
+
     if (link.startsWith('vpnclient://')) {
       // Обработка deep link для завершения onboarding
       if (_onboardingService != null) {
         _onboardingService!.handleDeepLink(link);
       }
     }
-    
+
     // Можно добавить обработку других deep links здесь
     // Например: vpnclient://add-server?url=...
     // или: vpnclient://connect?server_id=...
@@ -82,4 +85,3 @@ class DeepLinkService {
     print('DeepLinkService disposed');
   }
 }
-

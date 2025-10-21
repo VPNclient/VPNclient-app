@@ -53,14 +53,14 @@ class VpnService extends ChangeNotifier {
     // Подписка на streams
     _statusSubscription = _engine.statusStream.listen((status) {
       _status = status;
-      
+
       // Управление таймером соединения
       if (status == ConnectionStatus.connected && _connectionTimer == null) {
         _startConnectionTimer();
       } else if (status != ConnectionStatus.connected) {
         _stopConnectionTimer();
       }
-      
+
       notifyListeners();
     });
 
@@ -124,8 +124,10 @@ class VpnService extends ChangeNotifier {
     String? protocol,
   }) async {
     try {
-      final actualDriverType = driverType ?? _getDriverTypeFromString(ConfigService.defaultDriverType);
-      
+      final actualDriverType =
+          driverType ??
+          _getDriverTypeFromString(ConfigService.defaultDriverType);
+
       final config = VpnEngineConfig(
         core: CoreConfig(
           type: coreType,
@@ -212,13 +214,13 @@ class VpnService extends ChangeNotifier {
 
   void _addLog(Map<String, String> log) {
     if (!ConfigService.enableLogging) return;
-    
+
     _logs.add(log);
     if (_logs.length > _maxLogs) {
       _logs.removeAt(0);
     }
     notifyListeners();
-    
+
     // Вывод в консоль для отладки
     if (ConfigService.debugMode) {
       print('[${log['level']}] ${log['message']}');
@@ -268,4 +270,3 @@ class VpnService extends ChangeNotifier {
     super.dispose();
   }
 }
-

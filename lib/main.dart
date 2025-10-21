@@ -99,9 +99,8 @@ class App extends StatelessWidget {
       home: homeScreen,
       routes: {
         '/': (context) => const MainScreen(),
-        '/onboarding': (context) => OnboardingScreen(
-              onboardingService: onboardingService,
-            ),
+        '/onboarding': (context) =>
+            OnboardingScreen(onboardingService: onboardingService),
       },
       localizationsDelegates: const [
         AppLocalizations.delegate,

@@ -48,6 +48,7 @@ flutter:
     - assets/lang/zh.json
     - assets/lang/ru.json
     - assets/lang/th.json
+    - .env
 
 flutter_gen:
   output: lib/gen/  # ✅ Define где генерировать файлы
