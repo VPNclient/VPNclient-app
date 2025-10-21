@@ -17,10 +17,8 @@ dependencies:
   shared_preferences: ^2.5.3
   flutter_native_splash: ^2.4.6
   flutter_bloc: ^9.0.0
-  vpnclient_engine_flutter:
-    git:
-      url: https://github.com/VPNclient/VPNclient-engine-flutter.git
-      ref: c3bf79010c05a2474a24f763d428a61788a13e9b
+  vpnclient_engine:
+    path: ../flutter_vpn_engine
   cupertino_icons: ^1.0.8
   url_launcher: ^6.3.1
 

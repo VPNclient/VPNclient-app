@@ -5,7 +5,7 @@ import 'package:flutter_v2ray/flutter_v2ray.dart';
 import 'package:vpn_client/localization_service.dart';
 import 'package:vpn_client/vpn_state.dart';
 import 'package:vpn_client/l10n/app_localizations.dart';
-import 'package:vpnclient_engine_flutter/vpnclient_engine_flutter.dart';
+import 'package:vpnclient_engine/vpnclient_engine.dart';
 
 final FlutterV2ray flutterV2ray = FlutterV2ray(
   onStatusChanged: (status) {
@@ -167,10 +167,9 @@ class MainBtnState extends State<MainBtn> with SingleTickerProviderStateMixin {
           style: TextStyle(
             fontSize: 40,
             fontWeight: FontWeight.w600,
-            color:
-                _vpnState == VpnConnectionState.connected
-                    ? Theme.of(context).colorScheme.primary
-                    : Theme.of(context).colorScheme.secondary,
+            color: _vpnState == VpnConnectionState.connected
+                ? Theme.of(context).colorScheme.primary
+                : Theme.of(context).colorScheme.secondary,
           ),
         ),
         const SizedBox(height: 70),
@@ -183,10 +182,9 @@ class MainBtnState extends State<MainBtn> with SingleTickerProviderStateMixin {
                 width: 150,
                 height: 150,
                 decoration: BoxDecoration(
-                  color:
-                      Theme.of(context)
-                          .colorScheme
-                          .surfaceContainerHighest, // Usar cor do tema conforme sugestão do linter
+                  color: Theme.of(context)
+                      .colorScheme
+                      .surfaceContainerHighest, // Usar cor do tema conforme sugestão do linter
                   shape: BoxShape.circle,
                 ),
               ),

@@ -1,0 +1,289 @@
+# ข้อตกลงสิทธิการใช้งาน NativeMindNONC (ประเทศไทย)
+
+### 1. ข้อกำหนดทั่วไป
+
+ข้อตกลงนี้อยู่ภายใต้บังคับของพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 และแก้ไขเพิ่มเติม รวมถึงประมวลกฎหมายแพ่งและพาณิชย์แห่งราชอาณาจักรไทย
+
+ผู้ถือลิขสิทธิ์: บริษัทผู้พัฒนาซอฟต์แวร์
+
+เครื่องหมายการค้าของผลิตภัณฑ์ได้รับการจดทะเบียนและถือครองโดยผู้ถือลิขสิทธิ์
+
+ลิขสิทธิ์ © 2010-2025 ผู้ถือลิขสิทธิ์ สงวนลิขสิทธิ์
+
+### 2. เงื่อนไขการใช้งาน
+
+การใช้งานโปรแกรมซอฟต์แวร์ ("ผลิตภัณฑ์") ถือว่าท่านยอมรับข้อกำหนดและเงื่อนไขตามข้อตกลงฉบับนี้ หากท่านไม่ยอมรับ โปรดหยุดใช้งานผลิตภัณฑ์โดยทันที
+
+#### 2.1. การเผยแพร่ซอร์สโค้ด
+
+เมื่อท่านใช้งานซอร์สโค้ดของผลิตภัณฑ์ ท่านมีหน้าที่:
+
+- เผยแพร่ซอร์สโค้ดของท่านผ่าน GitHub โดยทำเป็น Fork ของ Repository อย่างเป็นทางการ
+- ปรับปรุงให้เป็นปัจจุบันอยู่เสมอเพื่อสะท้อนการเปลี่ยนแปลงจากต้นฉบับ
+- ระบุให้ชัดเจนว่าซอร์สโค้ดของท่านเป็น Fork ของ Repository ดั้งเดิม
+
+#### 2.2. การเผยแพร่อัตโนมัติ
+
+การเผยแพร่ทุกครั้งต้องดำเนินการผ่าน GitHub Actions เท่านั้น
+
+#### 2.3. การให้เครดิต (Attribution)
+
+เมื่อเผยแพร่ผลิตภัณฑ์ที่ดัดแปลงจากผลิตภัณฑ์ต้นฉบับ ท่านต้อง:
+
+- ระบุเครดิตของผู้ถือลิขสิทธิ์พร้อมลิงก์ไปที่ Repository ดั้งเดิม
+- แสดงลิงก์ไปยังข้อตกลงสิทธิ์ดั้งเดิม
+- บันทึกการเปลี่ยนแปลงใน README ของ Repository ของท่าน
+
+#### 2.4. ห้ามการใส่มัลแวร์
+
+ห้ามอย่างเด็ดขาดที่จะเพิ่มมัลแวร์หรือรหัสอันตรายใด ๆ ลงในผลิตภัณฑ์
+
+#### 2.5. ข้อจำกัดการใช้ชื่อและอินเทอร์เฟซ
+
+ห้ามเผยแพร่แอปพลิเคชันในร้านค้าแอปใดๆ เช่น Google Play, App Store, F-Droid, Microsoft Store, Huawei AppGallery หรือแพลตฟอร์มอื่นใดด้วยชื่อหรือหน้าตาที่คล้ายกับผลิตภัณฑ์ต้นฉบับจนอาจทำให้เกิดความเข้าใจผิด
+
+#### 2.6. การใช้งานเชิงพาณิชย์
+
+**ฟรีสำหรับการใช้งานที่ไม่ใช่เชิงพาณิชย์**: ผลิตภัณฑ์นี้ฟรีสำหรับการใช้งานที่ไม่ใช่เชิงพาณิชย์ รวมถึง:
+- สถาบันการศึกษา (โรงเรียน มหาวิทยาลัย วิทยาลัย)
+- วัตถุประสงค์ทางการศึกษาและการฝึกอบรม
+- การวิจัยและพัฒนาสำหรับโครงการที่ไม่ใช่เชิงพาณิชย์
+- การเรียนรู้และการพัฒนาส่วนบุคคล
+
+**การใช้งานเชิงพาณิชย์ต้องมีใบอนุญาต**: การใช้งานเชิงพาณิชย์ของผลิตภัณฑ์นี้ต้องได้รับอนุญาตเป็นลายลักษณ์อักษรจากผู้ถือลิขสิทธิ์ก่อนดำเนินการเชิงพาณิชย์ใดๆ รวมถึง:
+- การขายหรือจำหน่ายเพื่อหากำไร
+- การใช้งานในผลิตภัณฑ์หรือบริการเชิงพาณิชย์
+- แอปพลิเคชันทางธุรกิจ
+- กิจกรรมใดๆ ที่สร้างรายได้
+
+#### 2.7. สิทธิของนักพัฒนาและโครงสร้างบริษัท
+
+สิทธิทั้งหมดเป็นของนักพัฒนาที่เฉพาะเจาะจงซึ่งเป็นส่วนหนึ่งของบริษัทที่พัฒนาซอฟต์แวร์นี้ นักพัฒนาอาจ:
+- นำเสนอโค้ดและผลงานในงานแสดงสินค้าและงานประชุม
+- แสดงความสำเร็จทางเทคนิคของตนต่อสาธารณะ
+- ใช้ผลงานของตนเพื่อพอร์ตโฟลิโอทางวิชาชีพและการพัฒนาอาชีพ
+
+อย่างไรก็ตาม นักพัฒนาไม่สามารถ:
+- ใช้โค้ดหรือผลงานเพื่อวัตถุประสงค์เชิงพาณิชย์ส่วนตัว
+- อนุญาตให้ใช้ซอฟต์แวร์อย่างอิสระนอกเหนือจากโครงสร้างบริษัท
+- โอนสิทธิเชิงพาณิชย์โดยไม่ได้รับอนุญาตจากบริษัท
+
+การอนุญาตเชิงพาณิชย์ทั้งหมดต้องดำเนินการผ่านบริษัทที่จ้างนักพัฒนาเหล่านี้
+
+#### 2.8. การเผยแพร่ภายใต้เงื่อนไขเดียวกัน (ShareAlike)
+
+ผลงานที่สร้างจากผลิตภัณฑ์นี้ต้องถูกเผยแพร่ภายใต้ข้อตกลงสิทธิ์เดียวกันและในรูปแบบ Open Source ผ่านการ Fork จาก Repository ดั้งเดิม
+
+### 3. การใช้งานส่วนประกอบ Open Source
+
+ผลิตภัณฑ์ประกอบด้วยส่วนประกอบ Open Source ที่ได้รับอนุญาตตามเงื่อนไขอื่นๆ การใช้งานผลิตภัณฑ์หมายถึงท่านยอมรับเงื่อนไขของแต่ละส่วนประกอบด้วย รายละเอียดระบุไว้ในไฟล์ LICENSE.md ที่แนบมาพร้อมผลิตภัณฑ์
+
+### 4. การปฏิเสธความรับผิด
+
+ผลิตภัณฑ์นี้ให้บริการ "ตามสภาพ" โดยไม่มีการรับประกันใดๆ ทั้งสิ้น ไม่ว่าจะแจ้งชัดหรือโดยนัย รวมถึงการรับประกันด้านความเหมาะสมกับวัตถุประสงค์เฉพาะใดๆ และผู้ถือลิขสิทธิ์จะไม่รับผิดชอบต่อความเสียหายใดๆ อันเกิดจากการใช้งานผลิตภัณฑ์นี้
+
+### 5. การละเมิดข้อตกลง
+
+ในกรณีที่มีการละเมิดข้อตกลงนี้ ผู้ถือลิขสิทธิ์มีสิทธิ์ขอให้หยุดเผยแพร่ผลิตภัณฑ์ และอาจดำเนินการทางกฎหมายหรือแจ้งไปยังร้านค้าแอปพลิเคชันเพื่อให้มีการลบหรือระงับการเผยแพร่ผลิตภัณฑ์ที่ละเมิด
+
+ข้อพิพาทใดๆ จะต้องได้รับการตัดสินตามกฎหมายแห่งราชอาณาจักรไทย
+
+---
+
+การใช้งานผลิตภัณฑ์หมายถึงท่านได้อ่าน เข้าใจ และยอมรับข้อกำหนดและเงื่อนไขทั้งหมดตามข้อตกลงนี้แล้ว
+
+---
+
+## Лицензионное соглашение (Российская Федерация)
+
+### 1. Общие положения
+
+Настоящая лицензия регулируется нормами Гражданского кодекса Российской Федерации (часть IV, статьи 1225-1301) и иных применимых законодательных актов РФ.
+
+Правообладатель: Компания-разработчик программного обеспечения
+
+Товарный знак продукта зарегистрирован и принадлежит правообладателю.
+
+© 2010-2025 Правообладатель. Все права защищены.
+
+### 2. Условия использования
+
+Используя программный продукт ("Продукт"), вы подтверждаете согласие с условиями настоящей лицензии. В случае несогласия вы обязаны немедленно прекратить использование и распространение Продукта.
+
+#### 2.1. Доступность исходного кода
+
+При использовании исходного кода Продукта вы обязаны:
+
+- Опубликовать производный код исключительно в виде публичного репозитория на платформе GitHub в виде форка официального репозитория
+- Своевременно обновлять свой репозиторий, отражая изменения в официальных релизах
+- Указывать в репозитории, что он является форком официального репозитория
+
+#### 2.2. Автоматизация релизов
+
+Все релизы Продукта должны осуществляться исключительно через GitHub Actions.
+
+#### 2.3. Обязательная атрибуция
+
+При распространении производного Продукта вы обязаны:
+
+- Указывать автора и давать соответствующую ссылку на официальный репозиторий
+- Размещать ссылку на оригинальную лицензию
+- Документировать изменения, сделанные вами в README вашего репозитория
+
+#### 2.4. Запрет вредоносного ПО
+
+Категорически запрещается встраивать любое вредоносное программное обеспечение (вирусы, трояны и т.п.).
+
+#### 2.5. Ограничения на использование имени и интерфейса
+
+Запрещается публикация производных продуктов под названием или с пользовательским интерфейсом, сходным до степени смешения с оригинальным продуктом, на любых площадках распространения программного обеспечения (например, Google Play, App Store, RuStore, NashStore, AppGallery, VK Play и других площадках).
+
+#### 2.6. Некоммерческое использование
+
+**Бесплатно для некоммерческого использования**: Данный продукт бесплатен для некоммерческого использования, включая:
+- Образовательные учреждения (школы, университеты, колледжи)
+- Образовательные и обучающие цели
+- Исследования и разработки для некоммерческих проектов
+- Личное обучение и развитие
+
+**Коммерческое использование требует лицензии**: Использование Продукта в коммерческих целях (продажа, реклама, иные коммерческие операции) допускается исключительно после письменного согласия правообладателя.
+
+#### 2.7. Права разработчиков и структура компании
+
+Все права принадлежат конкретным разработчикам, которые входят в состав компании, разрабатывающей данное программное обеспечение. Разработчики могут:
+- Представлять код и результаты работы на выставках и конференциях
+- Демонстрировать свои технические достижения публично
+- Использовать свою работу для профессионального портфолио и развития карьеры
+
+Однако разработчики не могут:
+- Использовать код или результаты работы для личных коммерческих целей
+- Лицензировать программное обеспечение независимо вне структуры компании
+- Передавать коммерческие права без разрешения компании
+
+Все коммерческое лицензирование должно проводиться через компанию, которая нанимает этих разработчиков.
+
+#### 2.8. Условие аналогичного распространения (ShareAlike)
+
+Любое изменение, адаптация или создание производных работ на основе Продукта должно распространяться исключительно на условиях настоящей лицензии и с открытым исходным кодом через форк официального репозитория.
+
+### 3. Использование компонентов с открытым исходным кодом
+
+Продукт содержит компоненты с открытым исходным кодом, лицензируемые отдельно. Пользуясь Продуктом, вы принимаете условия лицензий каждого компонента. Подробности указаны в файле LICENSE.md, входящем в комплект поставки.
+
+### 4. Ответственность сторон
+
+Продукт предоставляется «как есть», без каких-либо гарантий, явных или подразумеваемых, в том числе гарантий пригодности для определённых целей и отсутствия нарушений прав третьих лиц. Правообладатель не несёт ответственности за убытки, возникающие вследствие использования или невозможности использования Продукта.
+
+### 5. Нарушение условий лицензии
+
+При нарушении условий настоящей лицензии правообладатель вправе требовать прекращения распространения Продукта, а также обратиться в суд или обратиться с жалобой в соответствующие площадки распространения программного обеспечения для удаления или ограничения доступа к нарушающим продуктам.
+
+Споры разрешаются в порядке, установленном законодательством Российской Федерации.
+
+---
+
+Используя Продукт, вы подтверждаете, что прочитали, поняли и полностью принимаете условия настоящей лицензии.
+
+---
+
+## License Agreement (English)
+
+### 1. General Provisions
+
+This agreement is governed by copyright laws and intellectual property regulations of the jurisdiction where the software is used.
+
+Copyright Holder: Software Development Company
+
+The product trademark is registered and owned by the copyright holder.
+
+Copyright © 2010-2025 Copyright Holder. All rights reserved.
+
+### 2. Usage Terms
+
+By using the software product ("Product"), you agree to accept the terms and conditions of this agreement. If you do not agree, please stop using the product immediately.
+
+#### 2.1. Source Code Publication
+
+When using the source code of the Product, you are obligated to:
+
+- Publish your source code through GitHub by creating a Fork of the official Repository
+- Keep it updated to reflect changes from the original
+- Clearly indicate that your source code is a Fork of the original Repository
+
+#### 2.2. Automatic Publication
+
+All publications must be conducted through GitHub Actions only.
+
+#### 2.3. Attribution
+
+When publishing products derived from the original Product, you must:
+
+- Credit the copyright holder with a link to the original Repository
+- Display a link to the original license agreement
+- Record changes in the README of your Repository
+
+#### 2.4. Malware Prohibition
+
+It is strictly prohibited to add malware or any dangerous code to the product.
+
+#### 2.5. Name and Interface Usage Restrictions
+
+It is prohibited to publish applications in any app store (Google Play, App Store, F-Droid, Microsoft Store, Huawei AppGallery, or other platforms) with names or interfaces similar to the original product that may cause confusion.
+
+#### 2.6. Commercial Use
+
+**Free for Non-Commercial Use**: This product is free for non-commercial use including:
+- Educational institutions (schools, universities, colleges)
+- Educational and training purposes
+- Research and development for non-commercial projects
+- Personal learning and development
+
+**Commercial Use Requires License**: Commercial use of this product requires a written license agreement from the copyright holder before any commercial activities including:
+- Selling or distributing for profit
+- Using in commercial products or services
+- Business applications
+- Any revenue-generating activities
+
+#### 2.7. Developer Rights and Company Structure
+
+All rights belong to specific developers who are part of the company that develops this software. Developers may:
+- Present code and work results at exhibitions and conferences
+- Showcase their technical achievements publicly
+- Use their work for professional portfolio and career development
+
+However, developers cannot:
+- Use the code or work results for personal commercial purposes
+- License the software independently outside the company structure
+- Transfer commercial rights without company authorization
+
+All commercial licensing must be conducted through the company that employs these developers.
+
+#### 2.8. License Standardization
+
+This license may become a standard and other companies may copy the license text for their own use, similar to MIT, Apache, or GPL licenses.
+
+#### 2.9. ShareAlike Requirement
+
+Any work created from this product must be published under the same license terms and in open source format through a Fork from the original Repository.
+
+### 3. Open Source Components
+
+The Product includes Open Source components licensed under different terms. Using the Product means you accept the terms of each component as well. Details are specified in the LICENSE.md file included with the product.
+
+### 4. Disclaimer
+
+This product is provided "as is" without any warranties, whether express or implied, including warranties of merchantability, fitness for a particular purpose, and non-infringement. The copyright holder shall not be liable for any damages arising from the use of this product.
+
+### 5. License Violations
+
+In case of violation of this agreement, the copyright holder has the right to request cessation of product distribution and may take legal action or notify app stores to remove or suspend distribution of violating products.
+
+Any disputes shall be resolved according to the laws of the jurisdiction where the copyright holder is incorporated.
+
+---
+
+Using the Product means you have read, understood, and accepted all terms and conditions of this agreement.
+
+---
+
+# NativeMindNONC License Agreement
