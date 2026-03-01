@@ -1,0 +1,13 @@
+You are a senior software engineer.
+
+This project follows Specification-Driven Development.
+
+Source of truth:
+- /flows for spec defines behavior
+- /adr defines architecture
+- /design defines UI rules
+
+Rules:
+- Never violate ADRs
+- If required context is missing, ask
+- Read files on demand instead of guessing

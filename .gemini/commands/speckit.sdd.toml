@@ -1,0 +1,87 @@
+description = "Synchronize architectural specs (speckit) with implementation flows (sdd)."
+
+prompt = """
+---
+description: Synchronize architectural specs (speckit) with implementation flows (sdd).
+---
+
+# Spec-Driven Development Sync (Speckit <-> SDD)
+
+You are facilitating the synchronization between the High-Level Architecture (managed by `speckit` in the Meta-Project) and Low-Level Implementation (managed by `sdd` in Sub-Projects).
+
+## Context
+- **Meta-Project:** Contains `specs/` defining "WHAT" and "WHY".
+- **Sub-Projects:** Defined in `GEMINI.md`. Contain `flows/sdd-*/` defining "HOW".
+
+## Command: {{args}}
+
+### Mode 1: Auto-Sync (No Arguments)
+If `{{args}}` is empty, perform a full project synchronization scan:
+
+1.  **Discovery:**
+    - Read `GEMINI.md` to identify valid **Sub-Project Paths**.
+    - List all specification files in `specs/` (Meta-Project).
+    - For each Sub-Project, list all directories in `flows/` (Sub-Project).
+
+2.  **Analysis & Execution Loop:**
+    Iterate through every Feature/Spec found:
+
+    **A. New Features (Create):**
+    - **Condition:** A spec exists in `specs/` (e.g., `005-auth.md`) but no corresponding `flows/sdd-auth` exists in any sub-project.
+    - **Action:**
+        1.  Ask User: "Found new spec 'auth'. Which sub-project should this go to? (or skip)"
+        2.  **If approved:** Run **Push** logic to initialize the flow.
+
+    **B. Updates (Push):**
+    - **Condition:** Spec exists AND Sub-Project flow exists.
+    - **Action:**
+        1.  Read the Meta-Project Spec and the Sub-Project `01-requirements.md`.
+        2.  If the Meta-Spec has content not present in the Sub-Project (updated requirements):
+            - **Perform Update Automatically:** Overwrite/Update `01-requirements.md` in the sub-project with the new spec content.
+            - Notify User: "Synced updates for [feature] to [sub-project]."
+
+    **C. Findings (Pull):**
+    - **Condition:** Sub-Project flow exists.
+    - **Action:**
+        1.  Read Sub-Project `04-implementation-log.md` and `_status.md`.
+        2.  Look for explicit "Blockers", "Constraints Discovered", or "Design Changes" sections.
+        3.  **If significant new info found:**
+            - Ask User: "Sub-project [name] has new implementation findings for [feature]. Pull to main spec? (y/n)"
+            - **If approved:** Run **Pull** logic.
+
+---
+
+### Mode 2: Manual Direction
+If `{{args}}` contains arguments, parse as: `[direction] [feature_name] [subproject_path]`
+
+#### 1. Push (Meta -> Sub)
+**Goal:** Transfer architectural requirements to implementation context.
+**Command:** `/speckit.sdd push <feature> <subproject_path>`
+
+**Steps:**
+1.  **Read Source:** Read `specs/*-<feature>.md` (or similar).
+2.  **Read Target:** Check if `flows/sdd-<feature>/` exists in `<subproject_path>`.
+3.  **Action:**
+    - If new: Initialize `flows/sdd-<feature>/01-requirements.md` in the sub-project using content from the Spec.
+    - If existing: Update `flows/sdd-<feature>/01-requirements.md` with latest Spec content.
+    - Convert "System Requirements" from Spec to "User Stories" format if needed.
+
+#### 2. Pull (Sub -> Meta)
+**Goal:** Update architecture with implementation realities.
+**Command:** `/speckit.sdd pull <feature> <subproject_path>`
+
+**Steps:**
+1.  **Read Source:** Read `flows/sdd-<feature>/04-implementation-log.md` and `02-specifications.md` in `<subproject_path>`.
+2.  **Read Target:** Read `specs/*-<feature>.md`.
+3.  **Action:**
+    - Append/Update a "Implementation Notes" or "Technical Constraints" section in the Meta-Spec.
+    - **Do not** overwrite business goals.
+
+#### 3. Status
+**Goal:** Check alignment.
+**Command:** `/speckit.sdd status <feature>`
+
+**Steps:**
+1.  Compare the Spec in Meta-Project vs the SDD flow in Sub-Projects.
+2.  Report sync status.
+"""
