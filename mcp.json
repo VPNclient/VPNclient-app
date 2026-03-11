@@ -1,0 +1,9 @@
+{
+  "figma-mcp": {
+    "command": "npx",
+    "args": ["figma-mcp"],
+    "env": {
+      "FIGMA_API_KEY": "${FIGMA_API_KEY}"
+    }
+  }
+}

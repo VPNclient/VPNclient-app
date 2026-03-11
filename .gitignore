@@ -49,3 +49,6 @@ ios/Podfile.lock
 
 # FVM Version Cache
 .fvm/
+
+# Environment variables (contains secrets)
+.env
