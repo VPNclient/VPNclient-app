@@ -1,229 +1,125 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:vpn_client/design/colors.dart';
-import 'package:flutter_v2ray/flutter_v2ray.dart';
-import 'package:vpn_client/localization_service.dart';
+import 'package:vpn_client/design/app_colors.dart';
+import 'package:vpn_client/design/app_spacing.dart';
 import 'package:vpn_client/vpn_state.dart';
-import 'package:vpn_client/l10n/app_localizations.dart';
 import 'package:vpnclient_engine/vpnclient_engine.dart';
 
-final FlutterV2ray flutterV2ray = FlutterV2ray(
-  onStatusChanged: (status) {
-    // Handle status changes if needed
-  },
-);
-
-enum VpnConnectionState { connected, disconnected, connecting, disconnecting }
-
+/// Connect button — 150x150 circle with the brand cyan→blue gradient.
+/// States:
+///   • disconnected → muted neutral fill, gradient hidden
+///   • connecting   → pulsing scale animation on the gradient layer
+///   • connected    → full gradient, slow breathing pulse
+///   • disconnecting → reverse pulse
 class MainBtn extends StatefulWidget {
   const MainBtn({super.key});
 
   @override
-  State<MainBtn> createState() => MainBtnState();
+  State<MainBtn> createState() => _MainBtnState();
 }
 
-class MainBtnState extends State<MainBtn> with SingleTickerProviderStateMixin {
-  ///static const platform = MethodChannel('vpnclient_engine2');
-  ///
-  late VpnConnectionState _vpnState;
-  late String connectionStatusDisconnected;
-  late String connectionStatusDisconnecting;
-  late String connectionStatusConnected;
-  late String connectionStatusConnecting;
-  bool _initialized = false;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    // Initialize localized strings once
-    connectionStatusDisconnected = AppLocalizations.of(context)!.disconnected;
-    connectionStatusConnected = AppLocalizations.of(context)!.connected;
-    connectionStatusDisconnecting = AppLocalizations.of(context)!.disconnecting;
-    connectionStatusConnecting = AppLocalizations.of(context)!.connecting;
-    if (!_initialized) {
-      _vpnState = VpnConnectionState.disconnected;
-      _initialized = true;
-    }
-  }
-
-  String connectionTime = "00:00:00";
-  Timer? _timer;
-  late AnimationController _animationController;
-  late Animation<double> _sizeAnimation;
+class _MainBtnState extends State<MainBtn> with SingleTickerProviderStateMixin {
+  late final AnimationController _ctrl;
+  late final Animation<double> _scale;
 
   @override
   void initState() {
     super.initState();
-    _animationController = AnimationController(
+    _ctrl = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 1),
+      duration: const Duration(milliseconds: 1200),
     );
-    _sizeAnimation = Tween<double>(begin: 0, end: 150).animate(
-      CurvedAnimation(parent: _animationController, curve: Curves.ease),
+    _scale = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _ctrl, curve: Curves.easeInOut),
     );
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final vpnState = Provider.of<VpnState>(context, listen: false);
-      if (vpnState.connectionStatus == ConnectionStatus.connected) {
-        _animationController.forward();
-      }
-    });
   }
 
   @override
   void dispose() {
-    _animationController.dispose();
+    _ctrl.dispose();
     super.dispose();
   }
 
-  String connectionStatusText(BuildContext context) {
-    final vpnState = Provider.of<VpnState>(context, listen: false);
-
-    return {
-      ConnectionStatus.connected: LocalizationService.to('connected'),
-      ConnectionStatus.disconnected: LocalizationService.to('disconnected'),
-      ConnectionStatus.reconnecting: LocalizationService.to('reconnecting'),
-      ConnectionStatus.disconnecting: LocalizationService.to('disconnecting'),
-      ConnectionStatus.connecting: LocalizationService.to('connecting'),
-    }[vpnState.connectionStatus]!;
-  }
-
-  void startTimer() {
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      final now = DateTime.now();
-      final duration = now.difference(_timer!.start);
-      setState(() {
-        connectionTime = duration.toString().substring(2, 7);
-      });
-    });
-  }
-
-  void stopTimer() {
-    _timer?.cancel();
-    setState(() {
-      connectionTime = "00:00:00";
-      _vpnState = VpnConnectionState.disconnected;
-    });
-  }
-
-  String get currentStatusText {
-    switch (_vpnState) {
-      case VpnConnectionState.connected:
-        return connectionStatusConnected;
-      case VpnConnectionState.disconnected:
-        return connectionStatusDisconnected;
-      case VpnConnectionState.connecting:
-        return connectionStatusConnecting;
-      case VpnConnectionState.disconnecting:
-        return connectionStatusDisconnecting;
+  void _sync(ConnectionStatus s) {
+    switch (s) {
+      case ConnectionStatus.connected:
+        if (!_ctrl.isAnimating) _ctrl.forward();
+        break;
+      case ConnectionStatus.connecting:
+      case ConnectionStatus.disconnecting:
+      case ConnectionStatus.reconnecting:
+        _ctrl.repeat(reverse: true);
+        break;
+      case ConnectionStatus.disconnected:
+        _ctrl.reverse();
+        break;
     }
   }
 
-  Future<void> _toggleConnection(BuildContext context) async {
-    final vpnState = Provider.of<VpnState>(context, listen: false);
-
-    switch (vpnState.connectionStatus) {
-      case ConnectionStatus.disconnected:
-        vpnState.setConnectionStatus(ConnectionStatus.connecting);
-        _animationController.repeat(reverse: true);
-        String link =
-            "vless://c61daf3e-83ff-424f-a4ff-5bfcb46f0b30@5.35.98.91:8443?encryption=none&flow=&security=reality&sni=yandex.ru&fp=chrome&pbk=rLCmXWNVoRBiknloDUsbNS5ONjiI70v-BWQpWq0HCQ0&sid=108108108108#%F0%9F%87%B7%F0%9F%87%BA+%F0%9F%99%8F+Russia+%231";
-        V2RayURL parser = FlutterV2ray.parseFromURL(link);
-
-        if (await flutterV2ray.requestPermission()) {
-          await flutterV2ray.startV2Ray(
-            remark: parser.remark,
-            config: parser.getFullConfiguration(),
-            blockedApps: null,
-            bypassSubnets: null,
-            proxyOnly: false,
-          );
-        }
-
-        vpnState.startTimer();
-        vpnState.setConnectionStatus(ConnectionStatus.connected);
-        await _animationController.forward();
-        _animationController.stop();
-      case ConnectionStatus.connected:
-        vpnState.setConnectionStatus(ConnectionStatus.disconnecting);
-        _animationController.repeat(reverse: true);
-        await flutterV2ray.stopV2Ray();
-        vpnState.stopTimer();
-        vpnState.setConnectionStatus(ConnectionStatus.disconnected);
-        await _animationController.reverse();
-        _animationController.stop();
-      default:
+  Future<void> _toggle() async {
+    final vpn = context.read<VpnState>();
+    if (vpn.connectionStatus == ConnectionStatus.connected) {
+      vpn.setConnectionStatus(ConnectionStatus.disconnecting);
+      await Future.delayed(const Duration(milliseconds: 700));
+      vpn.stopTimer();
+      vpn.setConnectionStatus(ConnectionStatus.disconnected);
+    } else if (vpn.connectionStatus == ConnectionStatus.disconnected) {
+      vpn.setConnectionStatus(ConnectionStatus.connecting);
+      await Future.delayed(const Duration(milliseconds: 1200));
+      vpn.startTimer();
+      vpn.setConnectionStatus(ConnectionStatus.connected);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final vpnState = Provider.of<VpnState>(context);
+    final vpn = context.watch<VpnState>();
+    _sync(vpn.connectionStatus);
+    final theme = Theme.of(context);
 
-    return Column(
-      children: [
-        Text(
-          vpnState.connectionTimeText,
-          style: TextStyle(
-            fontSize: 40,
-            fontWeight: FontWeight.w600,
-            color: _vpnState == VpnConnectionState.connected
-                ? Theme.of(context).colorScheme.primary
-                : Theme.of(context).colorScheme.secondary,
-          ),
-        ),
-        const SizedBox(height: 70),
-        GestureDetector(
-          onTap: () => _toggleConnection(context),
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              Container(
-                width: 150,
-                height: 150,
-                decoration: BoxDecoration(
-                  color: Theme.of(context)
-                      .colorScheme
-                      .surfaceContainerHighest, // Usar cor do tema conforme sugestão do linter
-                  shape: BoxShape.circle,
+    return GestureDetector(
+      onTap: _toggle,
+      child: SizedBox(
+        width: AppSpacing.connectBtn,
+        height: AppSpacing.connectBtn,
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            // Idle plate — visible when disconnected.
+            Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: theme.colorScheme.surfaceContainerHighest,
+              ),
+            ),
+            // Gradient layer — animates in on connect.
+            AnimatedBuilder(
+              animation: _scale,
+              builder: (_, __) => Transform.scale(
+                scale: _scale.value,
+                child: Container(
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: AppColors.brandGradient,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Color(0x4D005BEA),
+                        blurRadius: 32,
+                        spreadRadius: 4,
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              AnimatedBuilder(
-                animation: _sizeAnimation,
-                builder: (context, child) {
-                  return Container(
-                    width: _sizeAnimation.value,
-                    height: _sizeAnimation.value,
-                    decoration: BoxDecoration(
-                      gradient: mainGradient,
-                      shape: BoxShape.circle,
-                    ),
-                  );
-                },
-              ),
-              Container(
-                alignment: Alignment.center,
-                width: 150,
-                height: 150,
-                child: const Icon(
-                  Icons.power_settings_new_rounded,
-                  color: Colors.white,
-                  size: 70,
-                ),
-              ),
-            ],
-          ),
+            ),
+            const Icon(
+              Icons.power_settings_new_rounded,
+              color: Colors.white,
+              size: 64,
+            ),
+          ],
         ),
-        const SizedBox(height: 20),
-        Text(
-          connectionStatusText(context),
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
-            color: Theme.of(context).textTheme.bodyLarge?.color,
-          ),
-        ),
-      ],
+      ),
     );
   }
 }
