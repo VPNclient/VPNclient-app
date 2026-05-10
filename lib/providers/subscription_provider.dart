@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/server.dart';
+import '../models/subscription.dart';
 
 /// Holds subscriptions + currently-selected server. Demo seeds two
 /// subscriptions; replace [importFromUrl] body with the real fetch + parse

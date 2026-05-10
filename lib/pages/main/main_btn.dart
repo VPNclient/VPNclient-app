@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:vpn_client/design/app_colors.dart';
 import 'package:vpn_client/design/app_spacing.dart';
 import 'package:vpn_client/vpn_state.dart';
-import 'package:vpnclient_engine/vpnclient_engine.dart';
 
 /// Connect button — 150x150 circle with the brand cyan→blue gradient.
 /// States:

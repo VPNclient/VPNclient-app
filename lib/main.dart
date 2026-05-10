@@ -8,6 +8,8 @@ import 'package:vpn_client/pages/main/main_page.dart';
 import 'package:vpn_client/pages/servers/servers_page.dart';
 import 'package:vpn_client/pages/settings/settings_page.dart';
 import 'package:vpn_client/providers/locale_provider.dart';
+import 'package:vpn_client/providers/split_tunnel_provider.dart';
+import 'package:vpn_client/providers/subscription_provider.dart';
 import 'package:vpn_client/services/config_service.dart';
 import 'package:vpn_client/services/onboarding_service.dart';
 import 'package:vpn_client/services/vpn_service.dart';
@@ -29,6 +31,8 @@ Future<void> main() async {
         ChangeNotifierProvider.value(value: onboardingService),
         ChangeNotifierProvider(create: (_) => VpnService()),
         ChangeNotifierProvider(create: (_) => VpnState()),
+        ChangeNotifierProvider(create: (_) => SubscriptionProvider()),
+        ChangeNotifierProvider(create: (_) => SplitTunnelProvider()),
       ],
       child: const App(),
     ),

@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-// import 'package:flutter_v2ray/flutter_v2ray.dart';
 
 enum ConnectionStatus {
   disconnected,
@@ -10,22 +9,57 @@ enum ConnectionStatus {
   connecting,
 }
 
+/// UI-facing VPN phase (main screen labels / connect control).
+enum VpnStatus {
+  disconnected,
+  connecting,
+  connected,
+  disconnecting,
+}
+
 class VpnState with ChangeNotifier {
   ConnectionStatus _connectionStatus = ConnectionStatus.disconnected;
   Timer? _timer;
   String _connectionTimeText = "00:00:00";
 
+  String? selectedServerName;
+  String? selectedFlagCode;
+
   ConnectionStatus get connectionStatus => _connectionStatus;
   String get connectionTimeText => _connectionTimeText;
 
-  VpnState() {
-    // Initializing V2Ray when creating a provider
-    // FlutterV2ray(onStatusChanged: (status) {}).initializeV2Ray();
-  }
+  VpnStatus get status => switch (_connectionStatus) {
+        ConnectionStatus.disconnected => VpnStatus.disconnected,
+        ConnectionStatus.connected => VpnStatus.connected,
+        ConnectionStatus.connecting => VpnStatus.connecting,
+        ConnectionStatus.disconnecting => VpnStatus.disconnecting,
+        ConnectionStatus.reconnecting => VpnStatus.connecting,
+      };
+
+  bool get isConnected => _connectionStatus == ConnectionStatus.connected;
+
+  VpnState();
 
   void setConnectionStatus(ConnectionStatus status) {
     _connectionStatus = status;
     notifyListeners();
+  }
+
+  /// Toggles VPN for the main screen (demo timing; replace with real engine).
+  Future<void> toggle() async {
+    if (_connectionStatus == ConnectionStatus.connected ||
+        _connectionStatus == ConnectionStatus.connecting ||
+        _connectionStatus == ConnectionStatus.reconnecting) {
+      setConnectionStatus(ConnectionStatus.disconnecting);
+      await Future.delayed(const Duration(milliseconds: 700));
+      stopTimer();
+      setConnectionStatus(ConnectionStatus.disconnected);
+    } else if (_connectionStatus == ConnectionStatus.disconnected) {
+      setConnectionStatus(ConnectionStatus.connecting);
+      await Future.delayed(const Duration(milliseconds: 1200));
+      startTimer();
+      setConnectionStatus(ConnectionStatus.connected);
+    }
   }
 
   void startTimer() {
