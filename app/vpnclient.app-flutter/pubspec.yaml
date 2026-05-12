@@ -1,0 +1,61 @@
+name: vpn_client
+description: "A new Flutter project."
+publish_to: 'none'
+version: 1.0.14
+
+environment:
+  sdk: ^3.7.2
+  flutter: 3.29.3
+
+dependencies:
+  flutter:
+    sdk: flutter
+  provider: ^6.0.0
+  flutter_svg: ^2.0.17
+  flutter_localizations:
+    sdk: flutter
+  shared_preferences: ^2.5.3
+  flutter_native_splash: ^2.4.6
+  flutter_bloc: ^9.0.0
+  cupertino_icons: ^1.0.8
+  url_launcher: ^6.3.1
+  flutter_dotenv: ^5.1.0
+  app_links: ^3.4.5
+  intl: ^0.20.2
+  vpnclient_engine_flutter: ^1.0.5+10
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+  dart_code_metrics: ^4.19.2
+  flutter_gen: ^5.3.0
+
+flutter:
+  generate: true  # ✅ ESSENCIAL para gerar flutter_gen и l10n корректно
+  fonts:
+    - family: CustomIcons
+      fonts:
+        - asset: assets/fonts/CustomIcons.ttf
+
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/images/flags/
+    - assets/lang/en.json
+    - assets/lang/zh.json
+    - assets/lang/ru.json
+    - assets/lang/th.json
+    - .env
+
+flutter_gen:
+  output: lib/gen/  # ✅ Define где генерировать файлы
+  line_length: 80
+l10n:
+  arb-dir: lib/l10n
+  template-arb-file: app_en.arb
+  output-localization-file: app_localizations.dart
+  output-class: AppLocalizations
+  output-dir: lib/l10n
+  untranslated-messages-file: lib/l10n/untranslated_messages.txt

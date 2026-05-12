@@ -1,0 +1,16 @@
+root=true
+
+[*.md]
+indent_style=tab
+
+[*.{yml,yaml}]
+indent_style=space
+indent_size=2
+
+[*.{kt,kts}]
+indent_style=space
+indent_size=4
+
+[*.dart]
+indent_style=space
+indent_size=2
