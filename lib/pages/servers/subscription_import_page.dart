@@ -17,6 +17,7 @@ class SubscriptionImportPage extends StatefulWidget {
 }
 
 enum _Method { url, qr, file }
+
 enum _ImportState { idle, fetching, success, error }
 
 class _SubscriptionImportPageState extends State<SubscriptionImportPage> {
@@ -45,10 +46,10 @@ class _SubscriptionImportPageState extends State<SubscriptionImportPage> {
     setState(() => _state = _ImportState.fetching);
     try {
       final n = await context.read<SubscriptionProvider>().importFromUrl(
-            url: _urlCtrl.text.trim(),
-            name: _nameCtrl.text.trim().isEmpty ? null : _nameCtrl.text.trim(),
-            autoUpdate: _autoUpdate,
-          );
+        url: _urlCtrl.text.trim(),
+        name: _nameCtrl.text.trim().isEmpty ? null : _nameCtrl.text.trim(),
+        autoUpdate: _autoUpdate,
+      );
       if (!mounted) return;
       setState(() {
         _state = _ImportState.success;
@@ -69,8 +70,8 @@ class _SubscriptionImportPageState extends State<SubscriptionImportPage> {
     final l = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     final media = MediaQuery.of(context);
-    final canImport = _urlCtrl.text.trim().isNotEmpty &&
-        _state != _ImportState.fetching;
+    final canImport =
+        _urlCtrl.text.trim().isNotEmpty && _state != _ImportState.fetching;
 
     return Padding(
       padding: EdgeInsets.only(bottom: media.viewInsets.bottom),
@@ -79,14 +80,16 @@ class _SubscriptionImportPageState extends State<SubscriptionImportPage> {
         decoration: BoxDecoration(
           color: theme.scaffoldBackgroundColor,
           borderRadius: const BorderRadius.vertical(
-              top: Radius.circular(AppSpacing.radiusLg)),
+            top: Radius.circular(AppSpacing.radiusLg),
+          ),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             const SizedBox(height: AppSpacing.sm),
             Container(
-              width: 40, height: 4,
+              width: 40,
+              height: 4,
               decoration: BoxDecoration(
                 color: AppColors.textMuted.withValues(alpha: 0.3),
                 borderRadius: BorderRadius.circular(2),
@@ -95,7 +98,8 @@ class _SubscriptionImportPageState extends State<SubscriptionImportPage> {
             const SizedBox(height: AppSpacing.md),
             Padding(
               padding: const EdgeInsets.symmetric(
-                  horizontal: AppSpacing.pageGutter),
+                horizontal: AppSpacing.pageGutter,
+              ),
               child: Row(
                 children: [
                   IconButton(
@@ -132,32 +136,38 @@ class _SubscriptionImportPageState extends State<SubscriptionImportPage> {
                     onChanged: (_) => setState(() {}),
                   ),
                   const SizedBox(height: AppSpacing.sm),
-                  Row(children: [
-                    _Chip(
-                      icon: Icons.content_paste_rounded,
-                      label: l.paste,
-                      onTap: () async { await _paste(); setState(() {}); },
-                    ),
-                    const SizedBox(width: AppSpacing.xs),
-                    _Chip(
-                      icon: Icons.qr_code_scanner_rounded,
-                      label: l.scan_qr,
-                      onTap: () {
-                        // TODO: open camera scanner; on success, set _urlCtrl.
-                      },
-                    ),
-                  ]),
+                  Row(
+                    children: [
+                      _Chip(
+                        icon: Icons.content_paste_rounded,
+                        label: l.paste,
+                        onTap: () async {
+                          await _paste();
+                          setState(() {});
+                        },
+                      ),
+                      const SizedBox(width: AppSpacing.xs),
+                      _Chip(
+                        icon: Icons.qr_code_scanner_rounded,
+                        label: l.scan_qr,
+                        onTap: () {
+                          // TODO: open camera scanner; on success, set _urlCtrl.
+                        },
+                      ),
+                    ],
+                  ),
                   const SizedBox(height: AppSpacing.lg),
                   _FieldLabel(text: l.display_name_optional),
                   TextField(
                     controller: _nameCtrl,
                     decoration: InputDecoration(
-                      hintText: 'Hiddify · Public',
+                      hintText: 'Subscription #1',
                       filled: true,
                       fillColor: theme.colorScheme.surface,
                       border: OutlineInputBorder(
-                        borderRadius:
-                            BorderRadius.circular(AppSpacing.radiusMd),
+                        borderRadius: BorderRadius.circular(
+                          AppSpacing.radiusMd,
+                        ),
                         borderSide: BorderSide.none,
                       ),
                     ),
@@ -197,8 +207,9 @@ class _SubscriptionImportPageState extends State<SubscriptionImportPage> {
                       padding: EdgeInsets.only(bottom: AppSpacing.sm),
                       child: LinearProgressIndicator(
                         backgroundColor: Color(0x2900C6FB),
-                        valueColor:
-                            AlwaysStoppedAnimation<Color>(AppColors.brandBlue),
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          AppColors.brandBlue,
+                        ),
                       ),
                     ),
                   SizedBox(
@@ -208,24 +219,28 @@ class _SubscriptionImportPageState extends State<SubscriptionImportPage> {
                       decoration: BoxDecoration(
                         gradient: canImport ? AppColors.brandGradient : null,
                         color: canImport ? null : const Color(0xFFC8D4DC),
-                        borderRadius:
-                            BorderRadius.circular(AppSpacing.radiusMd),
-                        boxShadow: canImport
-                            ? [
-                                BoxShadow(
-                                  color: AppColors.brandBlue
-                                      .withValues(alpha: 0.3),
-                                  blurRadius: 16,
-                                  offset: const Offset(0, 6),
-                                ),
-                              ]
-                            : null,
+                        borderRadius: BorderRadius.circular(
+                          AppSpacing.radiusMd,
+                        ),
+                        boxShadow:
+                            canImport
+                                ? [
+                                  BoxShadow(
+                                    color: AppColors.brandBlue.withValues(
+                                      alpha: 0.3,
+                                    ),
+                                    blurRadius: 16,
+                                    offset: const Offset(0, 6),
+                                  ),
+                                ]
+                                : null,
                       ),
                       child: Material(
                         color: Colors.transparent,
                         child: InkWell(
-                          borderRadius:
-                              BorderRadius.circular(AppSpacing.radiusMd),
+                          borderRadius: BorderRadius.circular(
+                            AppSpacing.radiusMd,
+                          ),
                           onTap: canImport ? _doImport : null,
                           child: Center(
                             child: Text(
@@ -290,9 +305,8 @@ class _MethodSegment extends StatelessWidget {
                   child: Text(
                     it.$2,
                     style: theme.textTheme.bodyMedium?.copyWith(
-                      color: method == it.$1
-                          ? Colors.white
-                          : AppColors.textMuted,
+                      color:
+                          method == it.$1 ? Colors.white : AppColors.textMuted,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -315,7 +329,9 @@ class _UrlField extends StatelessWidget {
     final l = AppLocalizations.of(context)!;
     return Container(
       padding: const EdgeInsets.symmetric(
-          horizontal: AppSpacing.md, vertical: AppSpacing.sm),
+        horizontal: AppSpacing.md,
+        vertical: AppSpacing.sm,
+      ),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
@@ -353,14 +369,22 @@ class _Chip extends StatelessWidget {
         onTap: onTap,
         child: Padding(
           padding: const EdgeInsets.symmetric(
-              horizontal: AppSpacing.sm, vertical: 6),
-          child: Row(mainAxisSize: MainAxisSize.min, children: [
-            Icon(icon, size: 16, color: theme.colorScheme.primary),
-            const SizedBox(width: 6),
-            Text(label,
-                style: theme.textTheme.bodySmall
-                    ?.copyWith(color: theme.colorScheme.primary)),
-          ]),
+            horizontal: AppSpacing.sm,
+            vertical: 6,
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(icon, size: 16, color: theme.colorScheme.primary),
+              const SizedBox(width: 6),
+              Text(
+                label,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.primary,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -374,11 +398,12 @@ class _FieldLabel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 4, bottom: 6),
-      child: Text(text,
-          style: Theme.of(context)
-              .textTheme
-              .bodySmall
-              ?.copyWith(color: AppColors.textMuted)),
+      child: Text(
+        text,
+        style: Theme.of(
+          context,
+        ).textTheme.bodySmall?.copyWith(color: AppColors.textMuted),
+      ),
     );
   }
 }
@@ -399,9 +424,12 @@ class _AutoUpdateRow extends StatelessWidget {
             children: [
               Text(l.auto_update, style: theme.textTheme.titleMedium),
               const SizedBox(height: 2),
-              Text(l.auto_update_hint,
-                  style: theme.textTheme.bodySmall
-                      ?.copyWith(color: AppColors.textMuted)),
+              Text(
+                l.auto_update_hint,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: AppColors.textMuted,
+                ),
+              ),
             ],
           ),
         ),
@@ -420,17 +448,22 @@ class _Toast extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(
-          horizontal: AppSpacing.md, vertical: AppSpacing.sm),
+        horizontal: AppSpacing.md,
+        vertical: AppSpacing.sm,
+      ),
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
       ),
-      child: Row(children: [
-        Icon(icon, color: color, size: 20),
-        const SizedBox(width: AppSpacing.xs),
-        Expanded(
-            child: Text(text, style: Theme.of(context).textTheme.bodyMedium)),
-      ]),
+      child: Row(
+        children: [
+          Icon(icon, color: color, size: 20),
+          const SizedBox(width: AppSpacing.xs),
+          Expanded(
+            child: Text(text, style: Theme.of(context).textTheme.bodyMedium),
+          ),
+        ],
+      ),
     );
   }
 }
