@@ -5,6 +5,7 @@
 list(APPEND FLUTTER_PLUGIN_LIST
   app_links
   url_launcher_windows
+  vpnclient_engine_flutter
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST

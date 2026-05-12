@@ -5,6 +5,7 @@
 list(APPEND FLUTTER_PLUGIN_LIST
   gtk
   url_launcher_linux
+  vpnclient_engine_flutter
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST
