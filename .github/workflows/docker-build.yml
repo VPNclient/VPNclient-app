@@ -1,0 +1,78 @@
+name: Docker Build
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "0 3 * * *" # nightly, 03:00 UTC
+  release:
+    types: [published]
+
+jobs:
+  docker-build-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/build-push-action@v6
+        with:
+          context: docker
+          file: docker/linux-build.Dockerfile
+          tags: vpnclient-proto-linux-build:ci
+          load: true
+          cache-from: type=gha,scope=linux-build
+          cache-to: type=gha,mode=max,scope=linux-build
+
+      - run: |
+          docker run --rm \
+            -v ${{ github.workspace }}:/workspace \
+            -w /workspace \
+            vpnclient-proto-linux-build:ci \
+            bash -c 'flutter pub get && flutter build linux --release'
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: linux-release-build
+          path: build/linux/x64/release/bundle
+          retention-days: 90
+
+      - if: github.event_name == 'release'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: build/linux/x64/release/bundle/**
+
+  docker-build-android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/build-push-action@v6
+        with:
+          context: docker
+          file: docker/android-build.Dockerfile
+          tags: vpnclient-proto-android-build:ci
+          load: true
+          cache-from: type=gha,scope=android-build
+          cache-to: type=gha,mode=max,scope=android-build
+
+      - run: |
+          docker run --rm \
+            -v ${{ github.workspace }}:/workspace \
+            -w /workspace \
+            vpnclient-proto-android-build:ci \
+            bash -c 'flutter pub get && flutter build apk --release'
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: android-release-apk
+          path: build/app/outputs/flutter-apk/*.apk
+          retention-days: 90
+
+      - if: github.event_name == 'release'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: build/app/outputs/flutter-apk/*.apk
