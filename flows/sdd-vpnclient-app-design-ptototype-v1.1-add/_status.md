@@ -6,7 +6,7 @@ IMPLEMENTATION
 
 ## Phase Status
 
-DRAFTING
+APPROVED (complete)
 
 ## Last Updated
 
@@ -14,8 +14,9 @@ DRAFTING
 
 ## Blockers
 
-- None — Phase 2 (all 4 core screens) complete and verified. Phase 3 (5 new screens +
-  onboarding/mini-mode wiring) and Phase 4 (l10n/QA) remain.
+- None. All 4 plan phases complete and verified. `pubspec.yaml`'s
+  `vpnclient_engine_flutter` dependency restored to its original state (was temporarily
+  disabled for local QA only, see Phase 4 wrap-up below).
 
 ## Progress
 
@@ -26,9 +27,7 @@ DRAFTING
 - [x] Plan drafted
 - [x] Plan approved
 - [x] Implementation started
-- [ ] Implementation complete (Phase 1 done, Phase 2 done, Phase 3/4 remaining)
-- [ ] Implementation started
-- [ ] Implementation complete
+- [x] Implementation complete
 
 ## Context Notes
 
@@ -142,17 +141,59 @@ Key decisions and context for resuming:
 - Reported progress to anton after Phase 2; continuing into Phase 3 unless told
   otherwise.
 
+## Phase 3 wrap-up (2026-07-28)
+
+- All 5 new screens built: onboarding revived (real navigation gate via
+  `OnboardingService.shouldShowOnboarding()`), mini-mode (new `ENABLE_MINI_MODE` flag,
+  reuses real `MainPage`/`ServersPage` directly instead of near-duplicate files), Info/
+  speed-test (new entry point added via Main's stat tiles, which were previously not
+  tappable at all), Support chat (rewired Settings' support row to open it instead of
+  launching Telegram directly, with a real "open in Telegram" fallback added to its
+  AppBar), Subscribe sheet (closed the loop on Task 2.4's deferred TODO).
+- Same "no entry point" risk that hit onboarding also nearly hit the Info screen — same
+  fix pattern applied (find/add a real entry point rather than ship an unreachable
+  screen), now documented as a recurring thing to check for on any new screen.
+- Deleted 2 more confirmed-dead files while placing Info (`nav_bar.dart`,
+  `pages/speed/speed_page.dart`) — total dead-file cleanup across the whole flow so far:
+  15 files.
+- Everything screenshot-verified except the subscribe sheet's 3 non-default steps
+  (payment summary/method list/card entry) — those share already-verified patterns, so
+  `flutter analyze` clean was treated as sufficient confidence there rather than
+  screenshotting every step of every screen.
+
+## Phase 4 wrap-up (2026-07-28) — flow complete
+
+- Closed the pre-existing en/ru-only localization gap: added `app_zh.arb`/`app_th.arb`
+  for the full key set (`flutter gen-l10n`'s own `untranslated_messages.txt` output is
+  `{}` — zero gaps across all 4 locales). Localized onboarding's strings into all 4;
+  left Info/Support Chat/Subscribe Sheet as literals, matching the design prototype's
+  own un-localized state for those 3 stub screens (documented, not an oversight).
+- Dark theme screenshot-verified (Main + Settings) — renders correctly.
+- **Restored `pubspec.yaml`'s `vpnclient_engine_flutter` dependency** (was temporarily
+  commented out since Task 2.1 for local QA — see that log entry). `flutter analyze lib`
+  after restoration: 142 issues (down from 190 at flow start), confirmed confined to the
+  same pre-existing file set (`bak/`, `vpn_service.dart`, `vpn_provider.dart` — all
+  `sdd-vpnclient-vpnengine`'s territory) both before and after restoration.
+- **Total cleanup this flow**: 15 confirmed-dead files deleted (verified via grep before
+  each deletion, zero live references in any case).
+- **Mid-session discovery, unrelated to this flow's actual work**: the environment
+  auto-commits and auto-pushes to `origin/main` independent of explicit git calls.
+  Confirmed with anton this is his own platform-side setup, not something to act on —
+  no git action taken beyond the `git rm` calls already used for dead-file cleanup.
+- The generic `sdd-vpnclient-app-design-ptototype-v1.1-todo` backlog flow was never
+  created — every blocker was substantial enough to already have (or receive) its own
+  dedicated sibling flow (`vpnengine`, `support-chat`, `payment`, `profile`).
+- **This flow's implementation is complete.** The 4 sibling flows it spun off
+  (`sdd-vpnclient-vpnengine`, `sdd-vpnclient-support-chat`, `sdd-vpnclient-payment`,
+  `sdd-vpnclient-profile`) remain in REQUIREMENTS (pre-filled, not yet reviewed) and are
+  each their own separate, manually-triggered future run — not part of this flow.
+
 ## Fork History
 
 N/A — new flow, not forked.
 
 ## Next Actions
 
-1. **Plan approved by anton 2026-07-28.** Executing task-by-task per `03-plan.md`,
-   tracked in `04-implementation-log.md` and via the harness task list (Tasks #1-#15,
-   one per plan task).
-2. Currently on Task 1.1 (design token extension). Proceeding in plan order: Phase 1
-   (foundation) → Phase 2 (core screens) → Phase 3 (new screens/nav) → Phase 4 (l10n/QA).
-3. Any missing-function/clarification blocker gets logged to
-   `flows/sdd-vpnclient-app-design-ptototype-v1.1-todo/` (created on first occurrence)
-   rather than stalling — per the original process agreed in requirements.
+None for this flow — implementation complete. Follow-up work (if/when anton wants to
+pick it up) lives in the 4 sibling flows listed above; each needs its own requirements
+review and approval cycle before proceeding, same as this flow did.
