@@ -1,7 +1,7 @@
 # Requirements: vpnclient-app-design-ptototype-v1.1-add
 
-> Version: 1.0
-> Status: DRAFT
+> Version: 1.1
+> Status: APPROVED
 > Last Updated: 2026-07-28
 
 ## Problem Statement
@@ -62,6 +62,22 @@ be explicitly logged (not silently left mocked or half-done)
    `app_spacing.dart`, `app_typography.dart`) get their values (and structure, where it
    differs) replaced to match. The `lib/design/bak/` and other `bak/` folders are legacy
    and out of scope except as historical reference.
+   - **Addendum (2026-07-28)**: verified by diffing `app_theme.dart` in both trees — the
+     app's current color/type/spacing *values* already match the prototype's (both derive
+     from the same Figma "VPN-Client-Pro (Blue)" palette: `#00C6FB`/`#005BEA` gradient,
+     `#F8F9FA` bg, etc.). The prototype's `app_theme.dart` just consolidates
+     `AppColors`/`AppTypography`/`AppSpacing`/`AppRadius`/`AppShadows` into one file (vs.
+     the app's split files) and adds new tokens needed for screens the app doesn't have
+     yet (chat bubble colors, discount badge, push badge). So this is mostly a
+     **structural consolidation + extension**, not a value replacement.
+   - A third resource, `design/vpnclient-design-system/` (CSS variables in
+     `colors_and_type.css`, React reference components in `ui_kits/mobile/`, brand
+     guidelines in `README.md`), was added as a supplementary reference. It mirrors the
+     same token values and is useful for: exact icon/asset sources (`assets/`), motion/
+     press-state specs not encoded in the Dart files, and content voice rules (Russian-
+     first copy, sentence case, no emoji/exclamation marks — see its README). Precedence
+     when sources conflict: **prototype Dart code > design-system CSS/docs > app's
+     pre-existing tokens**, since the prototype is the executable spec for this flow.
 3. **Onboarding screen** (`lib/pages/onboarding/onboarding_screen.dart`) has no
    prototype equivalent. It should be **restyled** to the v1.1 visual language (colors,
    typography, spacing, components from the shared design system) even without a
@@ -156,7 +172,9 @@ be explicitly logged (not silently left mocked or half-done)
 
 ## References
 
-- Design source: `design/vpnclient-design-prototype-v1.1/`
+- Design source (primary): `design/vpnclient-design-prototype-v1.1/`
+- Design system (supplementary): `design/vpnclient-design-system/` (`colors_and_type.css`,
+  `ui_kits/mobile/`, `assets/`, `README.md`, `SKILL.md`)
 - Target app: `app/vpnclient.app-flutter/`
 - Prior restyle context: `app/vpnclient.app-flutter/CODE_ANALYSIS_SUMMARY.md`
 - Related (unfilled) prior flow: `flows/vdd-vpnclient-import/`, `flows/vdd-main-ui/`
@@ -166,6 +184,8 @@ be explicitly logged (not silently left mocked or half-done)
 
 ## Approval
 
-- [ ] Reviewed by: anton
-- [ ] Approved on: [date]
-- [ ] Notes:
+- [x] Reviewed by: anton
+- [x] Approved on: 2026-07-28
+- [x] Notes: Approved with addendum to include `design/vpnclient-design-system/` as a
+      supplementary reference (icons/assets, motion/press-state specs, content voice
+      rules) alongside the primary prototype source.

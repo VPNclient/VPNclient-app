@@ -2,11 +2,11 @@
 
 ## Current Phase
 
-REQUIREMENTS
+SPECIFICATIONS
 
 ## Phase Status
 
-REVIEW
+DRAFTING
 
 ## Last Updated
 
@@ -14,12 +14,12 @@ REVIEW
 
 ## Blockers
 
-- Waiting on explicit "requirements approved" from anton before moving to SPECIFICATIONS
+- None
 
 ## Progress
 
 - [x] Requirements drafted
-- [ ] Requirements approved
+- [x] Requirements approved
 - [ ] Specifications drafted
 - [ ] Specifications approved
 - [ ] Plan drafted
@@ -60,6 +60,16 @@ Key decisions and context for resuming:
   design — it gets created the first time IMPLEMENTATION hits a blocker worth logging.
 - `flows/vdd-vpnclient-import/` and `flows/vdd-main-ui/` exist but are empty/unfilled
   templates — not useful prior art, safe to ignore.
+- **Requirements approved 2026-07-28** with one addendum: also use
+  `design/vpnclient-design-system/` (CSS tokens, React reference components, brand
+  README/SKILL) as a supplementary reference alongside the prototype. Verified by diffing
+  `app_theme.dart` in both trees that the app's current color/type/spacing values already
+  match the prototype's (same Figma-derived palette) — so token work is mostly
+  consolidating the app's split token files (`app_colors.dart`, `app_spacing.dart`,
+  `app_typography.dart`) into the prototype's structure and adding the new tokens it
+  introduces (chat bubble colors, discount badge, push badge), not a full value swap.
+  Precedence when sources disagree: prototype Dart code > design-system CSS/docs > app's
+  pre-existing tokens.
 
 ## Fork History
 
@@ -67,8 +77,10 @@ N/A — new flow, not forked.
 
 ## Next Actions
 
-1. Present 01-requirements.md to anton for review.
-2. On "requirements approved", move to SPECIFICATIONS: map prototype screens/widgets to
-   app equivalents file-by-file, decide the design token migration approach concretely,
-   and identify integration points between prototype UI calls and real services.
+1. Draft 02-specifications.md: map prototype screens/widgets to app equivalents
+   file-by-file (main/servers/apps/settings + new mini/info/support_chat screens),
+   nail down the concrete token-file consolidation plan, and identify each integration
+   point between prototype UI calls (mock `VPNclientEngine`) and the app's real
+   services/providers.
+2. Present specifications to anton; wait for explicit "specs approved" before PLAN.
 3. Do NOT begin IMPLEMENTATION until PLAN is explicitly approved.
