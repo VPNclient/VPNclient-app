@@ -1,0 +1,29 @@
+<!doctype html>
+<!-- @dsCard group="Components" name="Server rows" subtitle="Pinned location + list row with ping" viewport="700x220" -->
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="_base.css"></head>
+<body style="background: var(--bg);">
+  <div style="display: flex; flex-direction: column; gap: 10px;">
+
+    <!-- Server-Main (home pinned card) -->
+    <div style="background: var(--surface); border-radius: 10px; padding: 14px; box-shadow: var(--shadow-card);">
+      <div style="font-size: 14px; color: var(--fg-1); margin-bottom: 6px;">Ваша локация</div>
+      <div style="display: flex; align-items: center; justify-content: space-between;">
+        <div style="font-size: 17px; color: var(--fg-1);">Германия</div>
+        <img src="../assets/flag-de.svg" style="width: 24px; height: 24px; border-radius: 4px;" alt="DE">
+      </div>
+    </div>
+
+    <!-- Server list row -->
+    <div style="background: var(--surface); border-radius: 10px; padding: 12px 14px; box-shadow: var(--shadow-card); display: flex; align-items: center; gap: 12px;">
+      <img src="../assets/flag-de.svg" style="width: 24px; height: 24px; border-radius: 4px;" alt="DE">
+      <div style="flex: 1; display: flex; align-items: baseline; gap: 8px;">
+        <div style="font-size: 17px; color: var(--fg-1);">Германия</div>
+        <div style="font-size: 13px; color: var(--fg-2);">Frankfurt 1</div>
+      </div>
+      <div style="display:flex; align-items:center; gap: 6px;">
+        <span style="width:8px; height:8px; border-radius:50%; background: var(--ping-good);"></span>
+        <span style="font-size: 13px; color: var(--fg-2); font-variant-numeric: tabular-nums;">42 ms</span>
+      </div>
+    </div>
+  </div>
+</body></html>

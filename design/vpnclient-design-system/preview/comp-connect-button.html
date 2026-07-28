@@ -1,0 +1,35 @@
+<!doctype html>
+<!-- @dsCard group="Components" name="Connect button" subtitle="Off / connecting / on" viewport="700x220" -->
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="_base.css"></head>
+<body>
+  <div class="row" style="gap: 40px; align-items: center; justify-content: center;">
+
+    <!-- OFF -->
+    <div class="col" style="align-items: center; gap: 10px;">
+      <div style="width:120px; height:120px; border-radius:50%; background: var(--disabled); display:flex; align-items:center; justify-content:center; color:#fff;">
+        <img src="../assets/power.svg" style="width: 56px; height: 56px;" alt="power">
+      </div>
+      <div style="font-size: 13px; color: var(--fg-2);">Off</div>
+    </div>
+
+    <!-- CONNECTING -->
+    <div class="col" style="align-items: center; gap: 10px;">
+      <div style="width:120px; height:120px; border-radius:50%; background: var(--brand-gradient); display:flex; align-items:center; justify-content:center; color:#fff; opacity: 0.85;">
+        <img src="../assets/power.svg" style="width: 56px; height: 56px; filter: brightness(0) invert(1); animation: pulse 1.2s ease-in-out infinite;" alt="power">
+      </div>
+      <div style="font-size: 13px; color: var(--fg-1);">Подключение</div>
+    </div>
+
+    <!-- ON -->
+    <div class="col" style="align-items: center; gap: 10px;">
+      <div style="width:120px; height:120px; border-radius:50%; background: var(--brand-gradient); display:flex; align-items:center; justify-content:center; color:#fff;">
+        <img src="../assets/power.svg" style="width: 56px; height: 56px; filter: brightness(0) invert(1);" alt="power">
+      </div>
+      <div style="font-size: 13px; color: var(--fg-1);">Подключен</div>
+    </div>
+
+  </div>
+  <style>
+    @keyframes pulse { 0%,100% { opacity: 0.85; } 50% { opacity: 1; } }
+  </style>
+</body></html>

@@ -1,0 +1,184 @@
+/* ============================================================
+   VPN Client Pro — Design Tokens
+   Source of truth: lib/design/app_colors.dart + app_typography.dart
+                    + app_spacing.dart, mirrored from Figma
+                    "VPN-Client-Pro (Blue)".
+   ============================================================ */
+
+/* SF Pro Text is the native iOS face used in Figma. We substitute
+   Inter (closest free Google Font) so the cascade still renders
+   correctly when SF Pro is not installed. See README.md > FONT NOTE. */
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+:root {
+  /* ── Brand ─────────────────────────────────────────────────── */
+  --brand-cyan: #00C6FB;          /* rgb(0,198,251) — gradient top */
+  --brand-blue: #005BEA;          /* rgb(0,91,234)  — gradient bottom + primary */
+  --brand-gradient: linear-gradient(180deg, #00C6FB 0%, #005BEA 100%);
+  --brand-gradient-soft: linear-gradient(180deg, #E6F8FF 0%, #E6EEFD 100%);
+
+  /* ── Neutrals (light) ──────────────────────────────────────── */
+  --bg:        #F8F9FA;           /* page background */
+  --surface:   #FFFFFF;           /* cards, tiles, bottom-nav */
+  --fg-1:      #303F49;           /* primary text */
+  --fg-2:      #B6B6B6;           /* muted, placeholder, secondary label */
+  --fg-3:      #A2A2A2;           /* off-state icon stroke */
+  --line:      rgba(156,178,194,0.1); /* hairline divider / card shadow tint */
+  --disabled:  #E0E0E0;           /* off-state circular button background */
+
+  /* ── Neutrals (dark) ───────────────────────────────────────── */
+  --bg-dark:        #0F1419;
+  --surface-dark:   #1A2129;
+  --surface-dark-2: #222B33;
+  --fg-1-dark:      #E7ECEF;
+  --switch-track-dark: #3A4750;
+
+  /* ── Semantic ──────────────────────────────────────────────── */
+  --success: #1FB67A;
+  --warning: #FFB020;
+  --danger:  #E5484D;
+
+  /* Ping scale */
+  --ping-good: var(--success);  /* < 80 ms  */
+  --ping-mid:  var(--warning);  /* < 180 ms */
+  --ping-bad:  var(--danger);   /* ≥ 180 ms */
+
+  /* ── Type ──────────────────────────────────────────────────── */
+  --font-family: "Inter", "SF Pro Text", "SF Pro", -apple-system,
+                 BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  /* Discrete scale used across Figma — keep these in sync with
+     lib/design/app_typography.dart. */
+  --t-timer-size:   40px;  --t-timer-weight:   700;  --t-timer-lh: 1.0;
+  --t-title-size:   24px;  --t-title-weight:   600;  --t-title-lh: 1.15;
+  --t-screen-size:  20px;  --t-screen-weight:  600;  --t-screen-lh: 1.2;
+  --t-body-size:    17px;  --t-body-weight:    400;  --t-body-lh: 1.3;
+  --t-button-size:  17px;  --t-button-weight:  500;  --t-button-lh: 1.0;
+  --t-secondary-size: 15px;--t-secondary-weight: 400;--t-secondary-lh: 1.35;
+  --t-label-size:   14px;  --t-label-weight:   500;  --t-label-lh: 1.0;
+  --t-caption-size: 13px;  --t-caption-weight: 400;  --t-caption-lh: 1.3;
+
+  /* ── Spacing (multiples of 4, 30px page gutter) ────────────── */
+  --space-xxs: 4px;
+  --space-xs:  8px;
+  --space-sm:  12px;
+  --space-md:  16px;
+  --space-lg:  20px;
+  --space-xl:  24px;
+  --space-xxl: 32px;
+  --page-gutter: 30px;     /* outer gutter on 390-wide frames */
+  --row-gutter: 14px;      /* inner padding/gap inside cards */
+
+  /* ── Radius ────────────────────────────────────────────────── */
+  --radius-sm:   8px;
+  --radius-md:  10px;       /* cards (Figma uses 10) */
+  --radius-lg:  16px;
+  --radius-xl:  20px;
+  --radius-pill: 999px;
+  --radius-circle: 50%;     /* connect button, flag chips */
+
+  /* ── Elevation ─────────────────────────────────────────────── */
+  /* The only shadow used app-wide — a soft, cool, low-opacity halo. */
+  --shadow-card: 0 1px 32px 0 rgba(156, 178, 194, 0.10);
+  --shadow-card-strong: 0 4px 24px 0 rgba(156, 178, 194, 0.22);
+  --shadow-modal: 0 12px 48px 0 rgba(20, 35, 50, 0.20);
+
+  /* ── Standard sizes ────────────────────────────────────────── */
+  --frame-w: 390px;         /* iPhone 14 design width */
+  --frame-h: 844px;
+  --tile-h: 64px;
+  --connect-btn: 150px;
+  --bottom-nav-h: 92px;
+  --tab-icon: 44px;
+}
+
+/* ── Semantic element styles ─────────────────────────────────── */
+
+html, body {
+  font-family: var(--font-family);
+  color: var(--fg-1);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+.t-timer {
+  font-size: var(--t-timer-size);
+  font-weight: var(--t-timer-weight);
+  line-height: var(--t-timer-lh);
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+  color: var(--fg-1);
+}
+
+.t-title {
+  font-size: var(--t-title-size);
+  font-weight: var(--t-title-weight);
+  line-height: var(--t-title-lh);
+  color: var(--fg-1);
+}
+
+.t-screen-title {
+  font-size: var(--t-screen-size);
+  font-weight: var(--t-screen-weight);
+  line-height: var(--t-screen-lh);
+  color: var(--fg-1);
+}
+
+.t-body {
+  font-size: var(--t-body-size);
+  font-weight: var(--t-body-weight);
+  line-height: var(--t-body-lh);
+  color: var(--fg-1);
+}
+
+.t-secondary {
+  font-size: var(--t-secondary-size);
+  font-weight: var(--t-secondary-weight);
+  line-height: var(--t-secondary-lh);
+  color: var(--fg-2);
+}
+
+.t-label {
+  font-size: var(--t-label-size);
+  font-weight: var(--t-label-weight);
+  line-height: var(--t-label-lh);
+  color: var(--fg-1);
+}
+
+.t-caption {
+  font-size: var(--t-caption-size);
+  font-weight: var(--t-caption-weight);
+  line-height: var(--t-caption-lh);
+  color: var(--fg-2);
+}
+
+.t-button {
+  font-size: var(--t-button-size);
+  font-weight: var(--t-button-weight);
+  line-height: var(--t-button-lh);
+  color: #fff;
+}
+
+/* ── Standard surfaces ───────────────────────────────────────── */
+
+.surface-card {
+  background: var(--surface);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+}
+
+.tile {
+  background: var(--surface);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  padding: var(--row-gutter);
+}
+
+/* Focus ring — keep subtle, blue, ~2px */
+:focus-visible {
+  outline: 2px solid color-mix(in oklab, var(--brand-blue), transparent 60%);
+  outline-offset: 2px;
+}

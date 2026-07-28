@@ -1,0 +1,37 @@
+<!doctype html>
+<!-- @dsCard group="Components" name="Settings rows" subtitle="Switch off / on + chevron row" viewport="700x240" -->
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="_base.css"></head>
+<body style="background: var(--bg);">
+  <div style="display:flex; flex-direction: column; gap: 0; background: var(--surface); border-radius: 10px; box-shadow: var(--shadow-card); overflow: hidden;">
+    <!-- Settings row with chevron -->
+    <div style="display:flex; align-items: center; gap: 14px; padding: 14px 16px; border-bottom: 1px solid var(--line);">
+      <div style="width: 28px; height: 28px; border-radius: 6px; background: var(--bg); display:flex; align-items:center; justify-content:center;">
+        <img src="../assets/tab-settings.svg" style="width: 18px; height: 18px;" alt="">
+      </div>
+      <div style="flex: 1; font-size: 17px; color: var(--fg-1);">Тёмная тема</div>
+      <!-- iOS switch off -->
+      <div style="width: 51px; height: 31px; border-radius: 999px; background: var(--disabled); position: relative;">
+        <div style="position:absolute; left: 2px; top:2px; width:27px; height:27px; border-radius:50%; background:#fff; box-shadow: 0 2px 4px rgba(0,0,0,0.15);"></div>
+      </div>
+    </div>
+    <!-- Switch ON -->
+    <div style="display:flex; align-items: center; gap: 14px; padding: 14px 16px; border-bottom: 1px solid var(--line);">
+      <div style="width: 28px; height: 28px; border-radius: 6px; background: var(--bg); display:flex; align-items:center; justify-content:center;">
+        <img src="../assets/icon-signal.svg" style="width: 18px; height: 18px;" alt="">
+      </div>
+      <div style="flex: 1; font-size: 17px; color: var(--fg-1);">Уведомления</div>
+      <div style="width: 51px; height: 31px; border-radius: 999px; background: var(--brand-blue); position: relative;">
+        <div style="position:absolute; right: 2px; top:2px; width:27px; height:27px; border-radius:50%; background:#fff; box-shadow: 0 2px 4px rgba(0,0,0,0.15);"></div>
+      </div>
+    </div>
+    <!-- Chevron row -->
+    <div style="display:flex; align-items: center; gap: 14px; padding: 14px 16px;">
+      <div style="width: 28px; height: 28px; border-radius: 6px; background: var(--bg); display:flex; align-items:center; justify-content:center;">
+        <img src="../assets/tab-app.svg" style="width: 18px; height: 18px;" alt="">
+      </div>
+      <div style="flex: 1; font-size: 17px; color: var(--fg-1);">Язык</div>
+      <div style="font-size: 15px; color: var(--fg-2);">Русский</div>
+      <svg width="8" height="14" viewBox="0 0 8 14" style="color: var(--fg-2);"><path d="M1 1L7 7L1 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+    </div>
+  </div>
+</body></html>

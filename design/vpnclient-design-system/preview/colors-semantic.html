@@ -1,0 +1,30 @@
+<!doctype html>
+<!-- @dsCard group="Colors" name="Semantic colors" subtitle="Success / warning / danger + ping scale" viewport="700x220" -->
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="_base.css"></head>
+<body>
+  <div class="row" style="gap: 12px;">
+    <div class="swatch" style="background: var(--success); flex: 1;">
+      <div class="name">--success</div><div class="hex">#1FB67A</div>
+    </div>
+    <div class="swatch" style="background: var(--warning); flex: 1;">
+      <div class="name">--warning</div><div class="hex">#FFB020</div>
+    </div>
+    <div class="swatch" style="background: var(--danger); flex: 1;">
+      <div class="name">--danger</div><div class="hex">#E5484D</div>
+    </div>
+  </div>
+  <div class="row" style="margin-top: 16px; gap: 12px; padding: 14px; background: var(--bg); border-radius: 10px;">
+    <div style="display:flex; align-items:center; gap:8px; font-size:14px; color: var(--fg-1);">
+      <span style="width:10px; height:10px; border-radius:50%; background: var(--ping-good);"></span>
+      <span>&lt; 80&nbsp;ms&nbsp;</span><span class="muted">good</span>
+    </div>
+    <div style="display:flex; align-items:center; gap:8px; font-size:14px; color: var(--fg-1);">
+      <span style="width:10px; height:10px; border-radius:50%; background: var(--ping-mid);"></span>
+      <span>&lt; 180&nbsp;ms&nbsp;</span><span class="muted">mid</span>
+    </div>
+    <div style="display:flex; align-items:center; gap:8px; font-size:14px; color: var(--fg-1);">
+      <span style="width:10px; height:10px; border-radius:50%; background: var(--ping-bad);"></span>
+      <span>≥ 180&nbsp;ms&nbsp;</span><span class="muted">bad</span>
+    </div>
+  </div>
+</body></html>

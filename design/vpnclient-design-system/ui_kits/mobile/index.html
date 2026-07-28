@@ -1,0 +1,50 @@
+<!doctype html>
+<!-- @dsCard group="UI Kit — Mobile" name="Mobile UI kit" subtitle="Click-thru iOS prototype — Home / Servers / Apps / Settings" viewport="700x940" -->
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <title>VPN Client Pro — Mobile UI Kit</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../../colors_and_type.css">
+  <style>
+    html, body { margin: 0; padding: 0; background: #0d0f12; min-height: 100%; }
+    body {
+      display: flex; align-items: center; justify-content: center;
+      min-height: 100vh;
+      background: radial-gradient(80% 60% at 50% 30%, #1a2030, #08090c 70%);
+      font-family: var(--font-family);
+    }
+    .stage {
+      display: flex; flex-direction: column; align-items: center;
+      gap: 22px; padding: 40px 0;
+    }
+    .meta {
+      color: rgba(255,255,255,0.65);
+      font-size: 12px; text-align: center;
+      letter-spacing: 0.06em; text-transform: uppercase;
+    }
+    .meta strong { color: rgba(255,255,255,0.9); font-weight: 600; }
+  </style>
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js"
+          integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L"
+          crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"
+          integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm"
+          crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js"
+          integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y"
+          crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="stage">
+    <div id="root"></div>
+    <div class="meta">VPN Client Pro · Mobile UI Kit · <strong>iOS 390 × 844</strong></div>
+  </div>
+
+  <script type="text/babel" src="ios-frame.jsx"></script>
+  <script type="text/babel" src="Components.jsx"></script>
+  <script type="text/babel" src="Screens.jsx"></script>
+  <script type="text/babel" src="App.jsx"></script>
+</body>
+</html>

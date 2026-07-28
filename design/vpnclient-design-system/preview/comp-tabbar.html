@@ -1,0 +1,37 @@
+<!doctype html>
+<!-- @dsCard group="Components" name="Tab bar" subtitle="iOS-style frosted bottom nav" viewport="700x180" -->
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="_base.css"></head>
+<body style="background: var(--bg);">
+  <!-- Bottom nav (frosted) -->
+  <div style="width: 390px; height: 92px; margin: 0 auto;
+              background: rgba(248,249,250,0.5);
+              backdrop-filter: blur(40px);
+              -webkit-backdrop-filter: blur(40px);
+              box-shadow: var(--shadow-card);
+              border-radius: 14px;
+              display:flex; align-items:flex-start; padding: 14px 30px;
+              justify-content: space-between;
+              position: relative;">
+    <div style="display:flex; flex-direction: column; align-items: center; gap: 2px; width: 44px;">
+      <img src="../assets/tab-app.svg" style="width: 24px; height: 24px;" alt="apps">
+    </div>
+    <div style="display:flex; flex-direction: column; align-items: center; gap: 2px; width: 44px;">
+      <img src="../assets/tab-server.svg" style="width: 24px; height: 24px;" alt="servers">
+    </div>
+    <!-- active = home -->
+    <div style="display:flex; flex-direction: column; align-items: center; gap: 2px; width: 44px;">
+      <img src="../assets/tab-home-active.svg" style="width: 24px; height: 24px;" alt="home active">
+    </div>
+    <div style="display:flex; flex-direction: column; align-items: center; gap: 2px; width: 44px;">
+      <img src="../assets/icon-speed.svg" style="width: 24px; height: 24px;" alt="speed">
+    </div>
+    <div style="display:flex; flex-direction: column; align-items: center; gap: 2px; width: 44px;">
+      <img src="../assets/tab-settings.svg" style="width: 24px; height: 24px;" alt="settings">
+    </div>
+    <!-- iOS home-bar indicator -->
+    <div style="position:absolute; left:50%; bottom:8px; transform: translateX(-50%); width:134px; height: 5px; border-radius: 999px; background: rgba(48,63,73,0.4);"></div>
+  </div>
+  <div style="margin-top: 14px; font-size: 13px; color: var(--fg-2); line-height: 1.5; text-align: center;">
+    Tab bar · 92px tall (58 + 34 safe area) · 50% bg + blur(40) · 5 destinations.
+  </div>
+</body></html>

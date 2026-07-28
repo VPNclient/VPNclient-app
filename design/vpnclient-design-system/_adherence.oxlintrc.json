@@ -1,0 +1,204 @@
+{
+  "plugins": [
+    "react",
+    "import"
+  ],
+  "rules": {
+    "react/forbid-elements": [
+      "warn",
+      {
+        "forbid": []
+      }
+    ],
+    "no-restricted-imports": [
+      "warn",
+      {
+        "patterns": [
+          {
+            "group": [
+              "ui_kits/mobile/**"
+            ],
+            "message": "Import design-system components from 'index.js', not component internals."
+          }
+        ]
+      }
+    ],
+    "no-restricted-syntax": [
+      "warn",
+      {
+        "selector": "Literal[value=/#[0-9a-fA-F]{3,8}\\b/]",
+        "message": "Raw hex color — use a design-system color token via var()."
+      },
+      {
+        "selector": "Literal[value=/\\b\\d+px\\b/]",
+        "message": "Raw px value — use a design-system spacing token via var()."
+      },
+      {
+        "selector": "Literal[value=/font-family\\s*:\\s*(?!['\\\"]?(?:Inter))/i]",
+        "message": "Font not provided by the design system. Available: Inter."
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": [
+        "**/index.js"
+      ],
+      "rules": {
+        "no-restricted-imports": "off"
+      }
+    }
+  ],
+  "x-omelette": {
+    "components": {},
+    "tokens": [
+      "--bg",
+      "--bg-dark",
+      "--bottom-nav-h",
+      "--brand-blue",
+      "--brand-cyan",
+      "--brand-gradient",
+      "--brand-gradient-soft",
+      "--connect-btn",
+      "--danger",
+      "--disabled",
+      "--fg-1",
+      "--fg-1-dark",
+      "--fg-2",
+      "--fg-3",
+      "--font-family",
+      "--frame-h",
+      "--frame-w",
+      "--line",
+      "--page-gutter",
+      "--ping-bad",
+      "--ping-good",
+      "--ping-mid",
+      "--radius-circle",
+      "--radius-lg",
+      "--radius-md",
+      "--radius-pill",
+      "--radius-sm",
+      "--radius-xl",
+      "--row-gutter",
+      "--shadow-card",
+      "--shadow-card-strong",
+      "--shadow-modal",
+      "--space-lg",
+      "--space-md",
+      "--space-sm",
+      "--space-xl",
+      "--space-xs",
+      "--space-xxl",
+      "--space-xxs",
+      "--success",
+      "--surface",
+      "--surface-dark",
+      "--surface-dark-2",
+      "--switch-track-dark",
+      "--t-body-lh",
+      "--t-body-size",
+      "--t-body-weight",
+      "--t-button-lh",
+      "--t-button-size",
+      "--t-button-weight",
+      "--t-caption-lh",
+      "--t-caption-size",
+      "--t-caption-weight",
+      "--t-label-lh",
+      "--t-label-size",
+      "--t-label-weight",
+      "--t-screen-lh",
+      "--t-screen-size",
+      "--t-screen-weight",
+      "--t-secondary-lh",
+      "--t-secondary-size",
+      "--t-secondary-weight",
+      "--t-timer-lh",
+      "--t-timer-size",
+      "--t-timer-weight",
+      "--t-title-lh",
+      "--t-title-size",
+      "--t-title-weight",
+      "--tab-icon",
+      "--tile-h",
+      "--warning"
+    ],
+    "tokenKinds": {
+      "--brand-cyan": "color",
+      "--brand-blue": "color",
+      "--brand-gradient": "other",
+      "--brand-gradient-soft": "other",
+      "--bg": "color",
+      "--surface": "color",
+      "--fg-1": "color",
+      "--fg-2": "color",
+      "--fg-3": "color",
+      "--line": "color",
+      "--disabled": "color",
+      "--bg-dark": "color",
+      "--surface-dark": "color",
+      "--surface-dark-2": "color",
+      "--fg-1-dark": "color",
+      "--switch-track-dark": "color",
+      "--success": "color",
+      "--warning": "color",
+      "--danger": "color",
+      "--ping-good": "color",
+      "--ping-mid": "color",
+      "--ping-bad": "color",
+      "--font-family": "font",
+      "--t-timer-size": "spacing",
+      "--t-timer-weight": "font",
+      "--t-timer-lh": "other",
+      "--t-title-size": "spacing",
+      "--t-title-weight": "font",
+      "--t-title-lh": "other",
+      "--t-screen-size": "spacing",
+      "--t-screen-weight": "font",
+      "--t-screen-lh": "other",
+      "--t-body-size": "spacing",
+      "--t-body-weight": "font",
+      "--t-body-lh": "other",
+      "--t-button-size": "spacing",
+      "--t-button-weight": "font",
+      "--t-button-lh": "other",
+      "--t-secondary-size": "spacing",
+      "--t-secondary-weight": "font",
+      "--t-secondary-lh": "other",
+      "--t-label-size": "spacing",
+      "--t-label-weight": "font",
+      "--t-label-lh": "other",
+      "--t-caption-size": "spacing",
+      "--t-caption-weight": "font",
+      "--t-caption-lh": "other",
+      "--space-xxs": "spacing",
+      "--space-xs": "spacing",
+      "--space-sm": "spacing",
+      "--space-md": "spacing",
+      "--space-lg": "spacing",
+      "--space-xl": "spacing",
+      "--space-xxl": "spacing",
+      "--page-gutter": "spacing",
+      "--row-gutter": "spacing",
+      "--radius-sm": "radius",
+      "--radius-md": "radius",
+      "--radius-lg": "radius",
+      "--radius-xl": "radius",
+      "--radius-pill": "radius",
+      "--radius-circle": "radius",
+      "--shadow-card": "shadow",
+      "--shadow-card-strong": "shadow",
+      "--shadow-modal": "shadow",
+      "--frame-w": "spacing",
+      "--frame-h": "spacing",
+      "--tile-h": "spacing",
+      "--connect-btn": "spacing",
+      "--bottom-nav-h": "spacing",
+      "--tab-icon": "spacing"
+    },
+    "fontFamilies": [
+      "Inter"
+    ]
+  }
+}
