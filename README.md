@@ -1,6 +1,6 @@
 # VPNclient-app
 
-**Unified VPN Client** с интегрированным функционалом из всех форков (orange, green, khongkha).
+**Unified VPN Client**
 
 ## 🎯 Что это?
 
@@ -249,7 +249,7 @@ ENABLE_LOGGING=true
 
 ## 📄 Лицензия
 
-MIT License - см. [LICENSE](LICENSE)
+NativeMindNONC License - см. [LICENSE](LICENSE)
 
 ---
 
