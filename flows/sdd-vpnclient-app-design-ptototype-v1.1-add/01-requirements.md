@@ -104,8 +104,14 @@ be explicitly logged (not silently left mocked or half-done)
 2. **Given** a restyled screen that previously called a real service/provider
    **When** the restyle is complete
    **Then** the screen still calls that same real service/provider (no regression to
-   mock/fake data) — e.g. connect/disconnect still drives `VpnService`, server list still
-   comes from `SubscriptionProvider`, settings still read/write via `ConfigService`
+   mock/fake data) — e.g. server list still comes from `SubscriptionProvider`, settings
+   still read/write via `ConfigService`
+   - **Exception (2026-07-28, see `flows/sdd-vpnclient-vpnengine/`)**: the Connect/
+     Disconnect button on Main is restyled on top of `VpnState` **unchanged** —
+     `VpnState.toggle()` is currently a fake timer with no real engine call, and neither
+     of the app's two "real" engine abstractions (`VpnService`, `VPNProvider`) currently
+     compile (both import an undeclared `package:vpnclient_engine`). Fixing that and
+     wiring real connect/disconnect is out of scope here; it's tracked as its own flow.
 
 3. **Given** a prototype screen whose UI calls `VPNclientEngine` (the mock) with a method
    that has a same-named real counterpart in `vpnclient_engine_flutter`
@@ -172,6 +178,9 @@ be explicitly logged (not silently left mocked or half-done)
 
 ## References
 
+- Carved-out engine work: `flows/sdd-vpnclient-vpnengine/` (broken `VpnService`/
+  `VPNProvider` compile errors, real connect/disconnect wiring, subscription/ping wiring
+  — a dedicated flow, not the generic `-todo` backlog, per anton's instruction 2026-07-28)
 - Design source (primary): `design/vpnclient-design-prototype-v1.1/`
 - Design system (supplementary): `design/vpnclient-design-system/` (`colors_and_type.css`,
   `ui_kits/mobile/`, `assets/`, `README.md`, `SKILL.md`)
