@@ -2,20 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../design/app_colors.dart';
 import '../../design/app_spacing.dart';
+import '../../design/widgets/unread_badge.dart';
 import '../../l10n/app_localizations.dart';
 import '../../providers/locale_provider.dart';
+import '../../services/config_service.dart';
 import '../../theme_provider.dart';
+import '../../unread_notifier.dart';
+import 'support_chat_page.dart';
 
 /// Settings — profile, connection, appearance (theme + language) and
 /// subscription/account groups. Language picker writes to [LocaleProvider]
 /// so the entire app flips between RU/EN/ZH/TH instantly.
 class SettingsPage extends StatelessWidget {
-  const SettingsPage({super.key});
+  final VoidCallback onOpenServers;
+  const SettingsPage({super.key, required this.onOpenServers});
 
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
-    final theme = Theme.of(context);
     final localeProv = context.watch<LocaleProvider>();
     final themeProv = context.watch<ThemeProvider>();
 
@@ -36,9 +40,7 @@ class SettingsPage extends StatelessWidget {
             label: l.servers_subscriptions,
             trailing: const Icon(Icons.chevron_right,
                 color: AppColors.textMuted),
-            onTap: () {
-              // navigate to ServersPage via root shell
-            },
+            onTap: onOpenServers,
           ),
           _Item(
             icon: Icons.swap_horiz_rounded,
@@ -49,7 +51,10 @@ class SettingsPage extends StatelessWidget {
             icon: Icons.shield_outlined,
             label: l.kill_switch,
             sub: l.kill_switch_hint,
-            trailing: Switch(value: true, onChanged: (_) {}),
+            // Real value from ConfigService (.env-configured per deployment,
+            // same pattern as SHOW_APPS_PAGE etc.) — not user-toggleable at
+            // runtime today, so the switch reflects but doesn't accept input.
+            trailing: Switch(value: ConfigService.enableKillSwitch, onChanged: null),
           ),
         ]),
         const SizedBox(height: AppSpacing.md),
@@ -74,6 +79,8 @@ class SettingsPage extends StatelessWidget {
           _Item(
             icon: Icons.workspace_premium_rounded,
             label: l.upgrade_pro,
+            // Real billing is flows/sdd-vpnclient-payment's job; this opens
+            // the (mocked-plan-data) subscribe sheet UI shell.
             trailing: Container(
               padding: const EdgeInsets.symmetric(
                   horizontal: AppSpacing.sm, vertical: 4),
@@ -84,6 +91,8 @@ class SettingsPage extends StatelessWidget {
               child: const Text('Pro',
                   style: TextStyle(color: Colors.white, fontSize: 12)),
             ),
+            // TODO(sdd-vpnclient-payment): wired to the subscribe-sheet UI
+            // shell in Task 3.5; real billing is that flow's job.
           ),
           _Item(
             icon: Icons.percent_rounded,
@@ -98,13 +107,25 @@ class SettingsPage extends StatelessWidget {
           _Item(
             icon: Icons.support_agent_rounded,
             label: l.telegram_support,
-            trailing: const Icon(Icons.open_in_new_rounded,
-                size: 18, color: AppColors.textMuted),
+            trailing: AnimatedBuilder(
+              animation: UnreadNotifier.instance,
+              builder: (context, _) => Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  UnreadBadge(count: UnreadNotifier.instance.count),
+                  const SizedBox(width: AppSpacing.xs),
+                  const Icon(Icons.chevron_right, color: AppColors.textMuted),
+                ],
+              ),
+            ),
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => const SupportChatPage()),
+            ),
           ),
           _Item(
             icon: Icons.info_outline_rounded,
             label: l.about,
-            trailing: _Trail(text: 'v 1.0.0'),
+            trailing: _Trail(text: 'v ${ConfigService.appVersion}'),
           ),
         ]),
         const SizedBox(height: AppSpacing.lg),
@@ -115,10 +136,43 @@ class SettingsPage extends StatelessWidget {
             foregroundColor: AppColors.danger,
             side: BorderSide(color: AppColors.divider),
           ),
-          onPressed: () {},
+          onPressed: () => _confirmReset(context, themeProv, localeProv, l),
         ),
       ],
     );
+  }
+
+  Future<void> _confirmReset(
+    BuildContext context,
+    ThemeProvider themeProv,
+    LocaleProvider localeProv,
+    AppLocalizations l,
+  ) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(l.reset_settings),
+        content: Text(l.are_you_sure_reset),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(false),
+            child: Text(l.cancel),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(true),
+            style: TextButton.styleFrom(foregroundColor: AppColors.danger),
+            child: Text(l.reset),
+          ),
+        ],
+      ),
+    );
+    if (confirmed != true) return;
+    await themeProv.setThemeMode(ThemeMode.light);
+    await localeProv.setLocale(null);
+    if (context.mounted) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(l.connection_reset)));
+    }
   }
 
   String _themeLabel(ThemeMode mode, AppLocalizations l) => switch (mode) {
@@ -195,7 +249,13 @@ class SettingsPage extends StatelessWidget {
   }
 }
 
+/// Identity row. STUB: the app has no user-account system (see
+/// flows/sdd-vpnclient-profile) — kept visually present per design with a
+/// placeholder identity rather than fabricated-but-plausible real-looking data.
 class _Profile extends StatelessWidget {
+  static const _placeholderName = 'Anonymous';
+  static const _placeholderId = 'ID 2485926342';
+
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
@@ -219,9 +279,9 @@ class _Profile extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Anonymous', style: theme.textTheme.titleMedium),
+                Text(_placeholderName, style: theme.textTheme.titleMedium),
                 const SizedBox(height: 2),
-                Text('ID 2485926342 · ${l.free_plan}',
+                Text('$_placeholderId · ${l.free_plan}',
                     style: theme.textTheme.bodySmall
                         ?.copyWith(color: AppColors.textMuted)),
               ],

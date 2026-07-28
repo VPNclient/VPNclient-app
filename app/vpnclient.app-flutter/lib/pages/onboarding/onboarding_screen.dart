@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../design/app_colors.dart';
 import '../../services/onboarding_service.dart';
 import '../../services/config_service.dart';
 
@@ -24,12 +25,13 @@ class _OnboardingScreenState extends State<OnboardingScreen>
       // Шаг 1: Подключение к телеграм боту
       OnboardingStep(
         title: 'Welcome',
-        description: ConfigService.requiresTelegramBot
-            ? 'To connect, go to the telegram bot to get your unique subscription'
-            : 'To connect, go to the telegram bot (optional)',
+        description:
+            ConfigService.requiresTelegramBot
+                ? 'To connect, go to the telegram bot to get your unique subscription'
+                : 'To connect, go to the telegram bot (optional)',
         telegramBot: '@${ConfigService.telegramBotUsername}',
         icon: Icons.telegram,
-        color: const Color(0xFF0088CC),
+        color: AppColors.brandBlue,
         showSkip: ConfigService.canSkipOnboarding,
         isWelcome: true,
       ),
@@ -37,11 +39,12 @@ class _OnboardingScreenState extends State<OnboardingScreen>
       // Шаг 2: Настройки успешно получены
       OnboardingStep(
         title: 'Settings Received',
-        description: ConfigService.requiresTelegramBot
-            ? 'Your unique subscription has been successfully received'
-            : 'Your settings have been successfully received',
+        description:
+            ConfigService.requiresTelegramBot
+                ? 'Your unique subscription has been successfully received'
+                : 'Your settings have been successfully received',
         icon: Icons.check_circle,
-        color: const Color(0xFF4CAF50),
+        color: AppColors.success,
         isLast: true,
         showGetStarted: true,
       ),
@@ -116,10 +119,9 @@ class _OnboardingScreenState extends State<OnboardingScreen>
   }
 
   void _completeOnboarding() async {
+    // No explicit navigation: `App` in main.dart watches OnboardingService
+    // and swaps `home` to RootShell once this notifies listeners.
     await widget.onboardingService.completeOnboarding();
-    if (mounted) {
-      Navigator.of(context).pushReplacementNamed('/');
-    }
   }
 
   Future<void> _openTelegramBot() async {
@@ -141,7 +143,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
         }
       }
     } catch (e) {
-      print('Error opening Telegram bot: $e');
+      debugPrint('Error opening Telegram bot: $e');
     }
   }
 
@@ -150,134 +152,129 @@ class _OnboardingScreenState extends State<OnboardingScreen>
     final steps = _getSteps();
     final currentStepData = steps[_currentStep];
 
+    // Flat background, no gradient — per design system, gradients are
+    // reserved for the connect button / primary CTA, never page backgrounds.
     return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [Colors.white, Color(0xFFF8F9FA), Color(0xFFE9ECEF)],
-          ),
-        ),
-        child: SafeArea(
-          child: Column(
-            children: [
-              // Skip button
-              if (currentStepData.showSkip) ...[
-                Align(
-                  alignment: Alignment.topRight,
-                  child: Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: TextButton(
-                      onPressed: ConfigService.canSkipOnboarding
-                          ? _skipOnboarding
-                          : null,
-                      child: Text(
-                        'Skip',
-                        style: TextStyle(
-                          color: ConfigService.canSkipOnboarding
-                              ? const Color(0xFF6C757D)
-                              : const Color(0xFF6C757D).withOpacity(0.3),
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-
-              // Main content
-              Expanded(
+      backgroundColor: AppColors.bgLight,
+      body: SafeArea(
+        child: Column(
+          children: [
+            // Skip button
+            if (currentStepData.showSkip) ...[
+              Align(
+                alignment: Alignment.topRight,
                 child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: FadeTransition(
-                    opacity: _fadeAnimation,
-                    child: ScaleTransition(
-                      scale: _slideAnimation,
-                      child: _buildStepContent(currentStepData),
+                  padding: const EdgeInsets.all(20),
+                  child: TextButton(
+                    onPressed:
+                        ConfigService.canSkipOnboarding
+                            ? _skipOnboarding
+                            : null,
+                    child: Text(
+                      'Skip',
+                      style: TextStyle(
+                        color:
+                            ConfigService.canSkipOnboarding
+                                ? AppColors.textMuted
+                                : AppColors.textMuted.withValues(alpha: 0.3),
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
                 ),
               ),
+            ],
 
-              // Navigation buttons
-              Container(
-                padding: const EdgeInsets.all(20),
-                child: Row(
-                  children: [
-                    if (_currentStep > 0) ...[
-                      Expanded(
-                        child: OutlinedButton(
-                          onPressed: _previousStep,
-                          style: OutlinedButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(vertical: 16),
-                            side: const BorderSide(color: Color(0xFF4A90E2)),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
-                          child: const Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.arrow_back, color: Color(0xFF4A90E2)),
-                              SizedBox(width: 8),
-                              Text(
-                                'Back',
-                                style: TextStyle(
-                                  color: Color(0xFF4A90E2),
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 16),
-                    ],
+            // Main content
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: FadeTransition(
+                  opacity: _fadeAnimation,
+                  child: ScaleTransition(
+                    scale: _slideAnimation,
+                    child: _buildStepContent(currentStepData),
+                  ),
+                ),
+              ),
+            ),
+
+            // Navigation buttons
+            Container(
+              padding: const EdgeInsets.all(20),
+              child: Row(
+                children: [
+                  if (_currentStep > 0) ...[
                     Expanded(
-                      child: ElevatedButton(
-                        onPressed: currentStepData.isWelcome
-                            ? _openTelegramBot
-                            : _nextStep,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: currentStepData.color,
-                          foregroundColor: Colors.white,
+                      child: OutlinedButton(
+                        onPressed: _previousStep,
+                        style: OutlinedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 16),
+                          side: const BorderSide(color: AppColors.brandBlue),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
-                        child: Row(
+                        child: const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
+                            Icon(Icons.arrow_back, color: AppColors.brandBlue),
+                            SizedBox(width: 8),
                             Text(
-                              currentStepData.isWelcome
-                                  ? (ConfigService.requiresTelegramBot
-                                        ? 'Go to telegram bot'
-                                        : 'Go to telegram bot (optional)')
-                                  : (currentStepData.isLast
-                                        ? 'Get Started'
-                                        : 'Next'),
-                              style: const TextStyle(
+                              'Back',
+                              style: TextStyle(
+                                color: AppColors.brandBlue,
                                 fontWeight: FontWeight.w600,
                               ),
-                            ),
-                            const SizedBox(width: 8),
-                            Icon(
-                              currentStepData.isWelcome
-                                  ? Icons.telegram
-                                  : Icons.arrow_forward,
                             ),
                           ],
                         ),
                       ),
                     ),
+                    const SizedBox(width: 16),
                   ],
-                ),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed:
+                          currentStepData.isWelcome
+                              ? _openTelegramBot
+                              : _nextStep,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: currentStepData.color,
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            currentStepData.isWelcome
+                                ? (ConfigService.requiresTelegramBot
+                                    ? 'Go to telegram bot'
+                                    : 'Go to telegram bot (optional)')
+                                : (currentStepData.isLast
+                                    ? 'Get Started'
+                                    : 'Next'),
+                            style: const TextStyle(fontWeight: FontWeight.w600),
+                          ),
+                          const SizedBox(width: 8),
+                          Icon(
+                            currentStepData.isWelcome
+                                ? Icons.telegram
+                                : Icons.arrow_forward,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -293,13 +290,13 @@ class _OnboardingScreenState extends State<OnboardingScreen>
             width: 120,
             height: 120,
             decoration: BoxDecoration(
-              color: step.color.withOpacity(0.1),
+              color: step.color.withValues(alpha: 0.1),
               shape: BoxShape.circle,
             ),
             child: const Icon(
               Icons.vpn_key,
               size: 60,
-              color: Color(0xFF0088CC),
+              color: AppColors.brandBlue,
             ),
           ),
           const SizedBox(height: 16),
@@ -308,7 +305,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
             style: const TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
-              color: Color(0xFF0088CC),
+              color: AppColors.brandBlue,
             ),
           ),
           const SizedBox(height: 32),
@@ -318,7 +315,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
             width: 120,
             height: 120,
             decoration: BoxDecoration(
-              color: step.color.withOpacity(0.1),
+              color: step.color.withValues(alpha: 0.1),
               shape: BoxShape.circle,
             ),
             child: Icon(step.icon, size: 60, color: step.color),
@@ -332,7 +329,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
           style: const TextStyle(
             fontSize: 28,
             fontWeight: FontWeight.bold,
-            color: Color(0xFF212529),
+            color: AppColors.textPrimaryLight,
           ),
           textAlign: TextAlign.center,
         ),
@@ -343,7 +340,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
           step.description,
           style: const TextStyle(
             fontSize: 16,
-            color: Color(0xFF6C757D),
+            color: AppColors.textMuted,
             height: 1.5,
           ),
           textAlign: TextAlign.center,
@@ -355,7 +352,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             decoration: BoxDecoration(
-              color: const Color(0xFF0088CC),
+              color: AppColors.brandBlue,
               borderRadius: BorderRadius.circular(20),
             ),
             child: Text(
