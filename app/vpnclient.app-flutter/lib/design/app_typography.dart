@@ -18,6 +18,7 @@ class AppTypography {
         fontWeight: FontWeight.w700,
         fontSize: 40,
         height: 1.0,
+        letterSpacing: -0.4,
         color: primary,
       ),
       // Screen title (24 Semibold).

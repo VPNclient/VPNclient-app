@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import '../../design/app_colors.dart';
 import '../../design/app_spacing.dart';
+import '../../design/flags.dart';
+import '../../design/widgets/ping_badge.dart';
+import '../../design/widgets/surface_card.dart';
 import '../../l10n/app_localizations.dart';
-import '../../models/server.dart';
 import '../../models/subscription.dart';
 import '../../providers/subscription_provider.dart';
 import 'subscription_import_page.dart';
@@ -25,7 +28,6 @@ class _ServersPageState extends State<ServersPage> {
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
     final prov = context.watch<SubscriptionProvider>();
-    final theme = Theme.of(context);
 
     final filtered = prov.servers.where((s) {
       if (_query.isEmpty) return true;
@@ -260,67 +262,63 @@ class _ServerTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isAuto = flagCode == null;
-    return Container(
-      margin: const EdgeInsets.only(bottom: 6),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-      ),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 6),
+      child: SurfaceCard(
+        padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.md, vertical: AppSpacing.sm),
         onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-              horizontal: AppSpacing.md, vertical: AppSpacing.sm),
-          child: Row(
-            children: [
+        child: Row(
+          children: [
+            Container(
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: isAuto ? AppColors.brandGradient : null,
+                color: isAuto ? null : const Color(0xFFECEFF1),
+              ),
+              alignment: Alignment.center,
+              child: isAuto
+                  ? const Icon(Icons.bolt_rounded, color: Colors.white, size: 22)
+                  : ClipOval(
+                      child: SvgPicture.asset(
+                        AppFlags.forIsoCode(flagCode),
+                        width: 40,
+                        height: 40,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+            ),
+            const SizedBox(width: AppSpacing.sm),
+            Expanded(
+              child: Text(name, style: theme.textTheme.titleMedium),
+            ),
+            if (ping != null)
+              Padding(
+                padding: const EdgeInsets.only(right: AppSpacing.xs),
+                child: PingBadge(ping: '$ping'),
+              )
+            else if (subtitle != null)
+              Padding(
+                padding: const EdgeInsets.only(right: AppSpacing.xs),
+                child: Text(subtitle!,
+                    style: theme.textTheme.bodySmall
+                        ?.copyWith(color: AppColors.success)),
+              ),
+            if (selected)
               Container(
-                width: 40, height: 40,
+                width: 24,
+                height: 24,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  gradient: isAuto ? AppColors.brandGradient : null,
-                  color: isAuto ? null : const Color(0xFFECEFF1),
+                  color: theme.colorScheme.primary,
                 ),
-                alignment: Alignment.center,
-                child: isAuto
-                    ? const Icon(Icons.bolt_rounded,
-                        color: Colors.white, size: 22)
-                    : Text(flagCode!,
-                        style: theme.textTheme.bodySmall?.copyWith(
-                            fontWeight: FontWeight.w600)),
-              ),
-              const SizedBox(width: AppSpacing.sm),
-              Expanded(
-                child: Text(name, style: theme.textTheme.titleMedium),
-              ),
-              if (ping != null)
-                Padding(
-                  padding: const EdgeInsets.only(right: AppSpacing.xs),
-                  child: Text('$ping ms',
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: AppColors.pingColor(ping!),
-                      )),
-                )
-              else if (subtitle != null)
-                Padding(
-                  padding: const EdgeInsets.only(right: AppSpacing.xs),
-                  child: Text(subtitle!,
-                      style: theme.textTheme.bodySmall
-                          ?.copyWith(color: AppColors.success)),
-                ),
-              if (selected)
-                Container(
-                  width: 24, height: 24,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: theme.colorScheme.primary,
-                  ),
-                  child: const Icon(Icons.check, color: Colors.white, size: 14),
-                )
-              else
-                const Icon(Icons.chevron_right, color: AppColors.textMuted),
-            ],
-          ),
+                child: const Icon(Icons.check, color: Colors.white, size: 14),
+              )
+            else
+              const Icon(Icons.chevron_right, color: AppColors.textMuted),
+          ],
         ),
       ),
     );

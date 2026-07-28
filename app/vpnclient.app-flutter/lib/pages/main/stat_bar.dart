@@ -1,83 +1,78 @@
 import 'package:flutter/material.dart';
-import 'package:vpn_client/design/dimensions.dart';
-
+import 'package:provider/provider.dart';
+import '../../design/app_spacing.dart';
 import '../../design/custom_icons.dart';
+import '../../vpn_state.dart';
 
-class StatBar extends StatefulWidget {
+/// Download / upload / ping stat tiles above the connect button.
+///
+/// STUB: no real traffic/latency measurement exists anywhere in the app yet
+/// (tracked in flows/sdd-vpnclient-vpnengine) — values are an intentional
+/// static placeholder, not fabricated live-looking numbers, so this reads as
+/// "not wired up yet" rather than silently fake.
+class StatBar extends StatelessWidget {
   const StatBar({super.key});
 
-  @override
-  State<StatBar> createState() => StatBarState();
-}
+  static const _placeholder = '—';
 
-class StatBarState extends State<StatBar> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(top: 37),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          _buildStatItem(CustomIcons.download, '0 Mb/s', context),
-          _buildStatItem(CustomIcons.upload, '0 Mb/s', context),
-          _buildStatItem(CustomIcons.ping, '0 ms', context),
-        ],
-      ),
+    final connected = context.watch<VpnState>().isConnected;
+    return Row(
+      children: [
+        Expanded(
+          child: _StatTile(
+            icon: CustomIcons.download,
+            value: connected ? _placeholder : '0 MB/s',
+          ),
+        ),
+        const SizedBox(width: AppSpacing.sm),
+        Expanded(
+          child: _StatTile(
+            icon: CustomIcons.upload,
+            value: connected ? _placeholder : '0 MB/s',
+          ),
+        ),
+        const SizedBox(width: AppSpacing.sm),
+        Expanded(
+          child: _StatTile(
+            icon: CustomIcons.ping,
+            value: connected ? _placeholder : '0 ms',
+          ),
+        ),
+      ],
     );
   }
+}
 
-  Widget _buildStatItem(IconData icon, String text, BuildContext context) {
+class _StatTile extends StatelessWidget {
+  final IconData icon;
+  final String value;
+  const _StatTile({required this.icon, required this.value});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Container(
-      width:
-          (MediaQuery.of(context).size.width / 3) - 20, // Para dar algum espaço
-      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+      height: AppSpacing.tileHeight,
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.onSurface,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-            color: Theme.of(
-              context,
-            ).shadowColor.withAlpha((255 * 0.1).round()), // Usar cor do tema
-            offset: const Offset(0.0, 2.0),
-            blurRadius: 8.0,
-          ),
-        ],
+        color: theme.colorScheme.surface,
+        borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
       ),
-      // Se precisar de ação de clique, envolva com InkWell ou GestureDetector
-      // InkWell(
-      //   onTap: () {},
-      //   borderRadius: BorderRadius.circular(12),
-      //   child: ...
-      // )
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            padding: const EdgeInsets.all(
-              4,
-            ), // Espaçamento interno para o ícone
+            width: 28,
+            height: 28,
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.primary.withAlpha(
-                (255 * 0.1).round(),
-              ), // Cor de fundo suave
-              borderRadius: BorderRadius.circular(8.0),
+              color: theme.colorScheme.primary.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
             ),
-            child: Icon(
-              icon,
-              size: 22,
-              color: Theme.of(context).colorScheme.primary,
-            ),
+            child: Icon(icon, size: 16, color: theme.colorScheme.primary),
           ),
-          const SizedBox(height: 8),
-          Text(
-            text,
-            style: TextStyle(
-              fontSize: fontSize14, // Usando constante de dimensions.dart
-              fontWeight: FontWeight.w500,
-              color: Theme.of(context).colorScheme.primary,
-            ),
-          ),
+          const SizedBox(height: 4),
+          Text(value, style: theme.textTheme.bodySmall),
         ],
       ),
     );

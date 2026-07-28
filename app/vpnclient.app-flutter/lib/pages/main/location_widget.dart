@@ -1,104 +1,78 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:vpn_client/l10n/app_localizations.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
+import '../../design/app_colors.dart';
+import '../../design/app_spacing.dart';
+import '../../design/flags.dart';
+import '../../l10n/app_localizations.dart';
+import '../../vpn_state.dart';
 
-
+/// "Your location" card — currently-selected server, tap to open Servers.
+/// Reads the real [VpnState.selectedServerName]/[selectedFlagCode].
 class LocationWidget extends StatelessWidget {
-  final String title;
-  final Map<String, dynamic>? selectedServer;
-  final VoidCallback? onTap;
-
-  const LocationWidget({
-    super.key,
-    required this.title,
-    this.selectedServer,
-    this.onTap,
-  });
+  final VoidCallback onTap;
+  const LocationWidget({super.key, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
-    final String locationName = selectedServer?['text'] ?? '...'; final String iconPath = selectedServer?['icon'] ?? 'assets/images/flags/auto.svg';
+    final vpn = context.watch<VpnState>();
+    final l = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final flagCode = vpn.selectedFlagCode;
+    final isAuto = flagCode == null;
 
-    return GestureDetector( onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.only(left: 14),
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.onSurface,
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Row(
-          children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                    color: Theme.of(context).colorScheme.secondary,
-                  ),
-                ),
-                Text(
-                  locationName,
-                  style: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.w400,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                ),
-              ],
-            ),
-            const Spacer(),
-            Column(
-              children: [
-                const SizedBox(height: 20),
-                SvgPicture.asset(iconPath, width: 48, height: 48),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.onSurface,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Row(
-        children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return Material(
+      color: theme.colorScheme.surface,
+      borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.all(AppSpacing.md),
+          child: Row(
             children: [
-              Text(
-                AppLocalizations.of(context).your_location,
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                  color: Theme.of(context).colorScheme.secondary,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      l.your_location,
+                      style: theme.textTheme.bodySmall
+                          ?.copyWith(color: AppColors.textMuted),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      vpn.selectedServerName ?? l.auto_select,
+                      style: theme.textTheme.titleMedium,
+                    ),
+                  ],
                 ),
               ),
-              Text(
-                locationName,
-                style: TextStyle(
-                  fontSize: 17,
-                  fontWeight: FontWeight.w400,
-                  color: Theme.of(context).colorScheme.primary,
+              Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: isAuto ? AppColors.brandGradient : null,
+                  color: isAuto ? null : const Color(0xFFECEFF1),
+                ),
+                child: Center(
+                  child: isAuto
+                      ? const Icon(Icons.bolt_rounded,
+                          color: Colors.white, size: 22)
+                      : ClipOval(
+                          child: SvgPicture.asset(
+                            AppFlags.forIsoCode(flagCode),
+                            width: 40,
+                            height: 40,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                 ),
               ),
             ],
           ),
-          const Spacer(),
-          Column(
-            children: [
-              SizedBox(height: 20),
-              SvgPicture.asset(iconPath, width: 48, height: 48),
-            ],
-          ),
-        ],
+        ),
       ),
     );
   }
