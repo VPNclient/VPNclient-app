@@ -1,0 +1,30 @@
+{
+    "@@locale": "th",
+    "app_name": "VPN Client",
+    "apps_selection": "เลือกแอป",
+    "search": "ค้นหา",
+    "your_location": "ตำแหน่งของคุณ",
+    "auto_select": "เลือกอัตโนมัติ",
+    "kazakhstan": "คาซัคสถาน",
+    "turkey": "ตุรกี",
+    "poland": "โปแลนด์",
+    "fastest": "เร็วที่สุด",
+    "selected_server": "เซิร์ฟเวอร์ที่เลือก",
+    "server_selection": "เลือกเซิร์ฟเวอร์",
+    "all_servers": "เซิร์ฟเวอร์ทั้งหมด",
+    "country_name": "ชื่อประเทศ",
+    "all_apps": "แอปทั้งหมด",
+    "done": "เสร็จสิ้น",
+    "cancel": "ยกเลิก",
+    "recently_searched": "การค้นหาล่าสุด",
+    "nothing_found": "ไม่พบข้อมูล",
+    "connected": "เชื่อมต่อแล้ว",
+    "disconnected": "ไม่ได้เชื่อมต่อ",
+    "connecting": "กำลังเชื่อมต่อ",
+    "disconnecting": "กำลังตัดการเชื่อมต่อ"
+
+
+
+
+}
+  
