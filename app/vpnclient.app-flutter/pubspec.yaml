@@ -43,6 +43,8 @@ flutter:
   assets:
     - assets/images/
     - assets/images/flags/
+    - assets/images/apps/
+    - assets/images/payment/
     - assets/lang/en.json
     - assets/lang/zh.json
     - assets/lang/ru.json
