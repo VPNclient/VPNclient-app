@@ -7,6 +7,8 @@ import 'package:intl/intl.dart' as intl;
 
 import 'app_localizations_en.dart';
 import 'app_localizations_ru.dart';
+import 'app_localizations_th.dart';
+import 'app_localizations_zh.dart';
 
 // ignore_for_file: type=lint
 
@@ -96,6 +98,8 @@ abstract class AppLocalizations {
   static const List<Locale> supportedLocales = <Locale>[
     Locale('en'),
     Locale('ru'),
+    Locale('th'),
+    Locale('zh'),
   ];
 
   /// No description provided for @appName.
@@ -439,6 +443,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Settings reset'**
   String get connection_reset;
+
+  /// No description provided for @skip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get skip;
+
+  /// No description provided for @back.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get back;
+
+  /// No description provided for @next.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get next;
+
+  /// No description provided for @get_started.
+  ///
+  /// In en, this message translates to:
+  /// **'Get Started'**
+  String get get_started;
+
+  /// No description provided for @onboarding_welcome_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome'**
+  String get onboarding_welcome_title;
+
+  /// No description provided for @onboarding_welcome_desc_required.
+  ///
+  /// In en, this message translates to:
+  /// **'To connect, go to the telegram bot to get your unique subscription'**
+  String get onboarding_welcome_desc_required;
+
+  /// No description provided for @onboarding_welcome_desc_optional.
+  ///
+  /// In en, this message translates to:
+  /// **'To connect, go to the telegram bot (optional)'**
+  String get onboarding_welcome_desc_optional;
+
+  /// No description provided for @onboarding_received_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings Received'**
+  String get onboarding_received_title;
+
+  /// No description provided for @onboarding_received_desc_required.
+  ///
+  /// In en, this message translates to:
+  /// **'Your unique subscription has been successfully received'**
+  String get onboarding_received_desc_required;
+
+  /// No description provided for @onboarding_received_desc_optional.
+  ///
+  /// In en, this message translates to:
+  /// **'Your settings have been successfully received'**
+  String get onboarding_received_desc_optional;
+
+  /// No description provided for @onboarding_cta_telegram.
+  ///
+  /// In en, this message translates to:
+  /// **'Go to telegram bot'**
+  String get onboarding_cta_telegram;
+
+  /// No description provided for @onboarding_cta_telegram_optional.
+  ///
+  /// In en, this message translates to:
+  /// **'Go to telegram bot (optional)'**
+  String get onboarding_cta_telegram_optional;
 }
 
 class _AppLocalizationsDelegate
@@ -452,7 +528,7 @@ class _AppLocalizationsDelegate
 
   @override
   bool isSupported(Locale locale) =>
-      <String>['en', 'ru'].contains(locale.languageCode);
+      <String>['en', 'ru', 'th', 'zh'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
@@ -465,6 +541,10 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
       return AppLocalizationsEn();
     case 'ru':
       return AppLocalizationsRu();
+    case 'th':
+      return AppLocalizationsTh();
+    case 'zh':
+      return AppLocalizationsZh();
   }
 
   throw FlutterError(

@@ -56,5 +56,17 @@
   "cancel": "Cancel",
   "reset": "Reset",
   "are_you_sure_reset": "This will restore theme and language to their defaults. This can't be undone.",
-  "connection_reset": "Settings reset"
+  "connection_reset": "Settings reset",
+  "skip": "Skip",
+  "back": "Back",
+  "next": "Next",
+  "get_started": "Get Started",
+  "onboarding_welcome_title": "Welcome",
+  "onboarding_welcome_desc_required": "To connect, go to the telegram bot to get your unique subscription",
+  "onboarding_welcome_desc_optional": "To connect, go to the telegram bot (optional)",
+  "onboarding_received_title": "Settings Received",
+  "onboarding_received_desc_required": "Your unique subscription has been successfully received",
+  "onboarding_received_desc_optional": "Your settings have been successfully received",
+  "onboarding_cta_telegram": "Go to telegram bot",
+  "onboarding_cta_telegram_optional": "Go to telegram bot (optional)"
 }

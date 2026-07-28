@@ -56,5 +56,17 @@
   "cancel": "Отмена",
   "reset": "Сбросить",
   "are_you_sure_reset": "Тема и язык будут возвращены к значениям по умолчанию. Это действие нельзя отменить.",
-  "connection_reset": "Настройки сброшены"
+  "connection_reset": "Настройки сброшены",
+  "skip": "Пропустить",
+  "back": "Назад",
+  "next": "Далее",
+  "get_started": "Начать",
+  "onboarding_welcome_title": "Добро пожаловать",
+  "onboarding_welcome_desc_required": "Для подключения перейдите в телеграм-бот, чтобы получить уникальную подписку",
+  "onboarding_welcome_desc_optional": "Для подключения перейдите в телеграм-бот (по желанию)",
+  "onboarding_received_title": "Настройки получены",
+  "onboarding_received_desc_required": "Ваша уникальная подписка успешно получена",
+  "onboarding_received_desc_optional": "Ваши настройки успешно получены",
+  "onboarding_cta_telegram": "Перейти в телеграм-бот",
+  "onboarding_cta_telegram_optional": "Перейти в телеграм-бот (по желанию)"
 }

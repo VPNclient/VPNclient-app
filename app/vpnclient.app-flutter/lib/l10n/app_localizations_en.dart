@@ -188,4 +188,45 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get connection_reset => 'Settings reset';
+
+  @override
+  String get skip => 'Skip';
+
+  @override
+  String get back => 'Back';
+
+  @override
+  String get next => 'Next';
+
+  @override
+  String get get_started => 'Get Started';
+
+  @override
+  String get onboarding_welcome_title => 'Welcome';
+
+  @override
+  String get onboarding_welcome_desc_required =>
+      'To connect, go to the telegram bot to get your unique subscription';
+
+  @override
+  String get onboarding_welcome_desc_optional =>
+      'To connect, go to the telegram bot (optional)';
+
+  @override
+  String get onboarding_received_title => 'Settings Received';
+
+  @override
+  String get onboarding_received_desc_required =>
+      'Your unique subscription has been successfully received';
+
+  @override
+  String get onboarding_received_desc_optional =>
+      'Your settings have been successfully received';
+
+  @override
+  String get onboarding_cta_telegram => 'Go to telegram bot';
+
+  @override
+  String get onboarding_cta_telegram_optional =>
+      'Go to telegram bot (optional)';
 }

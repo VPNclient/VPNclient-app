@@ -189,4 +189,45 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get connection_reset => 'Настройки сброшены';
+
+  @override
+  String get skip => 'Пропустить';
+
+  @override
+  String get back => 'Назад';
+
+  @override
+  String get next => 'Далее';
+
+  @override
+  String get get_started => 'Начать';
+
+  @override
+  String get onboarding_welcome_title => 'Добро пожаловать';
+
+  @override
+  String get onboarding_welcome_desc_required =>
+      'Для подключения перейдите в телеграм-бот, чтобы получить уникальную подписку';
+
+  @override
+  String get onboarding_welcome_desc_optional =>
+      'Для подключения перейдите в телеграм-бот (по желанию)';
+
+  @override
+  String get onboarding_received_title => 'Настройки получены';
+
+  @override
+  String get onboarding_received_desc_required =>
+      'Ваша уникальная подписка успешно получена';
+
+  @override
+  String get onboarding_received_desc_optional =>
+      'Ваши настройки успешно получены';
+
+  @override
+  String get onboarding_cta_telegram => 'Перейти в телеграм-бот';
+
+  @override
+  String get onboarding_cta_telegram_optional =>
+      'Перейти в телеграм-бот (по желанию)';
 }
