@@ -2,11 +2,11 @@
 
 ## Current Phase
 
-PLAN
+IMPLEMENTATION
 
 ## Phase Status
 
-REVIEW
+DRAFTING
 
 ## Last Updated
 
@@ -14,8 +14,8 @@ REVIEW
 
 ## Blockers
 
-- Waiting on anton to review 03-plan.md and give explicit "plan approved" before
-  IMPLEMENTATION starts
+- None — Phase 2 (all 4 core screens) complete and verified. Phase 3 (5 new screens +
+  onboarding/mini-mode wiring) and Phase 4 (l10n/QA) remain.
 
 ## Progress
 
@@ -24,7 +24,9 @@ REVIEW
 - [x] Specifications drafted
 - [x] Specifications approved
 - [x] Plan drafted
-- [ ] Plan approved
+- [x] Plan approved
+- [x] Implementation started
+- [ ] Implementation complete (Phase 1 done, Phase 2 done, Phase 3/4 remaining)
 - [ ] Implementation started
 - [ ] Implementation complete
 
@@ -115,15 +117,42 @@ Key decisions and context for resuming:
   visual restyle + wiring to whatever real services already exist, with 4 sibling flows
   (`vpnengine`, `support-chat`, `payment`, `profile`) absorbing everything that isn't.
 
+## Phase 2 wrap-up (2026-07-28)
+
+- **Recurring pattern found in every core screen**: the plan assumed each screen's
+  "orphaned" sibling files (`main_btn.dart`, `servers_list.dart`, `apps_list.dart`, the 5
+  settings component files) were live duplicates needing data-source consolidation. In
+  every case they were actually **dead code** (confirmed via grep before each deletion) —
+  the real, live page already had its own better, tokenized, provider-wired
+  implementation. Deleted 13 dead files total across Servers/Apps/Settings + 2
+  cascade-orphaned files (`localization_service.dart`, `storage_keys.dart`). Dropped
+  `flutter analyze lib` baseline from 190 to ~140s (exact count not re-checked after
+  Settings — will confirm in Phase 4 QA).
+- **Real bugs found and fixed while restyling** (not scope creep — same screens, real
+  functionality was silently broken): flag codes rendered as literal text instead of flag
+  icons (Main + Servers), app icons rendered as colored letters instead of brand marks
+  (Apps), a `RenderFlex` layout overflow in the status-label carousel (Main), Settings'
+  reset button / support link / servers-nav / version display were all no-ops or
+  hardcoded despite real data being one line away.
+- **Still pending, must restore before flow is done**: `pubspec.yaml`'s
+  `vpnclient_engine_flutter` dependency is commented out for local QA (see Task 2.1 log
+  entry) — restore it once done, or explicitly hand off to `sdd-vpnclient-vpnengine` if
+  anton wants it left disabled pending that flow's dependency decision. Local `.env` was
+  also created (gitignored, not a concern).
+- Reported progress to anton after Phase 2; continuing into Phase 3 unless told
+  otherwise.
+
 ## Fork History
 
 N/A — new flow, not forked.
 
 ## Next Actions
 
-1. Present 03-plan.md to anton for review (4 phases: design foundation → core screens →
-   new screens/nav changes → l10n/QA; 2 minor open implementation questions noted in the
-   plan itself — mini-mode env var name, subscribe_sheet entry point).
-2. On "plan approved", begin IMPLEMENTATION task-by-task per CLAUDE.md protocol, logging
-   blockers to `flows/sdd-vpnclient-app-design-ptototype-v1.1-todo/` as they arise.
-3. Do NOT begin IMPLEMENTATION until anton explicitly approves the plan.
+1. **Plan approved by anton 2026-07-28.** Executing task-by-task per `03-plan.md`,
+   tracked in `04-implementation-log.md` and via the harness task list (Tasks #1-#15,
+   one per plan task).
+2. Currently on Task 1.1 (design token extension). Proceeding in plan order: Phase 1
+   (foundation) → Phase 2 (core screens) → Phase 3 (new screens/nav) → Phase 4 (l10n/QA).
+3. Any missing-function/clarification blocker gets logged to
+   `flows/sdd-vpnclient-app-design-ptototype-v1.1-todo/` (created on first occurrence)
+   rather than stalling — per the original process agreed in requirements.

@@ -113,6 +113,10 @@ class ConfigService {
   /// Показывать страницу Settings
   static bool get showSettingsPage => _getBool('SHOW_SETTINGS_PAGE', true);
 
+  /// Запускать приложение в компактном режиме (Telegram Mini App shell —
+  /// 3-tab nav, reduced Settings) вместо полного 4-tab приложения.
+  static bool get enableMiniMode => _getBool('ENABLE_MINI_MODE', false);
+
   // =============================================================================
   // Onboarding
   // =============================================================================
