@@ -20,7 +20,8 @@ class AppSpacing {
 
   // Radius
   static const double radiusSm = 8;
-  static const double radiusMd = 12;
+  /// Card corner radius — 10 per Figma/design-system (was 12, corrected to match v1.1).
+  static const double radiusMd = 10;
   static const double radiusLg = 16;
   static const double radiusPill = 999;
 
@@ -28,6 +29,7 @@ class AppSpacing {
   static const double tileHeight = 64;
   static const double connectBtn = 150;
   static const double bottomNav = 92;
+  static const double tabIcon = 44;
 
   // Breakpoints
   static const double tabletBreakpoint = 600;

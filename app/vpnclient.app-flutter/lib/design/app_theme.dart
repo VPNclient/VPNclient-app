@@ -35,7 +35,7 @@ class AppTheme {
           onSecondary: Colors.white,
           surface: AppColors.surfaceDark,
           onSurface: AppColors.textPrimaryDark,
-          surfaceContainerHighest: Color(0xFF222B33),
+          surfaceContainerHighest: AppColors.surfaceDark2,
           error: AppColors.danger,
           onError: Colors.white,
         ),
@@ -85,7 +85,7 @@ class AppTheme {
         trackColor: WidgetStateProperty.resolveWith(
           (s) => s.contains(WidgetState.selected)
               ? scheme.primary
-              : (isDark ? const Color(0xFF3A4750) : const Color(0xFFE0E0E0)),
+              : (isDark ? AppColors.switchTrackDark : AppColors.disabled),
         ),
         trackOutlineColor:
             const WidgetStatePropertyAll<Color>(Colors.transparent),
