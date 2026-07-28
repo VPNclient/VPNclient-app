@@ -112,6 +112,36 @@ this flow's — do not start that work under this flow.
 
 ---
 
+### Post-completion amendment — 2026-07-28, from `flows/sdd-flutter-vpnclient-engine/`
+
+**Source**: Task 0.1 of `flows/sdd-flutter-vpnclient-engine/03-plan.md` (porting real
+functionality into `vpnclient_engine_flutter`, using this package's API as the source
+of truth). While designing how the real engine should report connection failures, that
+flow found the real native status API only ever returns an undifferentiated int error
+code (no reason text) — reusing this mock's `ConnectionFailed(reason)` as-is would have
+forced the real port to either fabricate descriptive text it can't back up, or discard
+the one real signal (the raw code) it does have.
+
+**Change**: `ConnectionFailed` gained an optional `nativeErrorCode` field:
+```dart
+const ConnectionFailed(this.reason, {this.nativeErrorCode});
+final int? nativeErrorCode;
+```
+Non-breaking — all existing positional-only call sites (`ConnectionFailed('...')`)
+across this package's own tests and `flows/sdd-vpnclient-vpnengine/`'s specs are
+unaffected. This mock leaves `nativeErrorCode` null (fault injection only ever
+constructs a `reason` string); real engines can populate it.
+**Files changed**: `lib/src/engine/connection_state.dart`,
+`test/engine/connection_state_test.dart` (added a case). Full suite re-run: 54/54
+passing (53 pre-existing + 1 new), `flutter analyze` clean.
+
+This is the package's **1st** post-completion amendment (the previously-planned
+`pingServer`/`onPingResult` amendment from `flows/sdd-vpnclient-vpnengine/`'s Resolved
+Decision 7 has been designed but not yet implemented anywhere as of this entry — that
+flow's own plan is not yet approved).
+
+---
+
 ## Deviations Summary
 
 | Planned | Actual | Reason |

@@ -18,6 +18,13 @@ REVIEW
   (ping redesigned to match `vpnclient_engine_flutter`'s existing shape, plus the new
   standing Engine-Ownership Porting Policy) and give explicit "specs approved" before
   PLAN starts
+- **Heads up from `flows/sdd-flutter-vpnclient-engine/`** (new sibling flow, porting
+  real functionality into `vpnclient_engine_flutter`): `ConnectionFailed` in
+  `flutter_vpnclient_engine_mock` is getting a 2nd amendment — an optional
+  `nativeErrorCode` field alongside the existing `reason` (`const ConnectionFailed(this.reason, {this.nativeErrorCode})`).
+  Non-breaking for this flow's existing `ConnectionFailed(reason)` usage throughout
+  02-specifications.md — no action needed here, just noting it so this flow's docs
+  aren't surprised by the mock gaining a field later.
 
 ## Progress
 
