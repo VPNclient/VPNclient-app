@@ -3,8 +3,11 @@ import 'package:provider/provider.dart';
 import '../../design/app_spacing.dart';
 import '../../design/custom_icons.dart';
 import '../../vpn_state.dart';
+import '../info/info_page.dart';
 
-/// Download / upload / ping stat tiles above the connect button.
+/// Download / upload / ping stat tiles above the connect button. Tapping any
+/// tile opens the speed-test screen ([InfoPage]) — its real entry point,
+/// matching the common VPN-app pattern of stats-tap-through-to-detail.
 ///
 /// STUB: no real traffic/latency measurement exists anywhere in the app yet
 /// (tracked in flows/sdd-vpnclient-vpnengine) — values are an intentional
@@ -15,6 +18,12 @@ class StatBar extends StatelessWidget {
 
   static const _placeholder = '—';
 
+  void _openInfo(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (_) => const InfoPage()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final connected = context.watch<VpnState>().isConnected;
@@ -24,6 +33,7 @@ class StatBar extends StatelessWidget {
           child: _StatTile(
             icon: CustomIcons.download,
             value: connected ? _placeholder : '0 MB/s',
+            onTap: () => _openInfo(context),
           ),
         ),
         const SizedBox(width: AppSpacing.sm),
@@ -31,6 +41,7 @@ class StatBar extends StatelessWidget {
           child: _StatTile(
             icon: CustomIcons.upload,
             value: connected ? _placeholder : '0 MB/s',
+            onTap: () => _openInfo(context),
           ),
         ),
         const SizedBox(width: AppSpacing.sm),
@@ -38,6 +49,7 @@ class StatBar extends StatelessWidget {
           child: _StatTile(
             icon: CustomIcons.ping,
             value: connected ? _placeholder : '0 ms',
+            onTap: () => _openInfo(context),
           ),
         ),
       ],
@@ -48,32 +60,37 @@ class StatBar extends StatelessWidget {
 class _StatTile extends StatelessWidget {
   final IconData icon;
   final String value;
-  const _StatTile({required this.icon, required this.value});
+  final VoidCallback onTap;
+  const _StatTile({required this.icon, required this.value, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Container(
-      height: AppSpacing.tileHeight,
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
+    return Material(
+      color: theme.colorScheme.surface,
+      borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+      child: InkWell(
         borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            width: 28,
-            height: 28,
-            decoration: BoxDecoration(
-              color: theme.colorScheme.primary.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
-            ),
-            child: Icon(icon, size: 16, color: theme.colorScheme.primary),
+        onTap: onTap,
+        child: SizedBox(
+          height: AppSpacing.tileHeight,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                width: 28,
+                height: 28,
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.primary.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
+                ),
+                child: Icon(icon, size: 16, color: theme.colorScheme.primary),
+              ),
+              const SizedBox(height: 4),
+              Text(value, style: theme.textTheme.bodySmall),
+            ],
           ),
-          const SizedBox(height: 4),
-          Text(value, style: theme.textTheme.bodySmall),
-        ],
+        ),
       ),
     );
   }

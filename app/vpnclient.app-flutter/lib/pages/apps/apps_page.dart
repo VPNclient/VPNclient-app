@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import '../../design/app_colors.dart';
+import '../../design/app_icons.dart';
 import '../../design/app_spacing.dart';
+import '../../design/widgets/surface_card.dart';
 import '../../l10n/app_localizations.dart';
 import '../../providers/split_tunnel_provider.dart';
 
@@ -23,7 +26,6 @@ class _AppsPageState extends State<AppsPage> {
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
     final prov = context.watch<SplitTunnelProvider>();
-    final theme = Theme.of(context);
 
     final apps = prov.apps.where((a) {
       if (_query.isEmpty) return true;
@@ -62,7 +64,7 @@ class _AppsPageState extends State<AppsPage> {
           ),
           for (final a in apps)
             _AppRow(
-              iconWidget: _AppIcon(letter: a.name[0], color: a.color),
+              iconWidget: _AppIcon(name: a.name, color: a.color),
               title: a.name,
               subtitle: a.packageName,
               value: prov.isEnabled(a.packageName),
@@ -176,56 +178,66 @@ class _AppRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Container(
-      margin: const EdgeInsets.only(bottom: 6),
-      padding: const EdgeInsets.symmetric(
-          horizontal: AppSpacing.md, vertical: AppSpacing.sm),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-      ),
-      child: Row(
-        children: [
-          SizedBox(width: 36, height: 36, child: iconWidget),
-          const SizedBox(width: AppSpacing.sm),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(title, style: theme.textTheme.titleMedium),
-                if (subtitle != null) ...[
-                  const SizedBox(height: 2),
-                  Text(subtitle!,
-                      style: theme.textTheme.bodySmall
-                          ?.copyWith(color: AppColors.textMuted)),
-                ]
-              ],
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 6),
+      child: SurfaceCard(
+        padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.md, vertical: AppSpacing.sm),
+        child: Row(
+          children: [
+            SizedBox(width: 36, height: 36, child: iconWidget),
+            const SizedBox(width: AppSpacing.sm),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(title, style: theme.textTheme.titleMedium),
+                  if (subtitle != null) ...[
+                    const SizedBox(height: 2),
+                    Text(subtitle!,
+                        style: theme.textTheme.bodySmall
+                            ?.copyWith(color: AppColors.textMuted)),
+                  ]
+                ],
+              ),
             ),
-          ),
-          Switch(value: value, onChanged: onChanged),
-        ],
+            Switch(value: value, onChanged: onChanged),
+          ],
+        ),
       ),
     );
   }
 }
 
+/// Real brand icon where the catalog has one (see [AppIcons]); falls back to
+/// a colored letter avatar (e.g. "Telegram" has no shipped brand asset).
 class _AppIcon extends StatelessWidget {
-  final String letter;
+  final String name;
   final Color color;
-  const _AppIcon({required this.letter, required this.color});
+  const _AppIcon({required this.name, required this.color});
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
-      ),
-      alignment: Alignment.center,
-      child: Text(
-        letter,
-        style: const TextStyle(
-            color: Colors.white, fontWeight: FontWeight.w600, fontSize: 16),
-      ),
+    final asset = AppIcons.forName(name);
+    if (asset == null) {
+      return Container(
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
+        ),
+        alignment: Alignment.center,
+        child: Text(
+          name[0],
+          style: const TextStyle(
+              color: Colors.white, fontWeight: FontWeight.w600, fontSize: 16),
+        ),
+      );
+    }
+    final child = asset.endsWith('.svg')
+        ? SvgPicture.asset(asset, width: 36, height: 36, fit: BoxFit.cover)
+        : Image.asset(asset, width: 36, height: 36, fit: BoxFit.cover);
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
+      child: child,
     );
   }
 }
@@ -236,14 +248,9 @@ class _Hint extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Container(
-      padding: const EdgeInsets.all(AppSpacing.md),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-      ),
+    return SurfaceCard(
       child: Row(children: [
-        Icon(Icons.info_outline_rounded,
+        const Icon(Icons.info_outline_rounded,
             color: AppColors.textMuted, size: 20),
         const SizedBox(width: AppSpacing.sm),
         Expanded(
