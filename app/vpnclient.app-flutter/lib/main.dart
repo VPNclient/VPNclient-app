@@ -5,6 +5,8 @@ import 'package:vpn_client/design/app_theme.dart';
 import 'package:vpn_client/l10n/app_localizations.dart';
 import 'package:vpn_client/pages/apps/apps_page.dart';
 import 'package:vpn_client/pages/main/main_page.dart';
+import 'package:vpn_client/pages/mini/mini_app_shell.dart';
+import 'package:vpn_client/pages/onboarding/onboarding_screen.dart';
 import 'package:vpn_client/pages/servers/servers_page.dart';
 import 'package:vpn_client/pages/settings/settings_page.dart';
 import 'package:vpn_client/providers/locale_provider.dart';
@@ -12,7 +14,6 @@ import 'package:vpn_client/providers/split_tunnel_provider.dart';
 import 'package:vpn_client/providers/subscription_provider.dart';
 import 'package:vpn_client/services/config_service.dart';
 import 'package:vpn_client/services/onboarding_service.dart';
-import 'package:vpn_client/services/vpn_service.dart';
 import 'package:vpn_client/theme_provider.dart';
 import 'package:vpn_client/vpn_state.dart';
 import 'package:vpn_client/widgets/responsive_scaffold.dart';
@@ -29,7 +30,6 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
         ChangeNotifierProvider(create: (_) => LocaleProvider()),
         ChangeNotifierProvider.value(value: onboardingService),
-        ChangeNotifierProvider(create: (_) => VpnService()),
         ChangeNotifierProvider(create: (_) => VpnState()),
         ChangeNotifierProvider(create: (_) => SubscriptionProvider()),
         ChangeNotifierProvider(create: (_) => SplitTunnelProvider()),
@@ -46,6 +46,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeProv = context.watch<ThemeProvider>();
     final localeProv = context.watch<LocaleProvider>();
+    final onboarding = context.watch<OnboardingService>();
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -61,7 +62,18 @@ class App extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      home: const RootShell(),
+      // OnboardingService.shouldShowOnboarding() combines the .env-configured
+      // requirement with persisted completion state — when the screen calls
+      // completeOnboarding()/skipOnboarding(), it notifies listeners, this
+      // widget rebuilds, and `home` swaps automatically (no explicit
+      // navigation needed). ConfigService.enableMiniMode picks the shell,
+      // same white-label-per-deployment pattern as SHOW_APPS_PAGE etc.
+      home:
+          onboarding.shouldShowOnboarding()
+              ? OnboardingScreen(onboardingService: onboarding)
+              : (ConfigService.enableMiniMode
+                  ? const MiniAppShell()
+                  : const RootShell()),
     );
   }
 }
@@ -92,7 +104,7 @@ class _RootShellState extends State<RootShell> {
       NavDestination(
         icon: Icons.apps_outlined,
         activeIcon: Icons.apps_rounded,
-        label: l.apps_title ?? 'Apps',
+        label: l.apps_title,
       ),
       NavDestination(
         icon: Icons.settings_outlined,
@@ -105,7 +117,7 @@ class _RootShellState extends State<RootShell> {
       const ServersPage(),
       MainPage(onOpenServers: () => setState(() => _index = 0)),
       const AppsPage(),
-      const SettingsPage(),
+      SettingsPage(onOpenServers: () => setState(() => _index = 0)),
     ];
 
     return AppScaffold(
@@ -118,10 +130,10 @@ class _RootShellState extends State<RootShell> {
   }
 
   String _titleFor(int i, AppLocalizations l) => switch (i) {
-        0 => l.servers,
-        1 => l.appName,
-        2 => l.apps_title ?? 'Apps',
-        3 => l.settings,
-        _ => '',
-      };
+    0 => l.servers,
+    1 => l.appName,
+    2 => l.apps_title,
+    3 => l.settings,
+    _ => '',
+  };
 }

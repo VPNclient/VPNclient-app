@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../design/app_colors.dart';
+import '../../l10n/app_localizations.dart';
 import '../../services/onboarding_service.dart';
 import '../../services/config_service.dart';
 
@@ -21,14 +22,14 @@ class _OnboardingScreenState extends State<OnboardingScreen>
   int _currentStep = 0;
 
   List<OnboardingStep> _getSteps() {
+    final l = AppLocalizations.of(context)!;
     return [
       // Шаг 1: Подключение к телеграм боту
       OnboardingStep(
-        title: 'Welcome',
-        description:
-            ConfigService.requiresTelegramBot
-                ? 'To connect, go to the telegram bot to get your unique subscription'
-                : 'To connect, go to the telegram bot (optional)',
+        title: l.onboarding_welcome_title,
+        description: ConfigService.requiresTelegramBot
+            ? l.onboarding_welcome_desc_required
+            : l.onboarding_welcome_desc_optional,
         telegramBot: '@${ConfigService.telegramBotUsername}',
         icon: Icons.telegram,
         color: AppColors.brandBlue,
@@ -38,11 +39,10 @@ class _OnboardingScreenState extends State<OnboardingScreen>
 
       // Шаг 2: Настройки успешно получены
       OnboardingStep(
-        title: 'Settings Received',
-        description:
-            ConfigService.requiresTelegramBot
-                ? 'Your unique subscription has been successfully received'
-                : 'Your settings have been successfully received',
+        title: l.onboarding_received_title,
+        description: ConfigService.requiresTelegramBot
+            ? l.onboarding_received_desc_required
+            : l.onboarding_received_desc_optional,
         icon: Icons.check_circle,
         color: AppColors.success,
         isLast: true,
@@ -149,6 +149,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     final steps = _getSteps();
     final currentStepData = steps[_currentStep];
 
@@ -171,7 +172,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                             ? _skipOnboarding
                             : null,
                     child: Text(
-                      'Skip',
+                      l.skip,
                       style: TextStyle(
                         color:
                             ConfigService.canSkipOnboarding
@@ -216,14 +217,14 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
-                        child: const Row(
+                        child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.arrow_back, color: AppColors.brandBlue),
-                            SizedBox(width: 8),
+                            const Icon(Icons.arrow_back, color: AppColors.brandBlue),
+                            const SizedBox(width: 8),
                             Text(
-                              'Back',
-                              style: TextStyle(
+                              l.back,
+                              style: const TextStyle(
                                 color: AppColors.brandBlue,
                                 fontWeight: FontWeight.w600,
                               ),
@@ -254,11 +255,11 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                           Text(
                             currentStepData.isWelcome
                                 ? (ConfigService.requiresTelegramBot
-                                    ? 'Go to telegram bot'
-                                    : 'Go to telegram bot (optional)')
+                                    ? l.onboarding_cta_telegram
+                                    : l.onboarding_cta_telegram_optional)
                                 : (currentStepData.isLast
-                                    ? 'Get Started'
-                                    : 'Next'),
+                                    ? l.get_started
+                                    : l.next),
                             style: const TextStyle(fontWeight: FontWeight.w600),
                           ),
                           const SizedBox(width: 8),

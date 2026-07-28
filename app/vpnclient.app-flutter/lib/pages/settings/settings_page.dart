@@ -8,6 +8,7 @@ import '../../providers/locale_provider.dart';
 import '../../services/config_service.dart';
 import '../../theme_provider.dart';
 import '../../unread_notifier.dart';
+import 'subscribe_sheet.dart';
 import 'support_chat_page.dart';
 
 /// Settings — profile, connection, appearance (theme + language) and
@@ -91,14 +92,14 @@ class SettingsPage extends StatelessWidget {
               child: const Text('Pro',
                   style: TextStyle(color: Colors.white, fontSize: 12)),
             ),
-            // TODO(sdd-vpnclient-payment): wired to the subscribe-sheet UI
-            // shell in Task 3.5; real billing is that flow's job.
+            onTap: () => SubscribeSheet.show(context),
           ),
           _Item(
             icon: Icons.percent_rounded,
             label: l.promo_code,
             trailing: const Icon(Icons.chevron_right,
                 color: AppColors.textMuted),
+            onTap: () => SubscribeSheet.show(context),
           ),
         ]),
         const SizedBox(height: AppSpacing.md),
