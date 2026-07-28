@@ -415,6 +415,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Servers & subscriptions'**
   String get servers_subscriptions;
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// No description provided for @reset.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset'**
+  String get reset;
+
+  /// No description provided for @are_you_sure_reset.
+  ///
+  /// In en, this message translates to:
+  /// **'This will restore theme and language to their defaults. This can\'t be undone.'**
+  String get are_you_sure_reset;
+
+  /// No description provided for @connection_reset.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings reset'**
+  String get connection_reset;
 }
 
 class _AppLocalizationsDelegate

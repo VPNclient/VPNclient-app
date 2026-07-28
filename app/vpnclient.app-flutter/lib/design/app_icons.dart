@@ -31,6 +31,7 @@ class AppIcons {
     'Instagram': instagramPng,
     'TikTok': tikTokPng,
     'X (Twitter)': twitterPng,
+    'X': twitterPng,
     'Amazon': amazonPng,
     'YouTube': youTube,
     'Facebook': facebook,
@@ -41,4 +42,9 @@ class AppIcons {
     'Spotify': spotify,
     'WhatsApp': whatsApp,
   };
+
+  /// Looks up an app icon by display name; `null` if this app isn't in the
+  /// catalog (caller should fall back to a generic/letter avatar — e.g.
+  /// "Telegram" has no shipped brand asset).
+  static String? forName(String name) => byName[name];
 }

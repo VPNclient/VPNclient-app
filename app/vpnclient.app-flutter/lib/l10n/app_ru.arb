@@ -52,5 +52,9 @@
   "free_plan": "Бесплатный тариф",
   "pro_plan": "Pro тариф",
   "protocol": "Протокол",
-  "servers_subscriptions": "Серверы и подписки"
+  "servers_subscriptions": "Серверы и подписки",
+  "cancel": "Отмена",
+  "reset": "Сбросить",
+  "are_you_sure_reset": "Тема и язык будут возвращены к значениям по умолчанию. Это действие нельзя отменить.",
+  "connection_reset": "Настройки сброшены"
 }

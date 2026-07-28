@@ -176,4 +176,17 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get servers_subscriptions => 'Серверы и подписки';
+
+  @override
+  String get cancel => 'Отмена';
+
+  @override
+  String get reset => 'Сбросить';
+
+  @override
+  String get are_you_sure_reset =>
+      'Тема и язык будут возвращены к значениям по умолчанию. Это действие нельзя отменить.';
+
+  @override
+  String get connection_reset => 'Настройки сброшены';
 }

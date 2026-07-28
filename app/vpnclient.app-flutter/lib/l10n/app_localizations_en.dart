@@ -175,4 +175,17 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get servers_subscriptions => 'Servers & subscriptions';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get reset => 'Reset';
+
+  @override
+  String get are_you_sure_reset =>
+      'This will restore theme and language to their defaults. This can\'t be undone.';
+
+  @override
+  String get connection_reset => 'Settings reset';
 }

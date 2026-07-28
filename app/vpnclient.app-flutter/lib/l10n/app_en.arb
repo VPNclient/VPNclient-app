@@ -52,5 +52,9 @@
   "free_plan": "Free plan",
   "pro_plan": "Pro plan",
   "protocol": "Protocol",
-  "servers_subscriptions": "Servers & subscriptions"
+  "servers_subscriptions": "Servers & subscriptions",
+  "cancel": "Cancel",
+  "reset": "Reset",
+  "are_you_sure_reset": "This will restore theme and language to their defaults. This can't be undone.",
+  "connection_reset": "Settings reset"
 }
